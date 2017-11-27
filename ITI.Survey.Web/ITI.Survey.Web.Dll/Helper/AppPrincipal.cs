@@ -41,5 +41,34 @@ namespace ITI.Survey.Web.Dll.Helper
             Thread.CurrentPrincipal = appPrincipal;
             return true;
         }
+
+        public static bool Login(string userId, string password)
+        {
+            //clear current principal
+            Thread.CurrentPrincipal = null;
+
+            AppPrincipal prin = new AppPrincipal();
+            AppIdentity appIdentity = prin.AppIdentity;
+            UserLoginDAL userLoginDal = new UserLoginDAL();
+            userLoginDal.FillUserLoginByUserId(userId, appIdentity);
+
+            if (appIdentity.IsNew)
+            {
+                return false;
+            }
+
+            if (appIdentity.Disabled != 0)
+            {
+                return false;
+            }
+
+            if (appIdentity.Password == password)
+            {
+                Thread.CurrentPrincipal = prin;
+                return true;
+            }
+
+            return false;
+        }
     }
 }
