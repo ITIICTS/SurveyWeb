@@ -49,12 +49,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAL\ContCardDAL.cs" />
     <Compile Include="DAL\GlobalWebServiceDAL.cs" />
     <Compile Include="DAL\UserLoginDAL.cs" />
     <Compile Include="Helper\AppConfig.cs" />
     <Compile Include="Helper\AppIdentity.cs" />
     <Compile Include="Helper\AppPrincipal.cs" />
+    <Compile Include="Helper\Converter.cs" />
     <Compile Include="Helper\PhpCompatible.cs" />
+    <Compile Include="Model\ContCard.cs" />
     <Compile Include="Model\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

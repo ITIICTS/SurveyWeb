@@ -11,8 +11,8 @@ namespace ITI.Survey.Web.Dll.DAL
 {
     public class UserLoginDAL
     {
-        public const string DefaultColumn = "userid, username, password, disabled, randompass, randomtype, dbpass, dbname, dbhost, cashiercode";
-        public const string DefaultTable = "userlogin";
+        public const string DEFAULT_COLUMN = "userid, username, password, disabled, randompass, randomtype, dbpass, dbname, dbhost, cashiercode";
+        public const string DEFAULT_TABLE = "userlogin";
 
         private void MappingReaderToUserLogin(NpgsqlDataReader npgsqlDataReader, UserLogin userLogin)
         {
@@ -44,7 +44,7 @@ namespace ITI.Survey.Web.Dll.DAL
                 using (NpgsqlConnection npgsqlConnection = AppConfig.GetLoginConnection())
                 {
                     npgsqlConnection.Open();
-                    string query = string.Format("SELECT {0} FROM {1} WHERE userid=@Userid", DefaultColumn, DefaultTable);
+                    string query = string.Format("SELECT {0} FROM {1} WHERE userid=@Userid", DEFAULT_COLUMN, DEFAULT_TABLE);
                     using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
                     {
                         npgsqlCommand.Parameters.AddWithValue("@UserId", userId);

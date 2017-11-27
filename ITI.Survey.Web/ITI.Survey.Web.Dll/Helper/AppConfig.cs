@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace ITI.Survey.Web.Dll.Helper
@@ -81,5 +82,18 @@ namespace ITI.Survey.Web.Dll.Helper
             return npgsqlConnection;
         }
 
+        public static NpgsqlConnection GetUserConnection()
+        {
+            AppIdentity appIdentity = Thread.CurrentPrincipal.Identity as AppIdentity;
+
+            string connectionString = string.Format(ConnectionString + "Pooling = True; MaxPoolSize = 60;",
+                                            appIdentity.DbHost,
+                                            "5432",
+                                            appIdentity.UserId,
+                                            appIdentity.DbPass,
+                                            appIdentity.DbName);
+            NpgsqlConnection npgsqlConnection = new NpgsqlConnection(connectionString);
+            return npgsqlConnection;
+        }
     }
 }
