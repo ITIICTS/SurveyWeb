@@ -26,43 +26,93 @@ namespace ITI.Survey.Web.Dll.Helper
             }
         }
 
+        private static void CreateColumnFromProperty(DataTable dataTable, PropertyInfo[] propertyInfo)
+        {
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                if (CommonType.Contains(propertyInfo[i].PropertyType.Name))
+                    dataTable.Columns.Add(propertyInfo[i].Name, propertyInfo[i].PropertyType);
+                else
+                    dataTable.Columns.Add(propertyInfo[i].Name, Type.GetType("System.String"));
+            }
+        }
 
-        public static string ToXML(object obj)
+        private static void MappingDataRowFromObject(DataRow dataRow, PropertyInfo[] propertyInfo, object data)
+        {
+            for (int i = 0; i < propertyInfo.Length; i++)
+            {
+                if (CommonType.Contains(propertyInfo[i].PropertyType.Name))
+                {
+                    try
+                    {
+                        object result = propertyInfo[i].GetValue(data, null);
+                        if (result != null)
+                        {
+                            dataRow[i] = result.ToString();
+                        }
+                    }
+                    catch
+                    {
+                    }
+                }
+                else
+                {
+                    dataRow[i] = propertyInfo[i].Name;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Object To XML
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public static string ConvertToXML(object theObject)
         {
             DataSet dataSet = new DataSet();
             DataTable dataTable = new DataTable();
-            PropertyInfo[] propInfo = obj.GetType().GetProperties();
-            dataSet.DataSetName = "DataSet." + obj.GetType().Name;
-            dataTable.TableName = "DataTable." + obj.GetType().Name;
-            for (int i = 0; i < propInfo.Length; i++)
-            {
-                if (CommonType.Contains(propInfo[i].PropertyType.Name))
-                    dataTable.Columns.Add(propInfo[i].Name, propInfo[i].PropertyType);
-                else
-                    dataTable.Columns.Add(propInfo[i].Name, Type.GetType("System.String"));
-            }
+            dataSet.DataSetName = "DataSet." + theObject.GetType().Name;
+            dataTable.TableName = "DataTable." + theObject.GetType().Name;
+
+            // Create Column
+            PropertyInfo[] propertyInfo = theObject.GetType().GetProperties();
+            CreateColumnFromProperty(dataTable, propertyInfo);
+
+            // Mapping Data
             DataRow dataRow = dataTable.NewRow();
-            for (int i = 0; i < propInfo.Length; i++)
-            {
-                if (CommonType.Contains(propInfo[i].PropertyType.Name))
-                {
-                    object tempObject = obj;
-                    try
-                    {
-                        object t = propInfo[i].GetValue(tempObject, null);
-                        if (t != null)
-                            dataRow[i] = t.ToString();
-                    }
-                    catch { }
-                }
-                else
-                {
-                    dataRow[i] = propInfo[i].Name;
-                }
-            }
+            MappingDataRowFromObject(dataRow, propertyInfo, theObject);
             dataTable.Rows.Add(dataRow);
             dataSet.Tables.Add(dataTable);
             return dataSet.GetXml();
+        }
+
+        /// <summary>
+        /// List to XML
+        /// </summary>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static string ConvertListToXML(IList list)
+        {
+            DataSet dataset = new DataSet();
+            dataset.DataSetName = list[0].GetType().Name;
+            DataTable dataTable = new DataTable();            
+            dataTable.TableName = list[0].GetType().Name;
+
+            // Create Column
+            PropertyInfo[] propertyInfo = list[0].GetType().GetProperties();
+            CreateColumnFromProperty(dataTable, propertyInfo);
+
+            // Mapping Data
+            DataRow dataRow;
+            for (int row = 0; row < list.Count; row++)
+            {
+                dataRow = dataTable.NewRow();
+                MappingDataRowFromObject(dataRow, propertyInfo, list[row]);
+                dataTable.Rows.Add(dataRow);
+            }
+
+            dataset.Tables.Add(dataTable);
+            return dataset.GetXml();
         }
     }
 }

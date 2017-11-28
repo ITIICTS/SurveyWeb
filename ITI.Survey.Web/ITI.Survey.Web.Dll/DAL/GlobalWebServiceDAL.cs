@@ -2,9 +2,7 @@
 using Npgsql;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace ITI.Survey.Web.Dll.DAL
 {
@@ -15,7 +13,10 @@ namespace ITI.Survey.Web.Dll.DAL
             List<string> listString = new List<string>();
             using (NpgsqlConnection npgsqlConnection = AppConfig.GetLoginConnection())
             {
-                npgsqlConnection.Open();
+                if (npgsqlConnection.State == ConnectionState.Closed)
+                {
+                    npgsqlConnection.Open();
+                }
                 string query = "SELECT userlogin.userid " +
                                 "FROM userlogin " +
                                         "INNER JOIN usergroup on userlogin.userid = usergroup.userid " +

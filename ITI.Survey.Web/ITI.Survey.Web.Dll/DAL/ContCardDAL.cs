@@ -2,10 +2,7 @@
 using ITI.Survey.Web.Dll.Model;
 using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data;
 
 namespace ITI.Survey.Web.Dll.DAL
 {
@@ -56,7 +53,10 @@ namespace ITI.Survey.Web.Dll.DAL
             {
                 using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
                 {
-                    npgsqlConnection.Open();
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
                     string query = string.Format("SELECT {0} FROM {1} WHERE contcardid=@ContCardId AND cardmode=@CardMode ",
                                         string.Format(DEFAULT_COLUMN, string.Empty),
                                         DEFAULT_TABLE);

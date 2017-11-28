@@ -20,14 +20,42 @@ namespace ITI.Survey.Web.WebService
     public class Stacking : System.Web.Services.WebService
     {
         private ContCardDAL contCardDAL = new ContCardDAL();
+        private ContainerDurationDAL containerDurationDAL = new ContainerDurationDAL();
 
-        [WebMethod]
-        public string ContCardFillByIdAndCardMode(string userId, long id, string cardMode)
+        /// <summary>
+        /// Old Name Method: ContCard_FillByID(string activeuser, long _id, string _cmode)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="id"></param>
+        /// <param name="cardMode"></param>
+        /// <returns></returns>
+        [WebMethod]        
+        public string FillContCardByIdAndCardMode(string userId, long id, string cardMode)
         {
             AppPrincipal.LoginForService(userId);
             ContCard contCard = new ContCard();
             contCard = contCardDAL.FillContCardByContCardIdAndCardMode(id, cardMode);
-            return contCard.ContCardID > 0 ?  Converter.ToXML(contCard) : string.Empty;
+            return contCard.ContCardID > 0 ?  Converter.ConvertToXML(contCard) : string.Empty;
+        }
+
+        /// <summary>
+        /// Old Name Method: WebDuration_Fill(string activeuser, string _customercode, string _contsize, string _conttype, string _condition, int _mindur, string _sortby)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="customerCode"></param>
+        /// <param name="containerSize"></param>
+        /// <param name="containerType"></param>
+        /// <param name="condition"></param>
+        /// <param name="minDuration"></param>
+        /// <param name="sortBy"></param>
+        /// <returns></returns>
+        [WebMethod]        
+        public string FillContainerDuration(string userId, string customerCode, string size, string type, string condition, int minDuration, string sortBy)
+        {
+            AppPrincipal.LoginForService(userId);
+            List<ContainerDuration> listContainerDuration = new List<ContainerDuration>();
+            listContainerDuration = containerDurationDAL.FillByCriteria(customerCode, size, type, condition, minDuration, sortBy);
+            return listContainerDuration.Count > 0 ? Converter.ConvertListToXML(listContainerDuration) : string.Empty;
         }
     }
 }
