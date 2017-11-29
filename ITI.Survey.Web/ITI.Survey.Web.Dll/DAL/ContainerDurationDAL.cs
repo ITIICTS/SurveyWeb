@@ -9,8 +9,6 @@ namespace ITI.Survey.Web.Dll.DAL
 {
     public class ContainerDurationDAL
     {
-        long id = 0;
-
         /// <summary>
         /// Mapping Data Reader To Container Card
         /// </summary>
@@ -19,7 +17,6 @@ namespace ITI.Survey.Web.Dll.DAL
         private void MappingDataReaderToContainerDuration(NpgsqlDataReader npgsqlDataReader, ContainerDuration containerDuration)
         {
             containerDuration.ContInOutId = npgsqlDataReader.GetInt64(0);
-            id = containerDuration.ContInOutId;
             containerDuration.Cont = npgsqlDataReader.GetString(1);
             containerDuration.Size = npgsqlDataReader.GetString(2);
             containerDuration.Type = npgsqlDataReader.GetString(3);

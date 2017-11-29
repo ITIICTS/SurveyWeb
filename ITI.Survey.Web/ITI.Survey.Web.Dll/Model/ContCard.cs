@@ -68,15 +68,6 @@ namespace ITI.Survey.Web.Dll.Model
                 return seal;
             }
         }
-        public string ContainerCardNumberToken
-        {
-            get
-            {
-                return string.Format("{0}-{1}",
-                                        ContCardID,
-                                        Token);
-            }
-        }
 
         public ContCard()
         {

@@ -46,6 +46,12 @@ namespace ITI.Survey.Web.Dll.DAL
             contCard.IsCombo = npgsqlDataReader.GetBoolean(npgsqlDataReader.GetOrdinal("iscombo"));
         }
 
+        /// <summary>
+        /// Fill Container Card By contCardId, cardMode
+        /// </summary>
+        /// <param name="contCardId"></param>
+        /// <param name="cardMode"></param>
+        /// <returns></returns>
         public ContCard FillContCardByContCardIdAndCardMode(long contCardId, string cardMode)
         {
             ContCard contCard = new ContCard();

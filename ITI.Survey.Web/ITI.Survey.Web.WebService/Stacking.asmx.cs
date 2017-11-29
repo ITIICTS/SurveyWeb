@@ -21,9 +21,12 @@ namespace ITI.Survey.Web.WebService
     {
         private ContCardDAL contCardDAL = new ContCardDAL();
         private ContainerDurationDAL containerDurationDAL = new ContainerDurationDAL();
+        private ContInOutDAL contInOutDAL = new ContInOutDAL();
+        private BlackListDAL blackListDAL = new BlackListDAL();
 
         /// <summary>
         /// Old Name Method: ContCard_FillByID(string activeuser, long _id, string _cmode)
+        /// Fill Container Card By Id and Card Mode
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="id"></param>
@@ -40,11 +43,12 @@ namespace ITI.Survey.Web.WebService
 
         /// <summary>
         /// Old Name Method: WebDuration_Fill(string activeuser, string _customercode, string _contsize, string _conttype, string _condition, int _mindur, string _sortby)
+        /// Fill Container Duration by Customer Code, Size, Type, Condition, Minimum Duration, Sort By
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="customerCode"></param>
-        /// <param name="containerSize"></param>
-        /// <param name="containerType"></param>
+        /// <param name="size"></param>
+        /// <param name="type"></param>
         /// <param name="condition"></param>
         /// <param name="minDuration"></param>
         /// <param name="sortBy"></param>
@@ -56,6 +60,23 @@ namespace ITI.Survey.Web.WebService
             List<ContainerDuration> listContainerDuration = new List<ContainerDuration>();
             listContainerDuration = containerDurationDAL.FillByCriteria(customerCode, size, type, condition, minDuration, sortBy);
             return listContainerDuration.Count > 0 ? Converter.ConvertListToXML(listContainerDuration) : string.Empty;
+        }
+
+        /// <summary>
+        /// Old Name Method: ContInOut_FillByID(string activeuser, long _id)
+        /// Fill Container By Id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="contInOutId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillContInOutById(string userId, long contInOutId)
+        {
+            AppPrincipal.LoginForService(userId);
+            ContInOut contInOut = new ContInOut();
+            contInOut = contInOutDAL.FillContInOutById(contInOutId);
+            contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+            return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;            
         }
     }
 }
