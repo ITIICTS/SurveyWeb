@@ -67,5 +67,15 @@ namespace ITI.Survey.Web.Dll.DAL
             return listString;
         }
 
+        public static DateTime GetServerDtm()
+        {
+            DateTime serverDateTime = DateTime.Now;
+            using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+            {
+                NpgsqlCommand npgsqlCommand = new NpgsqlCommand("SELECT now() ", npgsqlConnection);
+                serverDateTime = Convert.ToDateTime(npgsqlCommand.ExecuteScalar());
+            }
+            return serverDateTime;
+        }
     }
 }

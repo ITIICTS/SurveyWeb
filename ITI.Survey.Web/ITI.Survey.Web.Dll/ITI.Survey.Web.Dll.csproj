@@ -50,10 +50,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DAL\BlackListDAL.cs" />
+    <Compile Include="DAL\BlokDAL.cs" />
     <Compile Include="DAL\ContainerDurationDAL.cs" />
+    <Compile Include="DAL\ContainerLogDAL.cs" />
     <Compile Include="DAL\ContCardDAL.cs" />
     <Compile Include="DAL\ContInOutDAL.cs" />
     <Compile Include="DAL\GlobalWebServiceDAL.cs" />
+    <Compile Include="DAL\TruckInDepoDAL.cs" />
     <Compile Include="DAL\UserLoginDAL.cs" />
     <Compile Include="Helper\AppConfig.cs" />
     <Compile Include="Helper\AppIdentity.cs" />
@@ -61,9 +64,12 @@
     <Compile Include="Helper\Converter.cs" />
     <Compile Include="Helper\GlobalConstant.cs" />
     <Compile Include="Helper\PhpCompatible.cs" />
+    <Compile Include="Model\Blok.cs" />
     <Compile Include="Model\ContainerDuration.cs" />
+    <Compile Include="Model\ContainerLog.cs" />
     <Compile Include="Model\ContCard.cs" />
     <Compile Include="Model\ContInOut.cs" />
+    <Compile Include="Model\TruckInDepo.cs" />
     <Compile Include="Model\UserLogin.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

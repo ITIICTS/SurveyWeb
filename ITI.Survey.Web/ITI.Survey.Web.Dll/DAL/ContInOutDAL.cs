@@ -276,5 +276,227 @@ namespace ITI.Survey.Web.Dll.DAL
             }
             return contInOut;
         }
+
+        /// <summary>
+        /// Fill ContInOut By Container Number
+        /// </summary>
+        /// <param name="containerNumber"></param>
+        /// <returns></returns>
+        public ContInOut FillContInOutByContainerNumber(string containerNumber)
+        {
+            ContInOut contInOut = new ContInOut();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} " +
+                                                " FROM {1} " +
+                                                " WHERE cont=@ContainerNumber " +
+                                                "cORDER BY dtmin DESC",
+                                                string.Format(DEFAULT_COLUMN, string.Empty),
+                                                DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContainerNumber", containerNumber);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                MappingDataReaderToContCard(npgsqlDataReader, contInOut);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return contInOut;
+        }
+
+        /// <summary>
+        /// Update Location To TMP
+        /// </summary>
+        /// <param name="containerToBeTMPLeft"></param>
+        /// <param name="containerToBeTMPRight"></param>
+        /// <param name="location"></param>
+        /// <returns></returns>
+        public int UpdateLocationToTMP(string containerToBeTMPLeft, string containerToBeTMPRight, string location)
+        {
+            int affectedRow = 0;
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = "UPDATE continout " +
+                                    "   SET location='TMP' " +
+                                    "   WHERE (cont = @ContainerNumberLeft OR cont = @ContainerNumberRight) " +
+                                    "           AND location=@Location ";
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContainerNumberLeft", containerToBeTMPLeft);
+                        npgsqlCommand.Parameters.AddWithValue("@ContainerNumberRight", containerToBeTMPRight);
+                        npgsqlCommand.Parameters.AddWithValue("@Location", location);
+                        affectedRow = npgsqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return affectedRow;
+        }
+
+        /// <summary>
+        /// Update ContInOut
+        /// </summary>
+        /// <param name="contInOut"></param>
+        /// <returns></returns>
+        public int UpdateContInOut(ContInOut contInOut)
+        {
+            int affectedRow = 0;
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = "UPDATE continout SET " +
+                            "cont=@cont, customercode=@customercode, size=@size, " +
+                            "type=@type, berat=@berat, manufacture=@manufacture, " +
+                            "cscplate=@cscplate, dtmin=@dtmin, dtmout=@dtmout, " +
+                            "dtmrepaired=@dtmrepaired, dtmpti=@dtmpti, washstatus=@washstatus, " +
+                            "condition=@condition, actin=@actin, actout=@actout, location=@location, " +
+                            "exvessel=@exvessel, consignee=@consignee, nomobilin=@nomobilin, " +
+                            "angkutanin=@angkutanin, nomobilout=@nomobilout, " +
+                            "angkutanout=@angkutanout, donumber=@donumber, shipper=@shipper, " +
+                            "destination=@destination, seal=@seal,payload=@payload, " +
+                            "vesselvoyage=@vesselvoyage,exvesselname=@exvesselname, " +
+                            "vesselvoyagename=@vesselvoyagename, remarks=@remarks, " +
+                            "dtmeirin=@dtmeirin, eirincontact=@eirincontact, noseriorout=@noseriorout, " +
+                            "ediin=@ediin,ediout=@ediout,ediwash=@ediwash,ediapr=@ediapr, " +
+                            "edicom=@edicom,edipti=@edipti,edisync=@edisync,eirin=@eirin,eirout=@eirout, " +
+                            "rfmachine=@rfmachine, destinationname=@destinationname, " +
+                            "blnumber=@blnumber,dtmportout=@dtmportout, dtmoutdepoin=@dtmoutdepoin, " +
+                            "tare=@tare,cleaningrefno=@cleaningrefno,cleaningremark=@cleaningremark, " +
+                            "cleaninglastcargo=@cleaninglastcargo,cleaningdtmfinish=@cleaningdtmfinish, " +
+                            "cleaningcost=@cleaningcost, bookingassignment=@bookingassignment, " +
+                            "cleaningkode=@cleaningkode,cleaningdesc=@cleaningdesc,cleaningaction=@cleaningaction, " +
+                            "dtmshortpti=@dtmshortpti,exvesselport=@exvesselport, rfenginecond=@rfenginecond, " +
+                            "rfdtmenginerepaired=@rfdtmenginerepaired,rfengineediin=@rfengineediin,rfengineedicom=@rfengineedicom, " +
+                            "rfptitype=@rfptitype,rfptidtmapproved=@rfptidtmapproved,rfptidtmcompleted=@rfptidtmcompleted, " +
+                            "rfptiremark=@rfptiremark,rfpticost=@rfpticost,rfptitemp=@rfptitemp, " +
+                            "rfneedswupdate=@rfneedswupdate,rfdtmswupdated=@rfdtmswupdated, " +
+                            "grade=@grade,commodity=@commodity,mddc_remark=@mddcRemark, " +
+                            "businessunit=@businessUnit, vendorangkutanin=@vendorangkutanin, rkemin=@rkemin, isfreeuse=@isfreeuse " +
+                            "WHERE continoutid=@continoutid ";
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@continoutid", contInOut.ContInOutId);
+                        npgsqlCommand.Parameters.AddWithValue("@cont", contInOut.Cont);
+                        npgsqlCommand.Parameters.AddWithValue("@customercode", contInOut.CustomerCode);
+                        npgsqlCommand.Parameters.AddWithValue("@size", contInOut.Size);
+                        npgsqlCommand.Parameters.AddWithValue("@type", contInOut.Type);
+                        npgsqlCommand.Parameters.AddWithValue("@berat", contInOut.Berat);
+                        npgsqlCommand.Parameters.AddWithValue("@manufacture", contInOut.Manufacture);
+                        npgsqlCommand.Parameters.AddWithValue("@cscplate", contInOut.CscPlate);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmin", contInOut.DtmIn);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmout", contInOut.DtmOut);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmrepaired", contInOut.DtmRepaired);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmpti", contInOut.DtmPti);
+                        npgsqlCommand.Parameters.AddWithValue("@washstatus", contInOut.WashStatus);
+                        npgsqlCommand.Parameters.AddWithValue("@condition", contInOut.Condition);
+                        npgsqlCommand.Parameters.AddWithValue("@actin", contInOut.ActIn);
+                        npgsqlCommand.Parameters.AddWithValue("@actout", contInOut.ActOut);
+                        npgsqlCommand.Parameters.AddWithValue("@location", contInOut.Location);
+                        npgsqlCommand.Parameters.AddWithValue("@exvessel", contInOut.ExVessel);
+                        npgsqlCommand.Parameters.AddWithValue("@exvesselname", contInOut.ExVesselName);
+                        npgsqlCommand.Parameters.AddWithValue("@consignee", contInOut.Consignee);
+                        npgsqlCommand.Parameters.AddWithValue("@nomobilin", contInOut.NoMobilIn);
+                        npgsqlCommand.Parameters.AddWithValue("@angkutanin", contInOut.AngkutanIn);
+                        npgsqlCommand.Parameters.AddWithValue("@nomobilout", contInOut.NoMobilOut);
+                        npgsqlCommand.Parameters.AddWithValue("@angkutanout", contInOut.AngkutanOut);
+                        npgsqlCommand.Parameters.AddWithValue("@donumber", contInOut.DoNumber);
+                        npgsqlCommand.Parameters.AddWithValue("@shipper", contInOut.Shipper);
+                        npgsqlCommand.Parameters.AddWithValue("@destination", contInOut.Destination);
+                        npgsqlCommand.Parameters.AddWithValue("@seal", contInOut.Seal);
+                        npgsqlCommand.Parameters.AddWithValue("@vesselvoyage", contInOut.VesselVoyage);
+                        npgsqlCommand.Parameters.AddWithValue("@vesselvoyagename", contInOut.VesselVoyageName);
+                        npgsqlCommand.Parameters.AddWithValue("@remarks", contInOut.Remarks);
+                        npgsqlCommand.Parameters.AddWithValue("@payload", contInOut.Payload);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmeirin", contInOut.DtmEirIn);
+                        npgsqlCommand.Parameters.AddWithValue("@eirincontact", contInOut.EirInContact);
+                        npgsqlCommand.Parameters.AddWithValue("@noseriorout", contInOut.NoSeriOrOut);
+                        npgsqlCommand.Parameters.AddWithValue("@ediin", contInOut.EdiIn);
+                        npgsqlCommand.Parameters.AddWithValue("@ediout", contInOut.EdiOut);
+                        npgsqlCommand.Parameters.AddWithValue("@ediwash", contInOut.EdiWash);
+                        npgsqlCommand.Parameters.AddWithValue("@ediapr", contInOut.EdiApr);
+                        npgsqlCommand.Parameters.AddWithValue("@edicom", contInOut.EdiCom);
+                        npgsqlCommand.Parameters.AddWithValue("@edipti", contInOut.EdiPti);
+                        npgsqlCommand.Parameters.AddWithValue("@edisync", contInOut.EdiSync);
+                        npgsqlCommand.Parameters.AddWithValue("@eirin", contInOut.EirIn);
+                        npgsqlCommand.Parameters.AddWithValue("@eirout", contInOut.EirOut);
+                        npgsqlCommand.Parameters.AddWithValue("@rfmachine", contInOut.RfMachine);
+                        npgsqlCommand.Parameters.AddWithValue("@destinationname", contInOut.DestinationName);
+                        npgsqlCommand.Parameters.AddWithValue("@blnumber", contInOut.BlNumber);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmportout", contInOut.DtmPortOut);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmoutdepoin", contInOut.DtmOutDepoIn);
+                        npgsqlCommand.Parameters.AddWithValue("@tare", contInOut.Tare);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningrefno", contInOut.CleaningRefNo);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningremark", contInOut.CleaningRemark);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaninglastcargo", contInOut.CleaningLastCargo);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningdtmfinish", contInOut.CleaningDtmFinish);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningcost", contInOut.CleaningCost);
+                        npgsqlCommand.Parameters.AddWithValue("@bookingassignment", contInOut.BookingAssignment);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningkode", contInOut.CleaningKode);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningdesc", contInOut.CleaningDesc);
+                        npgsqlCommand.Parameters.AddWithValue("@cleaningaction", contInOut.CleaningAction);
+                        npgsqlCommand.Parameters.AddWithValue("@dtmshortpti", contInOut.DtmShortPti);
+                        npgsqlCommand.Parameters.AddWithValue("@exvesselport", contInOut.ExVesselPort);
+                        npgsqlCommand.Parameters.AddWithValue("@rfenginecond", contInOut.RfEngineCond);
+                        npgsqlCommand.Parameters.AddWithValue("@rfdtmenginerepaired", contInOut.RfDtmEngineRepaired);
+                        npgsqlCommand.Parameters.AddWithValue("@rfengineediin", contInOut.RfEngineEdiIn);
+                        npgsqlCommand.Parameters.AddWithValue("@rfengineedicom", contInOut.RfEngineEdiCom);
+                        npgsqlCommand.Parameters.AddWithValue("@rfptitype", contInOut.RfPtiType);
+                        npgsqlCommand.Parameters.AddWithValue("@rfptidtmapproved", contInOut.RfPtiDtmApproved);
+                        npgsqlCommand.Parameters.AddWithValue("@rfptidtmcompleted", contInOut.RfPtiDtmCompleted);
+                        npgsqlCommand.Parameters.AddWithValue("@rfptiremark", contInOut.RfPtiRemark);
+                        npgsqlCommand.Parameters.AddWithValue("@rfpticost", contInOut.RfPtiCost);
+                        npgsqlCommand.Parameters.AddWithValue("@rfptitemp", contInOut.RfPtiTemp);
+                        npgsqlCommand.Parameters.AddWithValue("@rfneedswupdate", contInOut.RfNeedSwUpdate);
+                        npgsqlCommand.Parameters.AddWithValue("@rfdtmswupdated", contInOut.RfDtmSwUpdated);
+                        npgsqlCommand.Parameters.AddWithValue("@grade", contInOut.GradeV2);
+                        npgsqlCommand.Parameters.AddWithValue("@commodity", contInOut.Commodity);
+
+                        npgsqlCommand.Parameters.AddWithValue("@mddcRemark", contInOut.MddcRemark);
+
+                        npgsqlCommand.Parameters.AddWithValue("@businessUnit", contInOut.BusinessUnit);
+
+                        npgsqlCommand.Parameters.AddWithValue("@vendorangkutanin", contInOut.VendorAngkutanIn);
+                        npgsqlCommand.Parameters.AddWithValue("@rkemin", contInOut.RkemIn);
+
+                        npgsqlCommand.Parameters.AddWithValue("@isfreeuse", contInOut.IsFreeUse);
+                        affectedRow = npgsqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return affectedRow;
+        }
     }
 }

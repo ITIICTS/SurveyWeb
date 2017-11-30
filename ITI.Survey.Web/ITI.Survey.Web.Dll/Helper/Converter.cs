@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -95,7 +96,7 @@ namespace ITI.Survey.Web.Dll.Helper
         {
             DataSet dataset = new DataSet();
             dataset.DataSetName = list[0].GetType().Name;
-            DataTable dataTable = new DataTable();            
+            DataTable dataTable = new DataTable();
             dataTable.TableName = list[0].GetType().Name;
 
             // Create Column
@@ -113,6 +114,14 @@ namespace ITI.Survey.Web.Dll.Helper
 
             dataset.Tables.Add(dataTable);
             return dataset.GetXml();
+        }
+
+        public static DataTable ConvertXmlToDataTable(string xml)
+        {           
+            DataSet dataSet = new DataSet();
+            StringReader stringReader = new StringReader(xml);
+            dataSet.ReadXml(stringReader);
+            return dataSet.Tables[0];
         }
     }
 }

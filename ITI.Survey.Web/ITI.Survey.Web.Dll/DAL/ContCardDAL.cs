@@ -47,6 +47,45 @@ namespace ITI.Survey.Web.Dll.DAL
         }
 
         /// <summary>
+        /// Fill Container Card By contCardId
+        /// </summary>
+        /// <param name="contCardId"></param>
+        /// <returns></returns>
+        public ContCard FillContCardByContCardId(long contCardId)
+        {
+            ContCard contCard = new ContCard();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} FROM {1} WHERE contcardid=@ContCardId ",
+                                        string.Format(DEFAULT_COLUMN, string.Empty),
+                                        DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContCardId", contCardId);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                MappingDataReaderToContCard(npgsqlDataReader, contCard);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return contCard;
+        }
+
+        /// <summary>
         /// Fill Container Card By contCardId, cardMode
         /// </summary>
         /// <param name="contCardId"></param>
@@ -85,6 +124,66 @@ namespace ITI.Survey.Web.Dll.DAL
                 throw ex;
             }
             return contCard;
+        }
+
+        /// <summary>
+        /// Update Container Card
+        /// </summary>
+        /// <param name="contCard"></param>
+        /// <returns></returns>
+        public int UpdateContCard(ContCard contCard)
+        {
+            int rowAffected = 0;
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = "    UPDATE contcard " + 
+                                    "   SET  cardmode=@CardMode, refid=@RefID, cont=@Cont, size=@Size, type=@Type, " +
+                                    "       dtm1=@Dtm1, loc1=@Loc1, dtm2=@Dtm2, loc2=@Loc2, remark=@Remark, dtm3=@dtm3, " + 
+                                    "       continoutid=@continoutid, userid3=@userid3, " +
+                                    "       seal1=@seal1, seal2=@seal2, seal3=@seal3, seal4=@seal4, "+ 
+                                    "       nomobilout=@nomobilout, angkutanout=@angkutanout, " +
+                                    "       eiroutno=@eiroutno, token = @Token, iscombo = @IsCombo " + 
+                                    "   WHERE contcardid=@ContCardID ";
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContCardID", contCard.ContCardID);
+                        npgsqlCommand.Parameters.AddWithValue("@CardMode", contCard.CardMode);
+                        npgsqlCommand.Parameters.AddWithValue("@RefID", contCard.RefID);
+                        npgsqlCommand.Parameters.AddWithValue("@Cont", contCard.Cont);
+                        npgsqlCommand.Parameters.AddWithValue("@Size", contCard.Size);
+                        npgsqlCommand.Parameters.AddWithValue("@Type", contCard.Type);
+                        npgsqlCommand.Parameters.AddWithValue("@Dtm1", contCard.Dtm1.Value);
+                        npgsqlCommand.Parameters.AddWithValue("@Loc1", contCard.Loc1);
+                        npgsqlCommand.Parameters.AddWithValue("@Dtm2", contCard.Dtm2.Value);
+                        npgsqlCommand.Parameters.AddWithValue("@Loc2", contCard.Loc2);
+                        npgsqlCommand.Parameters.AddWithValue("@Remark", contCard.Remark);
+                        npgsqlCommand.Parameters.AddWithValue("@dtm3", contCard.Dtm3.Value);
+                        npgsqlCommand.Parameters.AddWithValue("@continoutid", contCard.ContInOutID);
+                        npgsqlCommand.Parameters.AddWithValue("@userid3", contCard.UserID3);
+                        npgsqlCommand.Parameters.AddWithValue("@seal1", contCard.Seal1);
+                        npgsqlCommand.Parameters.AddWithValue("@seal2", contCard.Seal2);
+                        npgsqlCommand.Parameters.AddWithValue("@seal3", contCard.Seal3);
+                        npgsqlCommand.Parameters.AddWithValue("@seal4", contCard.Seal4);
+                        npgsqlCommand.Parameters.AddWithValue("@nomobilout", contCard.NoMobilOut);
+                        npgsqlCommand.Parameters.AddWithValue("@angkutanout", contCard.AngkutanOut);
+                        npgsqlCommand.Parameters.AddWithValue("@eiroutno", contCard.EirOutNo);
+                        npgsqlCommand.Parameters.AddWithValue("@Token", contCard.Token);
+                        npgsqlCommand.Parameters.AddWithValue("@IsCombo", contCard.IsCombo);
+                        rowAffected = npgsqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return rowAffected;
         }
     }
 }
