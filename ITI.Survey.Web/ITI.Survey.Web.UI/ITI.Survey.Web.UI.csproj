@@ -331,11 +331,7 @@
     <Content Include="Views\Sample\CreateHeaderDetail.cshtml" />
     <Content Include="Views\Sample\_SampleList.cshtml" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\Account\" />
-    <Folder Include="Views\Base\" />
-    <Folder Include="Views\MuatScan\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
