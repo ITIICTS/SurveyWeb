@@ -2,6 +2,7 @@
 using ITI.Survey.Web.Dll.Model;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace ITI.Survey.Web.Dll.DAL
@@ -317,6 +318,100 @@ namespace ITI.Survey.Web.Dll.DAL
                 throw ex;
             }
             return contInOut;
+        }
+
+        /// <summary>
+        /// Get Container Stock By Container Number
+        /// </summary>
+        /// <param name="cont"></param>
+        /// <param name="isSetMessage"></param>
+        /// <returns></returns>
+        public List<ContInOut> GetContainerStockByContainerNumber(string cont, bool isSetMessage)
+        {
+            List<ContInOut> listContInOut = new List<ContInOut>();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} FROM {1} " +
+                                                 "  WHERE cont LIKE @Container " +
+                                                 "      AND dtmout IS NULL " +
+                                                 "  ORDER BY cont,dtmin ", 
+                                         string.Format(DEFAULT_COLUMN, string.Empty), 
+                                         DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@Container", cont + '%');
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                ContInOut contInOut = new ContInOut();
+                                MappingDataReaderToContCard(npgsqlDataReader, contInOut);
+                                if (isSetMessage)
+                                {
+                                    BlackListDAL blackListDAL = new BlackListDAL();
+                                    contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+                                }
+                                listContInOut.Add(contInOut);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listContInOut;
+        }
+
+        /// <summary>
+        /// Get Container Stock By Blok
+        /// </summary>
+        /// <param name="blok"></param>
+        /// <returns></returns>
+        public List<ContInOut> GetContainerStockByBlok(string blok)
+        {
+            List<ContInOut> listContInOut = new List<ContInOut>();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} " +
+                                             " FROM {1} " +
+                                             " WHERE location = @Blok AND dtmout IS NULL " + 
+                                             " ORDER BY dtmin DESC ",
+                                         string.Format(DEFAULT_COLUMN, string.Empty),
+                                         DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@Blok", blok);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                ContInOut contInOut = new ContInOut();
+                                MappingDataReaderToContCard(npgsqlDataReader, contInOut);
+                                listContInOut.Add(contInOut);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listContInOut;
         }
 
         /// <summary>

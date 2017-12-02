@@ -125,6 +125,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MuatContainerController.cs" />
     <Compile Include="Controllers\MuatScanController.cs" />
     <Compile Include="Controllers\SampleController.cs" />
     <Compile Include="Global.asax.cs">
@@ -330,8 +331,11 @@
     <Content Include="Views\Sample\_DataTableLookupSample.cshtml" />
     <Content Include="Views\Sample\CreateHeaderDetail.cshtml" />
     <Content Include="Views\Sample\_SampleList.cshtml" />
+    <Content Include="Views\MuatContainer\MuatContainer.cshtml" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Views\Muat\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />

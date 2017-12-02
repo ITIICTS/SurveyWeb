@@ -29,7 +29,7 @@ namespace ITI.Survey.Web.WebService
         private TruckInDepoDAL truckInDepoDAL = new TruckInDepoDAL();
 
         /// <summary>
-        /// Old Name Method: ContCard_FillByID(string activeuser, long _id, string _cmode)
+        /// Previous Name: ContCard_FillByID(string activeuser, long _id, string _cmode)
         /// Fill Container Card By Id and Card Mode
         /// </summary>
         /// <param name="userId"></param>
@@ -46,7 +46,8 @@ namespace ITI.Survey.Web.WebService
         }
 
         /// <summary>
-        /// Old Name Method: WebDuration_Fill(string activeuser, string _customercode, string _contsize, string _conttype, string _condition, int _mindur, string _sortby)
+        /// Previous Name: WebDuration_Fill(string activeuser, string _customercode, string _contsize, string _conttype, string _condition, int _mindur, string _sortby)
+        /// Form: Container Duration
         /// Fill Container Duration by Customer Code, Size, Type, Condition, Minimum Duration, Sort By
         /// </summary>
         /// <param name="userId"></param>
@@ -67,7 +68,7 @@ namespace ITI.Survey.Web.WebService
         }
 
         /// <summary>
-        /// Old Name Method: ContInOut_FillByID(string activeuser, long _id)
+        /// Previous Name: ContInOut_FillByID(string activeuser, long _id)
         /// Fill Container By Id
         /// </summary>
         /// <param name="userId"></param>
@@ -84,7 +85,27 @@ namespace ITI.Survey.Web.WebService
         }
 
         /// <summary>
-        /// Old Name Method: Submit_KartuBongkar(string xml_parameter)
+        /// Previous Name: ContInOut_FillByCont(string activeuser, string _cont)
+        /// Fill ContInOut By Container Number
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="containerNumber"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillContInOutByContainerNumber(string userId, string containerNumber)
+        {
+            AppPrincipal.LoginForService(userId);
+            ContInOut contInOut = new ContInOut();
+            contInOut = contInOutDAL.FillContInOutByContainerNumber(containerNumber);
+            contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+            return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;
+        }
+
+        /// <summary>
+        /// Previous Name: Submit_KartuBongkar(string xml_parameter)
+        /// Form: 
+        /// 1. Bongkar AV
+        /// 2. Bongkar DM
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
@@ -252,7 +273,8 @@ namespace ITI.Survey.Web.WebService
         }
 
         /// <summary>
-        /// Old Name Method: Submit_NoMobil(string xml_parameter)
+        /// Previous Name: Submit_NoMobil(string xml_parameter)
+        /// Form: Input Nomor Mobil
         /// </summary>
         /// <param name="xml"></param>
         /// <returns></returns>
@@ -336,6 +358,205 @@ namespace ITI.Survey.Web.WebService
             result += "Nomor Mobil " + nomorMobil + " Angkutan " + dataRow["angkutan"].ToString() + " Update OK.";
 
             return result;
+        }
+
+        /// <summary>
+        /// Previous Name: Submit_BlokMove(string xml_parameter)
+        /// Form: Blok System
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string SubmitBlokMove(string xml)
+        {
+            string result = string.Empty;
+            DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
+            DataRow dataRow = dataTable.Rows[0];
+
+            AppPrincipal.LoginForService(dataRow["activeuser"].ToString());
+
+            #region Initialize Objects
+            // Initialize Blok After
+            string tempLocation = dataRow["location"].ToString();
+            string kodeBlok = tempLocation;
+
+            // Initialize ContInOut
+            ContInOut container = new ContInOut();
+            string containerNumber = string.Empty;
+            if (dataRow["cont"].ToString().Length > 0)
+            {
+                containerNumber = dataRow["cont"].ToString();
+            }
+            else if (dataRow["cont2"].ToString().Length > 0)
+            {
+                containerNumber = dataRow["cont2"].ToString();
+            }
+
+            container = contInOutDAL.FillContInOutByContainerNumber(containerNumber);
+            if (container.ContInOutId <= 0)
+            {
+                result += "Error: Continout tidak ditemukan\r\n";
+            }
+
+            // Initialize Blok Before
+            Blok blok1 = new Blok();
+            blok1 = blokDAL.FillBlokByKode(container.Location);
+            if (blok1.BlokId > 0)
+            {
+                blok1.Cont = string.Empty;
+                blok1.Cont2 = string.Empty;
+            }
+
+
+            Blok blok2 = new Blok();
+            if (kodeBlok != "TMP")
+            {
+                blok2 = blokDAL.FillBlokByKode(kodeBlok);
+                if (blok2.BlokId <= 0)
+                {
+                    result += "Error: Blok " + kodeBlok + " tidak ditemukan\r\n";
+                }
+            }
+
+            #endregion
+
+            if (result.Length > 0)
+            {
+                return result;
+            }
+
+            container.Location = kodeBlok;
+
+            string containerToBeTMPLeft = string.Empty;
+            string containerToBeTMPRight = string.Empty;
+
+            if (dataRow["cont"].ToString().Length > 0)
+            {
+                containerToBeTMPLeft = blok2.Cont;
+                blok2.Cont = containerNumber;
+                if (!container.Size.Equals("20"))
+                {
+                    containerToBeTMPRight = blok2.Cont2;
+                    blok2.Cont2 = string.Empty;
+                }
+                if (blok2.Cont2.Equals(blok2.Cont))
+                {
+                    blok2.Cont2 = string.Empty;
+                }
+                else
+                {
+                    ContInOut contInOutToBeTmp = new ContInOut();
+                    contInOutToBeTmp = contInOutDAL.FillContInOutByContainerNumber(blok2.Cont2);
+                    if (!contInOutToBeTmp.Size.Equals("20"))
+                    {
+                        containerToBeTMPRight = blok2.Cont2;
+                    }
+                }
+            }
+            else if (dataRow["cont2"].ToString().Length > 0)
+            {
+                containerToBeTMPRight = blok2.Cont2;
+                blok2.Cont2 = containerNumber;
+                if (blok2.Cont.Equals(blok2.Cont2))
+                {
+                    blok2.Cont = string.Empty;
+                }
+                else
+                {
+                    ContInOut contInOutToBeTmp = new ContInOut();
+                    contInOutToBeTmp = contInOutDAL.FillContInOutByContainerNumber(blok2.Cont);
+                    if (!contInOutToBeTmp.Size.Equals("20"))
+                    {
+                        containerToBeTMPLeft = blok2.Cont;
+                    }
+                }
+                if (!container.Size.Equals("20"))
+                {
+                    containerToBeTMPLeft = blok2.Cont;
+                    blok2.Cont = containerNumber;
+                    blok2.Cont2 = string.Empty;
+                }
+            }
+
+            try
+            {
+                contInOutDAL.UpdateLocationToTMP(containerToBeTMPLeft, containerToBeTMPRight, container.Location);
+                contInOutDAL.UpdateContInOut(container);
+            }
+            catch
+            {
+                result += "Error: Updating Continout gagal\r\n";
+            }
+
+            try
+            {
+                if (blok1.BlokId > 0)
+                {
+                    blokDAL.UpdateBlok(blok1);
+                }
+
+                if (kodeBlok != "TMP")
+                {
+                    if (blok2.BlokId > 0)
+                    {
+                        blokDAL.UpdateBlok(blok2);
+                    }
+                }
+            }
+            catch
+            {
+                result += "Error: Updating Blok gagal\r\n";
+            }
+
+            //Save to ContLog
+            ContainerLog containerLog = new ContainerLog();
+            containerLog.ContInOutId = Convert.ToInt64(dataRow["continoutid"]);
+            containerLog.Cont = dataRow["cont"].ToString();
+            containerLog.UserId = dataRow["activeuser"].ToString();
+            containerLog.EqpId = dataRow["eqpid"].ToString();
+            containerLog.FlagAct = dataRow["flagact"].ToString();
+            containerLog.Location = dataRow["location"].ToString();
+            containerLog.Shipper = dataRow["shipper"].ToString();
+            containerLog.Operator = dataRow["opid"].ToString();
+
+            try
+            {
+                containerLogDAL.InsertContainerLog(containerLog);
+            }
+            catch
+            {
+                result += "Error: Updating Log gagal\r\n";
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Previous Name: ContInOutList_FillByContStok(string activeuser, string _cont)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="containerNumber"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillContInOutByContainerForStock(string userId, string containerNumber)
+        {
+            AppPrincipal.LoginForService(userId);
+            List<ContInOut> listContInOut = contInOutDAL.GetContainerStockByContainerNumber(containerNumber, true);
+            return listContInOut.Count > 0 ? Converter.ConvertListToXML(listContInOut) : string.Empty;
+        }
+
+        /// <summary>
+        /// Previous Name: ContInOutList_FillByBlokStok(string activeuser, string _blok)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="blok"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillContInOutByBlokForStock(string userId, string blok)
+        {
+            AppPrincipal.LoginForService(userId);
+            List<ContInOut> listContInOut = listContInOut = contInOutDAL.GetContainerStockByBlok(blok);
+            return listContInOut.Count > 0 ? Converter.ConvertListToXML(listContInOut) : string.Empty;
         }
     }
 }
