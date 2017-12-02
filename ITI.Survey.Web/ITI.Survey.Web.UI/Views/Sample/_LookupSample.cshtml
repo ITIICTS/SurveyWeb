@@ -1,0 +1,54 @@
+﻿@{
+    Layout = null;
+}
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button class="close" aria-hidden="true" data-dismiss="modal" type="button"><i class="fa fa-remove"></i></button>
+            <h4>Lookup Sample</h4>
+        </div>
+        <div class="modal-body">
+            <div class="form-horizontal">
+                <form action="@Url.Action("DataTableLookupSample", "Sample")" method="post">
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label class="control-label">Sample Description</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="SampleDescription" class="form-control" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-10">
+                            <div class="form-group">
+                                <div class="col-md-4">
+                                    <label class="control-label">Sample Date</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <input type="text" name="SampleDate" class="form-control date-picker" />
+                                </div>
+                                <div class="col-md-2">
+                                    <button type="button" class="btn bg-color-blue txt-color-white btn-search" data-hidden="SampleID,SampleLookup"
+                                            data-property-order="SampleDropList" data-pagesize="5">
+                                        <span>Search </span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="row">
+                <div class="lookup-result">
+                    @Html.Partial("~/Views/Sample/_DataTableLookupSample.cshtml", new List<ITI.Survey.Web.UI.Models.SampleModel>())
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

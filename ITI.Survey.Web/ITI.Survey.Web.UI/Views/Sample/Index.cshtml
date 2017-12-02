@@ -1,0 +1,108 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ITI.Survey.Web.UI.Models.SampleModel
+
+<div class="container">
+    <h2>Dynamic Tabs</h2>
+    <ul class="nav nav-tabs">
+        <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+        <li><a data-toggle="tab" href="#menu1">Menu 1</a></li>
+        <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+        <li><a data-toggle="tab" href="#menu3">Menu 3</a></li>
+    </ul>
+
+    <div class="tab-content">
+        <div id="home" class="tab-pane fade in active">
+            <h3>HOME</h3>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+        </div>
+        <div id="menu1" class="tab-pane fade">
+            <h3>Menu 1</h3>
+            <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+        </div>
+        <div id="menu2" class="tab-pane fade">
+            <h3>Menu 2</h3>
+            <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.</p>
+        </div>
+        <div id="menu3" class="tab-pane fade">
+            <h3>Menu 3</h3>
+            <p>Eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>List Sample</b>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @using (Html.BeginForm("DataTableSample", "Sample", FormMethod.Post, htmlAttributes: new { @ID = "form-ListSample", @role = "form" }))
+                            {
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(model => model.SampleDropList, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-md-7">
+                                                @Html.DropDownListFor(model => model.SampleDropList, (IEnumerable<SelectListItem>)ViewBag.DropList, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(model => model.SampleDescription, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-md-7">
+                                                @Html.TextBoxFor(model => model.SampleDescription, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <button type="button" class="btn btn-primary btn-search" data-hidden="SampleID,SampleLookup"
+                                                        data-property-order="SampleDropList" data-pagesize="5">
+                                                    <span>Search </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                                <div class="col-md-offset-7 col-md-5 text-right">
+                                                    <button type="button" data-href="@Url.Action("Create", "Sample")" class="btn btn-primary btn-addnew"><span>Create Sample </span></button>
+                                                    <button type="button" data-href="@Url.Action("CreateHeaderDetail", "Sample")" class="btn btn-primary btn-addnew"><span>Create Sample HD</span></button>
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                    <div class="data-result">
+                        @Html.Partial("_DataTableSample", new List<ITI.Survey.Web.UI.Models.SampleModel>())
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

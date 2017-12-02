@@ -1,0 +1,48 @@
+﻿@{
+    Layout = null;
+}
+
+@model IEnumerable<ITI.Survey.Web.UI.Models.SampleModel>
+@using AGY.Solution.Helper
+
+@Html.HiddenJson(Model, new { @id = "dataSampleListJson", @name = "SampleListJson" })
+
+<div class="col-xs-12">
+    <div class="form-group">
+        <input type="hidden" class="current-page" value="1" />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <td data-id="SampleID" data-desc="True" style="display:none;">
+                            @Html.DisplayNameFor(model => model.SampleID)
+                        </td>
+                        <th data-id="SampleDescription" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleDescription)
+                        </th>
+                        <th data-id="SampleDate" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleDate)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.SampleID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleDate)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+

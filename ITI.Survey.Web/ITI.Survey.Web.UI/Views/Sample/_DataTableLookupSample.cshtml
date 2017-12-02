@@ -1,0 +1,75 @@
+﻿@{
+    Layout = null;
+}
+
+@model IEnumerable<ITI.Survey.Web.UI.Models.SampleModel>
+
+<div class="col-xs-12">
+    <div class="form-group">
+        <input type="hidden" class="current-page" value="1" />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <td data-id="SampleID" data-desc="True" style="display:none;">
+                            @Html.DisplayNameFor(model => model.SampleID)
+                        </td>
+                        <th data-id="SampleDescription" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleDescription)
+                        </th>
+                        <th data-id="SampleDropList" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleDropList)
+                        </th>
+                        <th data-id="SampleNumber" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleNumber)
+                        </th>
+                        <th data-id="SampleCurrency" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleCurrency)
+                        </th>
+                        <th data-id="SampleDate" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SampleDate)
+                        </th>
+                        <td data-id="SampleLookup" data-desc="True" style="display:none;">
+                            @Html.DisplayNameFor(model => model.SampleLookup)
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.SampleID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleDescription)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleDropList)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleNumber)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleCurrency)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SampleDate)
+                            </td>
+                            <td style="display:none;">
+                                @Html.DisplayFor(modelItem => item.SampleLookup)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="dt-toolbar-footer">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="dataTables_paginate paging_simple_numbers">
+                        @Html.Raw(ViewBag.Pagination)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

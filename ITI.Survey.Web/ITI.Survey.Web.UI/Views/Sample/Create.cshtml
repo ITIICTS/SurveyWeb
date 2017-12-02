@@ -1,0 +1,144 @@
+﻿@model ITI.Survey.Web.UI.Models.SampleModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using AGY.Solution.Helper
+
+<div class="row" id="samplecreateonly">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Sample Form</b>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @using (Html.BeginForm("Create", "Sample", FormMethod.Post, htmlAttributes: new { @ID = "form-CreateSample", @role = "form" }))
+                            {
+                                @Html.HiddenFor(model => model.SampleID)
+
+                                @Html.AntiForgeryToken()
+                                <div id="ErrorSummary">
+                                    @Html.CustomValidationSummary()
+                                </div>
+
+                                @*<div class="row">
+                                        <div class="col-md-10">
+                                            <div class="form-group">
+                                                <div class="col-sm-3">
+                                                    @Html.LabelFor(model => model.SampleID, htmlAttributes: new { @class = "control-label col-md-2" })
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    @Html.EditorFor(model => model.SampleID, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.SampleID, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>*@
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleDescription, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.SampleDescription, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleDropList, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.DropDownListFor(model => model.SampleDropList, (IEnumerable<SelectListItem>)ViewBag.DropList, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleNumber, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.SampleNumber, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleCurrency, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.SampleCurrency, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleDate, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.SampleDate, new { @class = "form-control date-picker", @Value = Model.SampleDate.Value.ToString("dd MMM yyyy") })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.SampleLookup, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <div class="input-group">
+                                                    @Html.TextBoxFor(model => model.SampleLookup, new { @class = "form-control" })
+                                                    <span class="input-group-addon" id="btn-sample-popup" data-href="@Url.Action("LookupSample","Sample")" data-target="#lookup-sample" data-toggle="modal">...</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-10">
+                                                <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span>Save </span></button>
+                                                <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="lookup-sample" class="modal fade" aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1">
+    </div>
+</div>
+
