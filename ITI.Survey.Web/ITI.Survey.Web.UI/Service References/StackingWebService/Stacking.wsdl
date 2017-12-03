@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="FillContCardByIdAndCardMode">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="id" type="s:long" />
+            <s:element minOccurs="0" maxOccurs="1" name="cardMode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContCardByIdAndCardModeResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContCardByIdAndCardModeResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContainerDuration">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="customerCode" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="size" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="type" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="condition" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="minDuration" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="sortBy" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContainerDurationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContainerDurationResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutById">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="contInOutId" type="s:long" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByIdResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContInOutByIdResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByContainerNumber">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="containerNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByContainerNumberResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContInOutByContainerNumberResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitKartuBongkar">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitKartuBongkarResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitKartuBongkarResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitNoMobil">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitNoMobilResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitNoMobilResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitBlokMove">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="xml" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="SubmitBlokMoveResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="SubmitBlokMoveResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByContainerForStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="containerNumber" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByContainerForStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContInOutByContainerForStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByBlokForStock">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="userId" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="blok" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="FillContInOutByBlokForStockResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="FillContInOutByBlokForStockResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="FillContCardByIdAndCardModeSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContCardByIdAndCardMode" />
+  </wsdl:message>
+  <wsdl:message name="FillContCardByIdAndCardModeSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContCardByIdAndCardModeResponse" />
+  </wsdl:message>
+  <wsdl:message name="FillContainerDurationSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContainerDuration" />
+  </wsdl:message>
+  <wsdl:message name="FillContainerDurationSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContainerDurationResponse" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByIdSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContInOutById" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByIdSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContInOutByIdResponse" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByContainerNumberSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContInOutByContainerNumber" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByContainerNumberSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContInOutByContainerNumberResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitKartuBongkarSoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitKartuBongkar" />
+  </wsdl:message>
+  <wsdl:message name="SubmitKartuBongkarSoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitKartuBongkarResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitNoMobilSoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitNoMobil" />
+  </wsdl:message>
+  <wsdl:message name="SubmitNoMobilSoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitNoMobilResponse" />
+  </wsdl:message>
+  <wsdl:message name="SubmitBlokMoveSoapIn">
+    <wsdl:part name="parameters" element="tns:SubmitBlokMove" />
+  </wsdl:message>
+  <wsdl:message name="SubmitBlokMoveSoapOut">
+    <wsdl:part name="parameters" element="tns:SubmitBlokMoveResponse" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByContainerForStockSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContInOutByContainerForStock" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByContainerForStockSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContInOutByContainerForStockResponse" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByBlokForStockSoapIn">
+    <wsdl:part name="parameters" element="tns:FillContInOutByBlokForStock" />
+  </wsdl:message>
+  <wsdl:message name="FillContInOutByBlokForStockSoapOut">
+    <wsdl:part name="parameters" element="tns:FillContInOutByBlokForStockResponse" />
+  </wsdl:message>
+  <wsdl:portType name="StackingSoap">
+    <wsdl:operation name="FillContCardByIdAndCardMode">
+      <wsdl:input message="tns:FillContCardByIdAndCardModeSoapIn" />
+      <wsdl:output message="tns:FillContCardByIdAndCardModeSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FillContainerDuration">
+      <wsdl:input message="tns:FillContainerDurationSoapIn" />
+      <wsdl:output message="tns:FillContainerDurationSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutById">
+      <wsdl:input message="tns:FillContInOutByIdSoapIn" />
+      <wsdl:output message="tns:FillContInOutByIdSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerNumber">
+      <wsdl:input message="tns:FillContInOutByContainerNumberSoapIn" />
+      <wsdl:output message="tns:FillContInOutByContainerNumberSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitKartuBongkar">
+      <wsdl:input message="tns:SubmitKartuBongkarSoapIn" />
+      <wsdl:output message="tns:SubmitKartuBongkarSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitNoMobil">
+      <wsdl:input message="tns:SubmitNoMobilSoapIn" />
+      <wsdl:output message="tns:SubmitNoMobilSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="SubmitBlokMove">
+      <wsdl:input message="tns:SubmitBlokMoveSoapIn" />
+      <wsdl:output message="tns:SubmitBlokMoveSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerForStock">
+      <wsdl:input message="tns:FillContInOutByContainerForStockSoapIn" />
+      <wsdl:output message="tns:FillContInOutByContainerForStockSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByBlokForStock">
+      <wsdl:input message="tns:FillContInOutByBlokForStockSoapIn" />
+      <wsdl:output message="tns:FillContInOutByBlokForStockSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="StackingSoap" type="tns:StackingSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="FillContCardByIdAndCardMode">
+      <soap:operation soapAction="http://tempuri.org/FillContCardByIdAndCardMode" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContainerDuration">
+      <soap:operation soapAction="http://tempuri.org/FillContainerDuration" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutById">
+      <soap:operation soapAction="http://tempuri.org/FillContInOutById" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerNumber">
+      <soap:operation soapAction="http://tempuri.org/FillContInOutByContainerNumber" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitKartuBongkar">
+      <soap:operation soapAction="http://tempuri.org/SubmitKartuBongkar" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitNoMobil">
+      <soap:operation soapAction="http://tempuri.org/SubmitNoMobil" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitBlokMove">
+      <soap:operation soapAction="http://tempuri.org/SubmitBlokMove" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerForStock">
+      <soap:operation soapAction="http://tempuri.org/FillContInOutByContainerForStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByBlokForStock">
+      <soap:operation soapAction="http://tempuri.org/FillContInOutByBlokForStock" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="StackingSoap12" type="tns:StackingSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="FillContCardByIdAndCardMode">
+      <soap12:operation soapAction="http://tempuri.org/FillContCardByIdAndCardMode" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContainerDuration">
+      <soap12:operation soapAction="http://tempuri.org/FillContainerDuration" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutById">
+      <soap12:operation soapAction="http://tempuri.org/FillContInOutById" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerNumber">
+      <soap12:operation soapAction="http://tempuri.org/FillContInOutByContainerNumber" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitKartuBongkar">
+      <soap12:operation soapAction="http://tempuri.org/SubmitKartuBongkar" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitNoMobil">
+      <soap12:operation soapAction="http://tempuri.org/SubmitNoMobil" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="SubmitBlokMove">
+      <soap12:operation soapAction="http://tempuri.org/SubmitBlokMove" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByContainerForStock">
+      <soap12:operation soapAction="http://tempuri.org/FillContInOutByContainerForStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="FillContInOutByBlokForStock">
+      <soap12:operation soapAction="http://tempuri.org/FillContInOutByBlokForStock" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Stacking">
+    <wsdl:port name="StackingSoap" binding="tns:StackingSoap">
+      <soap:address location="http://localhost:79/Stacking.asmx" />
+    </wsdl:port>
+    <wsdl:port name="StackingSoap12" binding="tns:StackingSoap12">
+      <soap12:address location="http://localhost:79/Stacking.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
