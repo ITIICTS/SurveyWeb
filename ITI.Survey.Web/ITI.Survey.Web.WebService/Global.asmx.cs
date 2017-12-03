@@ -97,7 +97,7 @@ namespace ITI.Survey.Web.WebService
         public bool Login (string userId, string password)
         {
             string hashed = PhpCompatible.Md5Hash(password);
-            return AppPrincipal.Login(userId, password);
+            return AppPrincipal.Login(userId, hashed);
         }
     }
 }
