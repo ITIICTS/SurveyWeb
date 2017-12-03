@@ -374,6 +374,10 @@ $(document).ready(function () {
         // this will return an array with strings "1", "2", etc.
         temp = str.split(",");
 
+        var skip = $(this).attr('data-skip');
+        var tempSkip = new Array();
+        tempSkip = skip.split(",");
+
         $.ajax({
             url: $form.attr('action'),
             data: $form.serialize(),
@@ -455,6 +459,11 @@ $(document).ready(function () {
                                 table_row += '<tr>';
                                 var styleDisplay = '';
                                 for (var key in value) {
+
+                                    if (tempSkip.any(function (s) { return s == key })) {
+                                        continue;
+                                    }
+
                                     var styleDisplay = '';
                                     if (temp.any(function (t) { return t == key })) {
                                         styleDisplay = ' style="display:none;"';
@@ -547,6 +556,10 @@ $(document).ready(function () {
                     // this will return an array with strings "1", "2", etc.
                     temp = str.split(",");
 
+                    var skip = $(this).attr('data-skip');
+                    var tempSkip = new Array();
+                    tempSkip = skip.split(",");
+
                     $.ajax({
                         url: $form.attr('action'),
                         data: $form.serialize(),
@@ -628,6 +641,11 @@ $(document).ready(function () {
                                             table_row += '<tr>';
                                             var styleDisplay = '';
                                             for (var key in value) {
+
+                                                if (tempSkip.any(function (s) { return s == key })) {
+                                                    continue;
+                                                }
+
                                                 var styleDisplay = '';
                                                 if (temp.any(function (t) { return t == key })) {
                                                     styleDisplay = ' style="display:none;"';
