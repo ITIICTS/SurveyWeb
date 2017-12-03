@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>@ViewBag.Title</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link href="~/Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="~/Content/dist/css/sb-admin-2.css" rel="stylesheet">
+
+    <!-- Custom Fonts -->
+    <link href="~/Content/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+    <div>
+        @RenderBody()
+    </div>
+
+    <!-- jQuery -->
+    <script src="~/Content/vendor/jquery/jquery.min.js"></script>
+    <script src="~/Scripts/jquery-2.2.4.min.js"></script>
+    <script src="~/Scripts/jquery-ui-1.11.4.min.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
+    
+    <!-- Metis Menu Plugin JavaScript -->
+    <script src="~/Content/vendor/metisMenu/metisMenu.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="~/Content/dist/js/sb-admin-2.js"></script>
+
+    <script>
+    $(document).ready(function () {
+        $(".form-control").keyup(function (event) {
+            if (event.keyCode == 13) {
+                doLogin();
+            }
+        });
+        $('#btnLogin').click(function () {
+            doLogin();
+        });
+    });
+    function doLogin() {
+        $.ajax({
+            url: $("#formLogin").attr('action'),
+            data: $("#formLogin").serialize(),
+            dataType: 'json',
+            type: 'post',
+            //beforeSend: function () {
+            //    $('#formApprovalChecker').showloading();
+            //},
+            //complete: function () {
+            //    $('#formApprovalChecker').hideloading();
+            //},
+            success: function (result) {
+                if (result.Status == true) {
+                    if (result.ReturnUrl != undefined) {
+                        if (result.ReturnUrl == '/')
+                            window.location = "@Url.Action("Index", "Home")";
+                        window.location = result.ReturnUrl;
+                    }
+                }
+                else {
+                    $('#ErrorLogin').text(result.ErrorMessage);
+                    if (result.ReturnUrl != undefined) {
+                        window.location = result.ReturnUrl;
+                    }
+                    else {
+                        return;
+                    }
+                }
+            }
+        });
+    }
+    </script>
+</body>
+</html>

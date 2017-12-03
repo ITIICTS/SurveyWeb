@@ -46,6 +46,7 @@
                         <div class="col-md-12">
                             @using (Html.BeginForm("DataTableSample", "Sample", FormMethod.Post, htmlAttributes: new { @ID = "form-ListSample", @role = "form" }))
                             {
+                                @Html.AntiForgeryToken()
                                 <div class="row">
                                     <div class="col-md-8">
                                         <div class="form-group">
