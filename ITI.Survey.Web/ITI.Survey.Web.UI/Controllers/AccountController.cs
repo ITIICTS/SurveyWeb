@@ -1,5 +1,7 @@
 ﻿using ITI.Survey.Web.UI.Models;
+using System;
 using System.Text.RegularExpressions;
+using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -35,6 +37,47 @@ namespace ITI.Survey.Web.UI.Controllers
 
             return View(model);
         }
+
+        [HttpPost]
+        [AllowAnonymous]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(LoginModel model, string returnUrl)
+        {
+            bool statusLogin = false;
+            ViewBag.Errors = "Your username or password is not valid.";
+            GlobalWebService.GlobalSoapClient GlobalService = new GlobalWebService.GlobalSoapClient();
+            
+            if (GlobalService.Login(model.UserId, model.Password))
+            {
+                //Create the ticket.
+                bool isCookiePersistent = model.RememberMe;
+                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,
+                         model.UserId, DateTime.Now, DateTime.Now.AddMinutes(60), isCookiePersistent, "SurveyWeb");
+
+                //Encrypt the ticket.
+                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+
+                //Create a cookie, and then add the encrypted ticket to the cookie as data.
+                HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+
+                if (true == isCookiePersistent)
+                    authCookie.Expires = authTicket.Expiration;
+
+                //Add the cookie to the outgoing cookies collection.
+                Response.Cookies.Add(authCookie);
+
+                Session["CURRUSER"] = model.UserId;
+                statusLogin = true;
+            }
+
+
+            if (statusLogin)
+            {
+                return Json(new { Status = true, ReturnUrl = GetReturnUrl(returnUrl) }, JsonRequestBehavior.AllowGet);
+            }
+            return Json(new { Status = false, ErrorMessage = ViewBag.Errors }, JsonRequestBehavior.AllowGet);
+        }
+
         [NonAction]
         public bool fBrowserIsMobile()
         {

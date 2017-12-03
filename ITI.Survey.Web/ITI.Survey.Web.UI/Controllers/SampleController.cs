@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
+    [Authorize]
     public class SampleController : BaseController
     {
 

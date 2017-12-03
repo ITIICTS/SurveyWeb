@@ -6,7 +6,8 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
-    public class HomeController : Controller
+    [Authorize]
+    public class HomeController : BaseController
     {
         public ActionResult Index()
         {

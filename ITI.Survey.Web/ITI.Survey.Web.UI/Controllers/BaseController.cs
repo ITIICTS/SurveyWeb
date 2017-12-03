@@ -10,9 +10,11 @@ namespace ITI.Survey.Web.UI.Controllers
 {
     public class BaseController : Controller
     {
+        public static string SESSION_CURUSER = "CURRUSER";
+
         public BaseController()
         {
-
+            ViewBag.CurrentUserName = System.Web.HttpContext.Current.User.Identity.Name;
         }
 
         public static JsonSerializerSettings JSONSetting
