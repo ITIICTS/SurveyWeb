@@ -1,0 +1,245 @@
+﻿@model ITI.Survey.Web.UI.Models.InputNoMobilModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using AGY.Solution.Helper;
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+    /* In order to place the tracking correctly */
+    canvas.drawing, canvas.drawingBuffer {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+</style>
+
+
+
+<div class="row" id="samplecreateonly"></div>
+<div class="col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Input No Mobil</b>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        @using (Html.BeginForm("Create", "InputNoMobil", FormMethod.Post, htmlAttributes: new { @ID = "form-CreateInputNoMobil", @role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            <div id="ErrorSummary">
+                                @Html.CustomValidationSummary()
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <div id="scanner-container"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.ContCardID, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ContCardID, new { @class = "form-control" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="button" id="btnScan" value="SCAN" class="btn btn-primary" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.NoMobil, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.NoMobil, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.Angkutan, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.Angkutan, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.IsCombo, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.CheckBoxFor(model => model.IsCombo, new { @class = "form-control checkbox" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span>Save </span></button>
+                                            <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <label id="ResultMessage" class="control-label">Result</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="~/Scripts/quagga.min.js"></script>
+
+<script>
+
+    
+
+
+
+
+    var _scannerIsRunning = false;
+
+    function startScanner() {
+        //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector('#scanner-container'),
+                constraints: {
+                    width: 300,
+                    height: 200,
+                    facingMode: "environment"
+                },
+            },
+            decoder: {
+                readers: [
+                    "code_128_reader",
+                    "ean_reader",
+                    "ean_8_reader",
+                    "code_39_reader",
+                    "code_39_vin_reader",
+                    "codabar_reader",
+                    "upc_reader",
+                    "upc_e_reader",
+                    "i2of5_reader"
+                ],
+                debug: {
+                    showCanvas: true,
+                    showPatches: true,
+                    showFoundPatches: true,
+                    showSkeleton: true,
+                    showLabels: true,
+                    showPatchLabels: true,
+                    showRemainingPatchLabels: true,
+                    boxFromPatches: {
+                        showTransformed: true,
+                        showTransformedBox: true,
+                        showBB: true
+                    }
+                }
+            },
+
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                $("#ResultMessage").val(err);
+                //document.getElementById("ResultMessage").innerHTML = err;
+                return
+            }
+
+            console.log("Initialization finished. Ready to SCAN");
+            //            alert("Initialization finished. Ready to SCAN");
+            $("#ResultMessage").val("Initialization finished. Ready to SCAN");
+
+            Quagga.start();
+
+            // Set flag to is running
+            _scannerIsRunning = true;
+        });
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+
+        Quagga.onDetected(function (result) {
+            // alert(result.codeResult.code);
+            $("#ContCardID").val(result.codeResult.code);
+
+        });
+    }
+
+
+    // Start/stop scanner
+    document.getElementById("btnScan").addEventListener("click", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            document.getElementById("scanner-container").innerHTML = "";
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = true;
+            startScanner();
+        }
+    }, false);
+</script>

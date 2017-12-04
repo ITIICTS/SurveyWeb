@@ -1,0 +1,165 @@
+﻿@model ITI.Survey.Web.UI.Models.BlokSystemModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using AGY.Solution.Helper;
+
+<div class="col-xs-12">
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <b>Input No Mobil</b>
+        </div>
+        <div class="panel-body">
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        @using (Html.BeginForm("GoByContainerNumber", "BlokSystem", FormMethod.Post, htmlAttributes: new { @ID = "form-GoByContainerNumberBlokSystem", @role = "form" }))
+                        {
+
+                            @Html.AntiForgeryToken()
+                            <div id="ErrorSummary">
+                                @Html.CustomValidationSummary()
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.ContNo, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ContNo, new { @class = "form-control" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to Process?" data-success-msg="Data Process successfully." data-failed-msg="Data Process failed."><span>GO </span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.ResultMessage, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.ResultMessage, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-md-12">
+                        @using (Html.BeginForm("Process", "BlokSystem", FormMethod.Post, htmlAttributes: new { @ID = "form-ProcessBlokSystem", @role = "form" }))
+                        {
+                            @Html.HiddenFor(model => model.ContInOutId)
+                            @Html.HiddenFor(model => model.KodeBlok)
+
+                            @Html.AntiForgeryToken()
+                            <div id="ErrorSummary">
+                                @Html.CustomValidationSummary()
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.Blok, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.Blok, new { @class = "form-control" })
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.Bay, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.Bay, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.Row, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.Row, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            @Html.LabelFor(model => model.Tier, htmlAttributes: new { @class = "control-label" })
+                                        </div>
+                                        <div class="col-sm-4">
+                                            @Html.TextBoxFor(model => model.Tier, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-md-offset-4 col-md-10">
+                                            <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to Process?" data-success-msg="Data Process successfully." data-failed-msg="Data Process failed."><span>Pindahkan Blok </span></button>
+                                            <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+                                        <div class="col-sm-4">
+                                            <label id="ResultMessage" class="control-label">Result</label>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
