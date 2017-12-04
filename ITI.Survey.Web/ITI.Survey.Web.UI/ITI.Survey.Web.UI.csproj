@@ -71,6 +71,8 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
@@ -132,8 +134,19 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Connected Services\GlobalWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Connected Services\StackingWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\BlokSystemController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InputNoMobilController.cs" />
     <Compile Include="Controllers\MuatScanController.cs" />
@@ -142,6 +155,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
+    <Compile Include="Models\BlokSystemModel.cs" />
     <Compile Include="Models\InputNoMobilModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\SampleModel.cs" />
@@ -149,6 +163,53 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Web.txt" />
+    <None Include="Connected Services\GlobalWebService\global.disco" />
+    <None Include="Connected Services\GlobalWebService\configuration91.svcinfo" />
+    <None Include="Connected Services\GlobalWebService\configuration.svcinfo" />
+    <Content Include="Connected Services\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.LoginResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\GlobalWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContainerDurationResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContCardByIdAndCardModeResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByBlokForStockResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerForStockResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerNumberResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByIdResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitBlokMoveResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitKartuBongkarResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitNoMobilResponse1.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Connected Services\StackingWebService\stacking.disco" />
+    <None Include="Connected Services\StackingWebService\configuration91.svcinfo" />
+    <None Include="Connected Services\StackingWebService\configuration.svcinfo" />
+    <None Include="Connected Services\StackingWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dist\css\sb-admin-2.css" />
@@ -301,6 +362,8 @@
     <Content Include="Content\vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\vendor\font-awesome\scss\_variables.scss" />
     <Content Include="bower.json" />
+    <None Include="Connected Services\GlobalWebService\global.wsdl" />
+    <None Include="Connected Services\StackingWebService\stacking.wsdl" />
     <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\SurveyWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -346,6 +409,9 @@
     <Content Include="Views\Sample\CreateHeaderDetail.cshtml" />
     <Content Include="Views\Sample\_SampleList.cshtml" />
     <Content Include="Views\InputNoMobil\Index.cshtml" />
+    <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\BlokSystem\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\Muat\" />
@@ -357,6 +423,13 @@
     <Content Include="packages.config" />
     <None Include="Project_Readme.html" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Connected Services\GlobalWebService\" />
+    <WCFMetadataStorage Include="Connected Services\StackingWebService\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
