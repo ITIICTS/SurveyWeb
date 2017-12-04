@@ -65,11 +65,11 @@ namespace ITI.Survey.Web.Dll.Helper
             }
             if (ConfigurationManager.AppSettings["UserId"] != null)
             {
-                port = ConfigurationManager.AppSettings["UserId"];
+                userId = ConfigurationManager.AppSettings["UserId"];
             }
             if (ConfigurationManager.AppSettings["Database"] != null)
             {
-                port = ConfigurationManager.AppSettings["Database"];
+                database = ConfigurationManager.AppSettings["Database"];
             }
             string connectionString = string.Format(ConnectionString,
                 loginServer,
