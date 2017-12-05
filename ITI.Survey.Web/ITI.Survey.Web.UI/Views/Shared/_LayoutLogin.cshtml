@@ -16,6 +16,12 @@
 
     <!-- Custom Fonts -->
     <link href="~/Content/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+
+    <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
 </head>
 <body>
     <div>
@@ -29,7 +35,7 @@
 
     <!-- Bootstrap Core JavaScript -->
     <script src="~/Content/vendor/bootstrap/js/bootstrap.min.js"></script>
-    
+
     <!-- Metis Menu Plugin JavaScript -->
     <script src="~/Content/vendor/metisMenu/metisMenu.min.js"></script>
 
@@ -37,48 +43,48 @@
     <script src="~/Content/dist/js/sb-admin-2.js"></script>
 
     <script>
-    $(document).ready(function () {
-        $(".form-control").keyup(function (event) {
-            if (event.keyCode == 13) {
-                doLogin();
-            }
-        });
-        $('#btnLogin').click(function () {
-            doLogin();
-        });
-    });
-    function doLogin() {
-        $.ajax({
-            url: $("#formLogin").attr('action'),
-            data: $("#formLogin").serialize(),
-            dataType: 'json',
-            type: 'post',
-            //beforeSend: function () {
-            //    $('#formApprovalChecker').showloading();
-            //},
-            //complete: function () {
-            //    $('#formApprovalChecker').hideloading();
-            //},
-            success: function (result) {
-                if (result.Status == true) {
-                    if (result.ReturnUrl != undefined) {
-                        if (result.ReturnUrl == '/')
-                            window.location = "@Url.Action("Index", "Home")";
-                        window.location = result.ReturnUrl;
-                    }
+        $(document).ready(function () {
+            $(".form-control").keyup(function (event) {
+                if (event.keyCode == 13) {
+                    doLogin();
                 }
-                else {
-                    $('#ErrorLogin').text(result.ErrorMessage);
-                    if (result.ReturnUrl != undefined) {
-                        window.location = result.ReturnUrl;
+            });
+            $('#btnLogin').click(function () {
+                doLogin();
+            });
+        });
+        function doLogin() {
+            $.ajax({
+                url: $("#formLogin").attr('action'),
+                data: $("#formLogin").serialize(),
+                dataType: 'json',
+                type: 'post',
+                //beforeSend: function () {
+                //    $('#formApprovalChecker').showloading();
+                //},
+                //complete: function () {
+                //    $('#formApprovalChecker').hideloading();
+                //},
+                success: function (result) {
+                    if (result.Status == true) {
+                        if (result.ReturnUrl != undefined) {
+                            if (result.ReturnUrl == '/')
+                                window.location = "@Url.Action("Index", "Home")";
+                            window.location = result.ReturnUrl;
+                        }
                     }
                     else {
-                        return;
+                        $('#ErrorLogin').text(result.ErrorMessage);
+                        if (result.ReturnUrl != undefined) {
+                            window.location = result.ReturnUrl;
+                        }
+                        else {
+                            return;
+                        }
                     }
                 }
-            }
-        });
-    }
+            });
+        }
     </script>
 </body>
 </html>
