@@ -1,0 +1,107 @@
+﻿
+@{
+    ViewBag.Title = "CONTAINER DURATION";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model ITI.Survey.Web.UI.Models.ContainerDurationModel
+
+<div class="row">
+    <div class="col-sm-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>CONTAINER DURATION</b>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="@Url.Action("DataTableContainerDuration", "ContainerDuration")" method="post">
+                                @Html.AntiForgeryToken()
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(model => model.CustomerCode, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-md-7">
+                                                @Html.DropDownListFor(model => model.CustomerCode, (IEnumerable<SelectListItem>)ViewBag.Customers, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label class="control-label">MIN DURATION</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="text" id="Duration" name="Duration" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(model => model.Size, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-md-7">
+                                                @Html.DropDownListFor(model => model.Size, (IEnumerable<SelectListItem>)ViewBag.ContainerSize, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                @Html.LabelFor(model => model.Type, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-md-7">
+                                                @Html.DropDownListFor(model => model.Type, (IEnumerable<SelectListItem>)ViewBag.ContainerType, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3">
+                                                <label class="control-label">CONDITION</label>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <input type="text" id="Condition" name="Condition" class="form-control" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                            <div class="col-md-3 col-md-offset-3">
+                                                <button type="button" class="btn btn-primary btn-search" data-hidden=""
+                                                        data-skip="ContInOutId,ActIn,RfEngineCond,EorNo,DtmEor,DtmApproved,DtmCompleted,RepairStatus,SpecialMessage2"
+                                                        data-property-order="Cont" data-pagesize="@int.MaxValue">
+                                                    <span><i class="fa fa-search"></i> Search </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="data-result">
+                        @Html.Partial("_DataTableContainerDuration", new List<ITI.Survey.Web.UI.Models.ContainerDurationModel>())
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>

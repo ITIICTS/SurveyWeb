@@ -1,0 +1,264 @@
+﻿@using AGY.Solution.Helper
+@{
+    ViewBag.Title = "BONGKAR CONTAINER AV";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row" id="bongkarcontainerav">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Bongkar Container AV</b>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+
+                            <form action="@Url.Action("ProsesBongkarContainerAV", "BongkarContainer")" method="post">
+
+                                @Html.AntiForgeryToken()
+                                <div id="ErrorSummary">
+                                    @Html.CustomValidationSummary()
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <div id="scanner-container"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Silahkan ketik/scan kode kartu bongkar disini</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input type="text" id="ContCardID" name="ContCardID" placeholder="Scan Kartu" class="form-control" />
+                                                    <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="col-sm-3">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-11"><label class="control-label">Block</label></div>
+                                                    <div class="col-md-11">
+                                                        <select class="form-control">
+                                                            <option>A</option>
+                                                            <option>B</option>
+                                                            <option>C</option>
+                                                            <option>D</option>
+                                                            <option>E</option>
+                                                            <option>F</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-11"><label class="control-label">Bay</label></div>
+                                                    <div class="col-md-11"><input type="text" name="" class="form-control" /></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-sm-3">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-11"><label class="control-label">Row</label></div>
+                                                    <div class="col-md-11"><input type="text" name="" class="form-control" /></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-3">
+                                            <div class="row">
+                                                <div class="form-group">
+                                                    <div class="col-md-12"><label class="control-label">Tier</label></div>
+                                                    <div class="col-md-12"><input type="text" name="" class="form-control" /></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <button type="button" value="Proses" class="btn btn-primary btn-save" data-confirm-msg="Apakah Bongkar Container AV diproses?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span> Proses </span></button>
+                                                <button type="button" value="New" class="btn btn-primary btn-new"><span> New </span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <label id="ResultMessage" class="control-label">Result</label>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/quagga.min.js"></script>
+<script>
+    //'use strict';
+
+    var _scannerIsRunning = false;
+
+
+    function startScanner() {
+        //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
+
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            alert("enumerateDevices() not supported.");
+            return;
+        }
+
+        var backCamID = '';
+
+        navigator.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+            devices.forEach(function (device) {
+                //alert( JSON.stringify(device) );
+                if (device.kind == "videoinput" && device.label.indexOf("back") !== -1) {
+                    //alert("Back found!");
+                    //alert( JSON.stringify(device) );
+                    backCamID = device.deviceId;
+                    //alert(backCamID);
+                }
+            });
+        })
+        .catch(function (err) {
+            //alert(err.name + ": " + err.message);
+        });
+
+        //if (typeof (backCamID) == "undefined") {
+        //    alert("back camera not found.");
+        //}
+
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector('#scanner-container'),
+                constraints: {
+                    width: 300,
+                    height: 200,
+                    facingMode: "environment",
+                    deviceId: backCamID
+                },
+            },
+            decoder: {
+                readers: [
+                    "code_39_reader",
+                    "code_39_vin_reader"
+                ],
+                debug: {
+                    showCanvas: true,
+                    showPatches: true,
+                    showFoundPatches: true,
+                    showSkeleton: true,
+                    showLabels: true,
+                    showPatchLabels: true,
+                    showRemainingPatchLabels: true,
+                    boxFromPatches: {
+                        showTransformed: true,
+                        showTransformedBox: true,
+                        showBB: true
+                    }
+                }
+            },
+
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                $("#ResultMessage").val(err);
+                //document.getElementById("ResultMessage").innerHTML = err;
+                return
+            }
+
+            console.log("Initialization finished. Ready to SCAN");
+            //            alert("Initialization finished. Ready to SCAN");
+            $("#ResultMessage").val("Initialization finished. Ready to SCAN");
+
+            Quagga.start();
+
+            // Set flag to is running
+            _scannerIsRunning = true;
+        });
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+
+        Quagga.onDetected(function (result) {
+            // alert(result.codeResult.code);
+            $("#ContCardID").val(result.codeResult.code);
+
+        });
+    }
+
+
+    // Start/stop scanner
+    document.getElementById("btnScan").addEventListener("click", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            document.getElementById("scanner-container").innerHTML = "";
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = true;
+            startScanner();
+        }
+    }, false);
+</script>

@@ -1,0 +1,93 @@
+﻿@{ 
+    Layout = null;
+}
+
+@model IEnumerable<ITI.Survey.Web.UI.Models.ContainerDurationModel>
+
+<div class="col-xs-12">
+    <div class="form-group">
+        <input type="hidden" class="current-page" value="1" />
+        <div class="table-responsive">
+            <table class="table table-striped table-bordered table-hover">
+                <thead>
+                    <tr>
+                        <th data-id="No" data-desc="True">
+                            @Html.DisplayNameFor(model => model.No)
+                        </th>
+                        <th data-id="Cont" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Cont)
+                        </th>
+                        <th data-id="Size" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Size)
+                        </th>
+                        <th data-id="Type" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Type)
+                        </th>
+                        <th data-id="CustomerCode" data-desc="True">
+                            @Html.DisplayNameFor(model => model.CustomerCode)
+                        </th>
+                        <th data-id="Condition" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Condition)
+                        </th>
+                        <th data-id="DtmIn" data-desc="True">
+                            @Html.DisplayNameFor(model => model.DtmIn)
+                        </th>
+                        <th data-id="Duration" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Duration)
+                        </th>
+                        <th data-id="Remarks" data-desc="True">
+                            @Html.DisplayNameFor(model => model.Remarks)
+                        </th>
+                        <th data-id="SpecialMessage" data-desc="True">
+                            @Html.DisplayNameFor(model => model.SpecialMessage)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.No)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Cont)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Size)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Type)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.CustomerCode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Condition)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.DtmIn)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Duration)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Remarks)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.SpecialMessage)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            <div class="dt-toolbar-footer">
+                <div class="col-xs-12 col-sm-12">
+                    <div class="dataTables_paginate paging_simple_numbers">
+                        @Html.Raw(ViewBag.Pagination)
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
