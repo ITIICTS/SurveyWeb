@@ -395,7 +395,7 @@ $(document).ready(function () {
             },
             success: function (dataResult) {
                 $('.data-result', container).html(dataResult);
-                $('.table>thead>tr>th', container).attr("style", "cursor: pointer;");
+                //$('.table>thead>tr>th', container).attr("style", "cursor: pointer;");
                 //$('tbody', container).on("click", "tr", function () {
                 //    if ($(this).attr('data-edit') != undefined)
                 //        window.location.href = $(this).attr('data-edit');
@@ -403,89 +403,93 @@ $(document).ready(function () {
                 //        return;
                 //});
 
-                $('.current-page', container).val(1);
-
-                var isDescending = true;
-                $('.data-result', container).on("click", "li.page", function (e) {
-                    var page = $(this).attr('link');
-                    var objSearch = JSON.stringify($form.serializeObject());
-                    $('.current-page', container).val(page);
-                    pageSize = $('.data-result', container).find("#pagesize option:selected").val();
-                    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                $('.data-result', container).find('table').DataTable({
+                    responsive: true
                 });
 
-                $('.data-result', container).on("change", "#pagesize", function (e) {
-                    var page = 1;
-                    var objSearch = JSON.stringify($form.serializeObject());
-                    $('.current-page', container).val(page);
-                    pageSize = $('.data-result', container).find("#pagesize option:selected").val();
-                    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
-                });
+                //$('.current-page', container).val(1);
 
-                $('.table>thead>tr>th', container).click(function (e) {
-                    var objSearch = JSON.stringify($form.serializeObject());
-                    var page = $('.current-page', container).val();
-                    propertyOrder = $(this).attr('data-id');
-                    isDescending = $(this).attr('data-desc');
-                    $('.table>thead>tr>th>span', container).remove();
-                    if (isDescending == "True") {
-                        $(this).attr('data-desc', 'False');
-                        $(this).html($(this).text() + '<span class="fa fa-caret-up pull-right"></span>');
-                    }
-                    else {
-                        $(this).attr('data-desc', 'True');
-                        $(this).html($(this).text() + '<span style="padding-top:5px" class="fa fa-caret-down pull-right"></span>');
-                    }
-                    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
-                });
+                //var isDescending = true;
+                //$('.data-result', container).on("click", "li.page", function (e) {
+                //    var page = $(this).attr('link');
+                //    var objSearch = JSON.stringify($form.serializeObject());
+                //    $('.current-page', container).val(page);
+                //    pageSize = $('.data-result', container).find("#pagesize option:selected").val();
+                //    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                //});
 
-                function GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending) {
-                    $.ajax({
-                        url: $form.attr('action') + 'Json',
-                        data: {
-                            stringSearch: objSearch,
-                            page: page,
-                            pageSize: pageSize,
-                            propertyOrder: propertyOrder,
-                            isDescending: isDescending
-                        },
-                        dataType: 'JSON',
-                        type: 'post',
-                        beforeSend: function () {
-                            $('.data-result', container).showloading();
-                        },
-                        complete: function () {
-                            $('.data-result', container).hideloading();
-                        },
-                        success: function (dataJson) {
-                            var table_row = '';
-                            $.each(dataJson.DataTable, function (i, value) {
-                                table_row += '<tr>';
-                                var styleDisplay = '';
-                                for (var key in value) {
+                //$('.data-result', container).on("change", "#pagesize", function (e) {
+                //    var page = 1;
+                //    var objSearch = JSON.stringify($form.serializeObject());
+                //    $('.current-page', container).val(page);
+                //    pageSize = $('.data-result', container).find("#pagesize option:selected").val();
+                //    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                //});
 
-                                    if (tempSkip.any(function (s) { return s == key })) {
-                                        continue;
-                                    }
+                //$('.table>thead>tr>th', container).click(function (e) {
+                //    var objSearch = JSON.stringify($form.serializeObject());
+                //    var page = $('.current-page', container).val();
+                //    propertyOrder = $(this).attr('data-id');
+                //    isDescending = $(this).attr('data-desc');
+                //    $('.table>thead>tr>th>span', container).remove();
+                //    if (isDescending == "True") {
+                //        $(this).attr('data-desc', 'False');
+                //        $(this).html($(this).text() + '<span class="fa fa-caret-up pull-right"></span>');
+                //    }
+                //    else {
+                //        $(this).attr('data-desc', 'True');
+                //        $(this).html($(this).text() + '<span style="padding-top:5px" class="fa fa-caret-down pull-right"></span>');
+                //    }
+                //    GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                //});
 
-                                    var styleDisplay = '';
-                                    if (temp.any(function (t) { return t == key })) {
-                                        styleDisplay = ' style="display:none;"';
-                                    }
-                                    if (key.indexOf("Date") >= 0) {
-                                        var date = new Date(parseInt(value[key].substr(6)));
-                                        table_row += '<td' + styleDisplay + '>' + date.getDate() + " " + GetMonthName(parseInt(date.getMonth()) + 1) + " " + date.getFullYear() + '</td>';
-                                    } else {
-                                        table_row += '<td' + styleDisplay + '>' + value[key].toString() + '</td>';
-                                    }
-                                }
-                                table_row += '</tr>';
-                            });
-                            $('tbody', container).html(table_row);
-                            $('.dataTables_paginate', container).html(dataJson.Pagination);
-                        }
-                    });
-                }
+                //function GetDataTableJson(objSearch, page, pageSize, propertyOrder, isDescending) {
+                //    $.ajax({
+                //        url: $form.attr('action') + 'Json',
+                //        data: {
+                //            stringSearch: objSearch,
+                //            page: page,
+                //            pageSize: pageSize,
+                //            propertyOrder: propertyOrder,
+                //            isDescending: isDescending
+                //        },
+                //        dataType: 'JSON',
+                //        type: 'post',
+                //        beforeSend: function () {
+                //            $('.data-result', container).showloading();
+                //        },
+                //        complete: function () {
+                //            $('.data-result', container).hideloading();
+                //        },
+                //        success: function (dataJson) {
+                //            var table_row = '';
+                //            $.each(dataJson.DataTable, function (i, value) {
+                //                table_row += '<tr>';
+                //                var styleDisplay = '';
+                //                for (var key in value) {
+
+                //                    if (tempSkip.any(function (s) { return s == key })) {
+                //                        continue;
+                //                    }
+
+                //                    var styleDisplay = '';
+                //                    if (temp.any(function (t) { return t == key })) {
+                //                        styleDisplay = ' style="display:none;"';
+                //                    }
+                //                    if (key.indexOf("Date") >= 0) {
+                //                        var date = new Date(parseInt(value[key].substr(6)));
+                //                        table_row += '<td' + styleDisplay + '>' + date.getDate() + " " + GetMonthName(parseInt(date.getMonth()) + 1) + " " + date.getFullYear() + '</td>';
+                //                    } else {
+                //                        table_row += '<td' + styleDisplay + '>' + value[key].toString() + '</td>';
+                //                    }
+                //                }
+                //                table_row += '</tr>';
+                //            });
+                //            $('tbody', container).html(table_row);
+                //            $('.dataTables_paginate', container).html(dataJson.Pagination);
+                //        }
+                //    });
+                //}
             }
         });
 
@@ -578,7 +582,7 @@ $(document).ready(function () {
                         },
                         success: function (dataResult) {
                             $('.lookup-result', container).html(dataResult);
-                            $('.table>thead>tr>th', container).attr("style", "cursor: pointer;");
+                            //$('.table>thead>tr>th', container).attr("style", "cursor: pointer;");
                             //$('tbody', container).on("click", "tr", function () {
                             //    if ($(this).attr('data-edit') != undefined)
                             //        window.location.href = $(this).attr('data-edit');
@@ -586,89 +590,93 @@ $(document).ready(function () {
                             //        return;
                             //});
 
-                            $('.current-page', container).val(1);
-
-                            var isDescending = true;
-                            $('.lookup-result', container).on("click", "li.page", function (e) {
-                                var page = $(this).attr('link');
-                                var objSearch = JSON.stringify($form.serializeObject());
-                                $('.current-page', container).val(page);
-                                pageSize = $('.lookup-result', container).find("#pagesize option:selected").val();
-                                GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                            $('.lookup-result', container).find('table').DataTable({
+                                responsive: true
                             });
 
-                            $('.lookup-result', container).on("change", "#pagesize", function (e) {
-                                var page = 1;
-                                var objSearch = JSON.stringify($form.serializeObject());
-                                $('.current-page', container).val(page);
-                                pageSize = $('.lookup-result', container).find("#pagesize option:selected").val();
-                                GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
-                            });
+                            //$('.current-page', container).val(1);
 
-                            $('.table>thead>tr>th', container).click(function (e) {
-                                var objSearch = JSON.stringify($form.serializeObject());
-                                var page = $('.current-page', container).val();
-                                propertyOrder = $(this).attr('data-id');
-                                isDescending = $(this).attr('data-desc');
-                                $('.table>thead>tr>th>span', container).remove();
-                                if (isDescending == "True") {
-                                    $(this).attr('data-desc', 'False');
-                                    $(this).html($(this).text() + '<span class="fa fa-caret-up pull-right"></span>');
-                                }
-                                else {
-                                    $(this).attr('data-desc', 'True');
-                                    $(this).html($(this).text() + '<span style="padding-top:5px" class="fa fa-caret-down pull-right"></span>');
-                                }
-                                GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
-                            });
+                            //var isDescending = true;
+                            //$('.lookup-result', container).on("click", "li.page", function (e) {
+                            //    var page = $(this).attr('link');
+                            //    var objSearch = JSON.stringify($form.serializeObject());
+                            //    $('.current-page', container).val(page);
+                            //    pageSize = $('.lookup-result', container).find("#pagesize option:selected").val();
+                            //    GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                            //});
 
-                            function GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending) {
-                                $.ajax({
-                                    url: $form.attr('action') + 'Json',
-                                    data: {
-                                        stringSearch: objSearch,
-                                        page: page,
-                                        pageSize: pageSize,
-                                        propertyOrder: propertyOrder,
-                                        isDescending: isDescending
-                                    },
-                                    dataType: 'JSON',
-                                    type: 'post',
-                                    beforeSend: function () {
-                                        $('.lookup-result', container).showloading();
-                                    },
-                                    complete: function () {
-                                        $('.lookup-result', container).hideloading();
-                                    },
-                                    success: function (dataJson) {
-                                        var table_row = '';
-                                        $.each(dataJson.DataTable, function (i, value) {
-                                            table_row += '<tr>';
-                                            var styleDisplay = '';
-                                            for (var key in value) {
+                            //$('.lookup-result', container).on("change", "#pagesize", function (e) {
+                            //    var page = 1;
+                            //    var objSearch = JSON.stringify($form.serializeObject());
+                            //    $('.current-page', container).val(page);
+                            //    pageSize = $('.lookup-result', container).find("#pagesize option:selected").val();
+                            //    GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                            //});
 
-                                                if (tempSkip.any(function (s) { return s == key })) {
-                                                    continue;
-                                                }
+                            //$('.table>thead>tr>th', container).click(function (e) {
+                            //    var objSearch = JSON.stringify($form.serializeObject());
+                            //    var page = $('.current-page', container).val();
+                            //    propertyOrder = $(this).attr('data-id');
+                            //    isDescending = $(this).attr('data-desc');
+                            //    $('.table>thead>tr>th>span', container).remove();
+                            //    if (isDescending == "True") {
+                            //        $(this).attr('data-desc', 'False');
+                            //        $(this).html($(this).text() + '<span class="fa fa-caret-up pull-right"></span>');
+                            //    }
+                            //    else {
+                            //        $(this).attr('data-desc', 'True');
+                            //        $(this).html($(this).text() + '<span style="padding-top:5px" class="fa fa-caret-down pull-right"></span>');
+                            //    }
+                            //    GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending);
+                            //});
 
-                                                var styleDisplay = '';
-                                                if (temp.any(function (t) { return t == key })) {
-                                                    styleDisplay = ' style="display:none;"';
-                                                }
-                                                if (key.indexOf("Date") >= 0) {
-                                                    var date = new Date(parseInt(value[key].substr(6)));
-                                                    table_row += '<td' + styleDisplay + '>' + date.getDate() + " " + GetMonthName(parseInt(date.getMonth()) + 1) + " " + date.getFullYear() + '</td>';
-                                                } else {
-                                                    table_row += '<td' + styleDisplay + '>' + value[key].toString() + '</td>';
-                                                }
-                                            }
-                                            table_row += '</tr>';
-                                        });
-                                        $('tbody', container).html(table_row);
-                                        $('.dataTables_paginate', container).html(dataJson.Pagination);
-                                    }
-                                });
-                            }
+                            //function GetDataTableLookupJson(objSearch, page, pageSize, propertyOrder, isDescending) {
+                            //    $.ajax({
+                            //        url: $form.attr('action') + 'Json',
+                            //        data: {
+                            //            stringSearch: objSearch,
+                            //            page: page,
+                            //            pageSize: pageSize,
+                            //            propertyOrder: propertyOrder,
+                            //            isDescending: isDescending
+                            //        },
+                            //        dataType: 'JSON',
+                            //        type: 'post',
+                            //        beforeSend: function () {
+                            //            $('.lookup-result', container).showloading();
+                            //        },
+                            //        complete: function () {
+                            //            $('.lookup-result', container).hideloading();
+                            //        },
+                            //        success: function (dataJson) {
+                            //            var table_row = '';
+                            //            $.each(dataJson.DataTable, function (i, value) {
+                            //                table_row += '<tr>';
+                            //                var styleDisplay = '';
+                            //                for (var key in value) {
+
+                            //                    if (tempSkip.any(function (s) { return s == key })) {
+                            //                        continue;
+                            //                    }
+
+                            //                    var styleDisplay = '';
+                            //                    if (temp.any(function (t) { return t == key })) {
+                            //                        styleDisplay = ' style="display:none;"';
+                            //                    }
+                            //                    if (key.indexOf("Date") >= 0) {
+                            //                        var date = new Date(parseInt(value[key].substr(6)));
+                            //                        table_row += '<td' + styleDisplay + '>' + date.getDate() + " " + GetMonthName(parseInt(date.getMonth()) + 1) + " " + date.getFullYear() + '</td>';
+                            //                    } else {
+                            //                        table_row += '<td' + styleDisplay + '>' + value[key].toString() + '</td>';
+                            //                    }
+                            //                }
+                            //                table_row += '</tr>';
+                            //            });
+                            //            $('tbody', container).html(table_row);
+                            //            $('.dataTables_paginate', container).html(dataJson.Pagination);
+                            //        }
+                            //    });
+                            //}
                         }
                     });
                 });
