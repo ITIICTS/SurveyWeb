@@ -114,7 +114,8 @@
                                             <div class="col-sm-4">
                                                 <div class="input-group">
                                                     @Html.TextBoxFor(model => model.SampleLookup, new { @class = "form-control" })
-                                                    <span class="input-group-addon" id="btn-sample-popup" data-href="@Url.Action("LookupSample","Sample")" data-target="#lookup-sample" data-toggle="modal">...</span>
+                                                    <span class="input-group-addon" id="btn-sample-popup" data-href="@Url.Action("LookupSample","Sample")"
+                                                          data-target="#lookup-sample" data-toggle="modal"><i class="fa fa-search"></i></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -124,8 +125,8 @@
                                     <div class="col-md-10">
                                         <div class="form-group">
                                             <div class="col-md-offset-4 col-md-10">
-                                                <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span>Save </span></button>
-                                                <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                                <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span><i class="fa fa-save"></i> Save </span></button>
+                                                <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span><i class="fa fa-times"></i> Cancel </span></button>
                                             </div>
                                         </div>
                                     </div>

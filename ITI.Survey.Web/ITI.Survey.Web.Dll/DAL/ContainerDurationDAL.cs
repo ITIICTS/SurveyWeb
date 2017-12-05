@@ -88,12 +88,15 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@Condition", condition + "%");
                         npgsqlCommand.Parameters.AddWithValue("@MinDuration", minDuration);
                         using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
-                        {                            
+                        {
+                            int i = 1;            
                             while (npgsqlDataReader.Read())
                             {
                                 ContainerDuration containerDuration = new ContainerDuration();
+                                containerDuration.No = i;
                                 MappingDataReaderToContainerDuration(npgsqlDataReader, containerDuration);
                                 listContainerDuration.Add(containerDuration);
+                                i++;
                             }
                         }
                     }

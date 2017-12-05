@@ -336,6 +336,8 @@ function GetMonthName(monthNumber) {
 }
 
 $(document).ready(function () {
+
+
     $('#btn-logout').click(function () {
         $.ajax({
             url: $(this).attr('data-href'),
@@ -354,6 +356,8 @@ $(document).ready(function () {
         changeYear: true,
         //...
     });
+
+    $('select').attr('data-live-search', true);
 
     $('button[class*="addnew"]').click(function () {
         window.location.href = $(this).attr('data-href');
@@ -503,7 +507,8 @@ $(document).ready(function () {
             success: function (result) {
                 if (result.Status == true) {
                     PopupMessage(successmsg, function () {
-                        window.location.href = result.Href;
+                        if (result.Href != undefined)
+                            window.location.href = result.Href;
                     });
                 } else {
                     if (result.errorList != undefined) {
@@ -670,4 +675,6 @@ $(document).ready(function () {
             }
         });
     });
+
+
 });

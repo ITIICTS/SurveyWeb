@@ -1,5 +1,6 @@
 ﻿using ITI.Survey.Web.UI.Models;
 using System;
+using System.Data;
 using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
@@ -34,46 +35,48 @@ namespace ITI.Survey.Web.UI.Controllers
             //    return View("../Mobile/Login");
             //for debug
             LoginModel model = new LoginModel();
-
             return View(model);
         }
 
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginModel model, string returnUrl)
+        public ActionResult Login(LoginModel model, string ReturnUrl)
         {
             bool statusLogin = false;
             ViewBag.Errors = "Your username or password is not valid.";
-            GlobalWebService.GlobalSoapClient GlobalService = new GlobalWebService.GlobalSoapClient();
-            
-            if (GlobalService.Login(model.UserId, model.Password))
+
+            using (GlobalWebService.GlobalSoapClient GlobalService = new GlobalWebService.GlobalSoapClient())
             {
-                //Create the ticket.
-                bool isCookiePersistent = model.RememberMe;
-                FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,
-                         model.UserId, DateTime.Now, DateTime.Now.AddMinutes(60), isCookiePersistent, "SurveyWeb");
+                if (GlobalService.Login(model.UserId, model.Password))
+                {
+                    //Create the ticket.
+                    bool isCookiePersistent = model.RememberMe;
+                    FormsAuthenticationTicket authTicket = new FormsAuthenticationTicket(1,
+                             model.UserId, DateTime.Now, DateTime.Now.AddMinutes(60), isCookiePersistent, "SurveyWeb");
 
-                //Encrypt the ticket.
-                string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
+                    //Encrypt the ticket.
+                    string encryptedTicket = FormsAuthentication.Encrypt(authTicket);
 
-                //Create a cookie, and then add the encrypted ticket to the cookie as data.
-                HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
+                    //Create a cookie, and then add the encrypted ticket to the cookie as data.
+                    HttpCookie authCookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
 
-                if (true == isCookiePersistent)
-                    authCookie.Expires = authTicket.Expiration;
+                    if (true == isCookiePersistent)
+                        authCookie.Expires = authTicket.Expiration;
 
-                //Add the cookie to the outgoing cookies collection.
-                Response.Cookies.Add(authCookie);
+                    //Add the cookie to the outgoing cookies collection.
+                    Response.Cookies.Add(authCookie);
 
-                Session["CURRUSER"] = model.UserId;
-                statusLogin = true;
+                    //Session["CURRUSER"] = model.UserId;
+                    statusLogin = true;
+                }
             }
 
+            //GlobalWebService.GlobalSoapClient GlobalService = new GlobalWebService.GlobalSoapClient();
 
             if (statusLogin)
             {
-                return Json(new { Status = true, ReturnUrl = GetReturnUrl(returnUrl) }, JsonRequestBehavior.AllowGet);
+                return Json(new { Status = true, ReturnUrl = GetReturnUrl(ReturnUrl) }, JsonRequestBehavior.AllowGet);
             }
             return Json(new { Status = false, ErrorMessage = ViewBag.Errors }, JsonRequestBehavior.AllowGet);
         }

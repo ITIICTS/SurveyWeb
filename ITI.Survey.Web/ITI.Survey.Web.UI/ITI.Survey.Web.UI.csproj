@@ -26,7 +26,6 @@
     <NuGetPackageImportStamp>
     </NuGetPackageImportStamp>
     <TargetFrameworkProfile />
-    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,20 +48,11 @@
     <Reference Include="AGY.Solution">
       <HintPath>..\packages\AGY.Solution.1.0.0.0\AGY.Solution.dll</HintPath>
     </Reference>
-    <Reference Include="Flashlight, Version=1.0.6349.37993, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mvx.Flashlight.1.0.3\lib\portable-net45+win+wpa81+wp80\Flashlight.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="MvvmCross.Platform, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Mvx.Flashlight.1.0.3\lib\portable-net45+win+wpa81+wp80\MvvmCross.Platform.dll</HintPath>
-    </Reference>
-    <Reference Include="MvvmCross.Platform.Wpf, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MvvmCross.Platform.4.4.0\lib\net45\MvvmCross.Platform.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -134,19 +124,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Connected Services\GlobalWebService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
-    <Compile Include="Connected Services\StackingWebService\Reference.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Compile>
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\BlokSystemController.cs" />
+    <Compile Include="Controllers\BongkarContainerController.cs" />
+    <Compile Include="Controllers\ContainerDurationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InputNoMobilController.cs" />
     <Compile Include="Controllers\MuatScanController.cs" />
@@ -156,60 +138,24 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BlokSystemModel.cs" />
-    <Compile Include="Models\InputNoMobilModel.cs" />
+    <Compile Include="Models\ContainerDurationModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
+    <Compile Include="Models\InputNoMobilModel.cs" />
     <Compile Include="Models\SampleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\GlobalWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service References\StackingWebService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Web.txt" />
-    <None Include="Connected Services\GlobalWebService\global.disco" />
-    <None Include="Connected Services\GlobalWebService\configuration91.svcinfo" />
-    <None Include="Connected Services\GlobalWebService\configuration.svcinfo" />
-    <Content Include="Connected Services\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.LoginResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Connected Services\GlobalWebService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContainerDurationResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContCardByIdAndCardModeResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByBlokForStockResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerForStockResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerNumberResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByIdResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitBlokMoveResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitKartuBongkarResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <Content Include="Connected Services\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitNoMobilResponse1.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </Content>
-    <None Include="Connected Services\StackingWebService\stacking.disco" />
-    <None Include="Connected Services\StackingWebService\configuration91.svcinfo" />
-    <None Include="Connected Services\StackingWebService\configuration.svcinfo" />
-    <None Include="Connected Services\StackingWebService\Reference.svcmap">
-      <Generator>WCF Proxy Generator</Generator>
-      <LastGenOutput>Reference.cs</LastGenOutput>
-    </None>
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\dist\css\sb-admin-2.css" />
@@ -362,9 +308,6 @@
     <Content Include="Content\vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\vendor\font-awesome\scss\_variables.scss" />
     <Content Include="bower.json" />
-    <None Include="Connected Services\GlobalWebService\global.wsdl" />
-    <None Include="Connected Services\StackingWebService\stacking.wsdl" />
-    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
     <None Include="Properties\PublishProfiles\SurveyWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\CustomScript.js" />
@@ -385,6 +328,54 @@
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\_references.js" />
+    <None Include="Service References\GlobalWebService\Global.disco" />
+    <None Include="Service References\GlobalWebService\configuration91.svcinfo" />
+    <None Include="Service References\GlobalWebService\configuration.svcinfo" />
+    <Content Include="Service References\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\GlobalWebService\ITI.Survey.Web.UI.GlobalWebService.LoginResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\GlobalWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContainerDurationResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContCardByIdAndCardModeResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByBlokForStockResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerForStockResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByContainerNumberResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.FillContInOutByIdResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitBlokMoveResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitKartuBongkarResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\StackingWebService\ITI.Survey.Web.UI.StackingWebService.SubmitNoMobilResponse.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Service References\GlobalWebService\Global.wsdl" />
+    <None Include="Service References\StackingWebService\Stacking.disco" />
+    <None Include="Service References\StackingWebService\configuration91.svcinfo" />
+    <None Include="Service References\StackingWebService\configuration.svcinfo" />
+    <None Include="Service References\StackingWebService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -408,13 +399,18 @@
     <Content Include="Views\Sample\_DataTableLookupSample.cshtml" />
     <Content Include="Views\Sample\CreateHeaderDetail.cshtml" />
     <Content Include="Views\Sample\_SampleList.cshtml" />
-    <Content Include="Views\InputNoMobil\Index.cshtml" />
+    <None Include="Service References\StackingWebService\Stacking.wsdl" />
     <Content Include="Views\Account\Login.cshtml" />
     <Content Include="Views\Shared\_LayoutLogin.cshtml" />
+    <Content Include="Views\BongkarContainer\BongkarContainerAV.cshtml" />
+    <Content Include="Views\BongkarContainer\BongkarContainerDM.cshtml" />
+    <Content Include="Views\InputNoMobil\Index.cshtml" />
     <Content Include="Views\BlokSystem\Index.cshtml" />
+    <Content Include="Views\ContainerDuration\Index.cshtml" />
+    <Content Include="Views\ContainerDuration\_DataTableContainerDuration.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Muat\" />
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -425,12 +421,10 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <WCFMetadata Include="Connected Services\" />
+    <WCFMetadataStorage Include="Service References\GlobalWebService\" />
+    <WCFMetadataStorage Include="Service References\StackingWebService\" />
   </ItemGroup>
-  <ItemGroup>
-    <WCFMetadataStorage Include="Connected Services\GlobalWebService\" />
-    <WCFMetadataStorage Include="Connected Services\StackingWebService\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
