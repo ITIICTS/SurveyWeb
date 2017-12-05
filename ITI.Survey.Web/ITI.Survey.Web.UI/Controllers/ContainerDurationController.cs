@@ -47,21 +47,21 @@ namespace ITI.Survey.Web.UI.Controllers
             return View("_DataTableContainerDuration", resultSearch);
         }
 
-        [HttpPost]
-        public ActionResult DataTableContainerDurationJson(string stringSearch, int page = 1, int pageSize = int.MaxValue, string propertyOrder = "CreatedDate", bool isDescending = true)
-        {
-            ContainerDurationModel objSearch = Newtonsoft.Json.JsonConvert.DeserializeObject<ContainerDurationModel>(stringSearch, JSONSetting);
-            DataTableModel objPage = new DataTableModel { CurrentPage = page, IsDescending = isDescending, PageSize = pageSize, PropertyOrder = propertyOrder };
-            IList<ContainerDurationModel> resultSearch = DataContainerDuration(Username, objSearch.CustomerCode, objSearch.Size, objSearch.Type, objSearch.Condition, objSearch.Duration, objPage.PropertyOrder);
-            objPage.TotalRow = resultSearch.Count;
-            string pagination = PageHelper.CreateLink(objPage.CurrentPage, objPage.TotalRow, objPage.PageSize, true);
-            var jsonResult = new
-            {
-                DataTable = resultSearch,
-                TotalRow = objPage.TotalRow,
-                Pagination = pagination
-            };
-            return Json(jsonResult, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpPost]
+        //public ActionResult DataTableContainerDurationJson(string stringSearch, int page = 1, int pageSize = int.MaxValue, string propertyOrder = "CreatedDate", bool isDescending = true)
+        //{
+        //    ContainerDurationModel objSearch = Newtonsoft.Json.JsonConvert.DeserializeObject<ContainerDurationModel>(stringSearch, JSONSetting);
+        //    DataTableModel objPage = new DataTableModel { CurrentPage = page, IsDescending = isDescending, PageSize = pageSize, PropertyOrder = propertyOrder };
+        //    IList<ContainerDurationModel> resultSearch = DataContainerDuration(Username, objSearch.CustomerCode, objSearch.Size, objSearch.Type, objSearch.Condition, objSearch.Duration, objPage.PropertyOrder);
+        //    objPage.TotalRow = resultSearch.Count;
+        //    string pagination = PageHelper.CreateLink(objPage.CurrentPage, objPage.TotalRow, objPage.PageSize, true);
+        //    var jsonResult = new
+        //    {
+        //        DataTable = resultSearch,
+        //        TotalRow = objPage.TotalRow,
+        //        Pagination = pagination
+        //    };
+        //    return Json(jsonResult, JsonRequestBehavior.AllowGet);
+        //}
     }
 }
