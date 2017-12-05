@@ -1,0 +1,60 @@
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ITI.Survey.Web.UI.Models
+{
+    public class ContainerDurationModel
+    {
+        [Display(Name = "NO")]
+        public int No { get; set; }
+        public long ContInOutId { get; set; }
+        [Display(Name = "CONT")]
+        public string Cont { get; set; }
+        [Display(Name = "SIZE")]
+        public string Size { get; set; }
+        [Display(Name = "TYPE")]
+        public string Type { get; set; }
+        [Display(Name = "CUSTOMER")]
+        public string CustomerCode { get; set; }
+        [Display(Name = "CONDITION")]
+        public string Condition { get; set; }
+        [Display(Name = "DTMIN")]
+        public string DtmIn { get; set; }
+        public string ActIn { get; set; }
+        public string RfEngineCond { get; set; }
+        [Display(Name = "DURATION")]
+        public int Duration { get; set; }
+        [Display(Name = "REMARKS")]
+        public string Remarks { get; set; }
+        public string EorNo { get; set; }
+        public string DtmEor { get; set; }
+        public string DtmApproved { get; set; }
+        public string DtmCompleted { get; set; }
+        public string RepairStatus { get; set; }
+        [Display(Name = "SPECIAL MESSAGE")]
+        public string SpecialMessage { get; set; }
+        public string SpecialMessage2 { get; set; }
+
+        public ContainerDurationModel()
+        {
+            No = 0;
+            ContInOutId = 0;
+            Cont = string.Empty;
+            Size = string.Empty;
+            Type = string.Empty;
+            CustomerCode = string.Empty;
+            Condition = string.Empty;
+            DtmIn = string.Empty;
+            ActIn = string.Empty;
+            RfEngineCond = string.Empty;
+            Remarks = string.Empty;
+            Duration = 0;
+            EorNo = string.Empty;
+            DtmEor = string.Empty;
+            DtmApproved = string.Empty;
+            DtmCompleted = string.Empty;
+            RepairStatus = string.Empty;
+            SpecialMessage = string.Empty;
+            SpecialMessage2 = string.Empty;
+        }
+    }
+}
