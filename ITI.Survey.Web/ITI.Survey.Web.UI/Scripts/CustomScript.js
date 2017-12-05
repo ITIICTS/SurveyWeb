@@ -407,6 +407,8 @@ $(document).ready(function () {
                     responsive: true
                 });
 
+                $('.data-result', container).find('table').removeAttr('style');
+
                 //$('.current-page', container).val(1);
 
                 //var isDescending = true;
@@ -593,6 +595,8 @@ $(document).ready(function () {
                             $('.lookup-result', container).find('table').DataTable({
                                 responsive: true
                             });
+
+                            $('.data-result', container).find('table').removeAttr('style');
 
                             //$('.current-page', container).val(1);
 
