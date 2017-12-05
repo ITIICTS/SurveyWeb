@@ -1,7 +1,15 @@
-﻿namespace ITI.Survey.Web.Dll.Model
+﻿using ITI.Survey.Web.Dll.DAL;
+using ITI.Survey.Web.Dll.Helper;
+using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace ITI.Survey.Web.Dll.Model
 {
     public class ContInOut
     {
+        private StringBuilder _brokenRulesMessage = new StringBuilder();
+
         #region Property
         public long ContInOutId { get; set; }
         public string Cont { get; set; }
@@ -88,6 +96,17 @@
         public bool IsFreeUse { get; set; }
 
         public string Message { get; set; }
+
+        public int ContAge
+        {
+            get
+            {                
+                return DateTime.Now.Subtract(Convert.ToDateTime(DtmIn)).Days;
+            }
+        }
+
+        public List<BlackList> ListBlackList { get; set; }
+        public bool DoCheckBlockOut { get; set; }
         #endregion
 
         public ContInOut()
@@ -176,6 +195,112 @@
             RkemIn = string.Empty;
             IsFreeUse = false;
             Message = string.Empty;
+
+            ListBlackList = new List<BlackList>();
+            DoCheckBlockOut = false;
+        }
+
+        public string GetBlockOutMessage()
+        {
+            StringBuilder result = new StringBuilder();
+            DateTime serverDate = GlobalWebServiceDAL.GetServerDtm();
+            foreach (var blackList in ListBlackList)
+            {
+                if (blackList.DisabledUntil >= serverDate || blackList.Disabled)
+                {
+                    continue;
+                }
+                if (blackList.BlockOut)
+                {
+                    result.AppendLine( (blackList.BlockByMnr ? "[MNR] " : "")
+                       + blackList.DtmCreate.ToString("yyyy-MM-dd")
+                       + " " + blackList.ContainerNumber
+                       + ":" + blackList.Message);
+                }
+            }
+
+            return result.ToString();
+        }
+
+        public bool IsBlockOut()
+        {
+            //block can be released with password
+            DateTime serverDate = GlobalWebServiceDAL.GetServerDtm();
+            foreach (BlackList blackList in ListBlackList)
+            {
+                if (blackList.DisabledUntil >= serverDate || blackList.Disabled)
+                {
+                    continue;
+                }
+                if (blackList.BlockOut)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void UiBrokenRulesCheck()
+        {
+            _brokenRulesMessage.Clear();
+
+            BrokenRulesAssert("Invalid Condition Code", !ConditionList.Value.Contains(Condition));
+            BrokenRulesAssert("Invalid Container No", Cont.Length != 14);
+            BrokenRulesAssert("Invalid Type", !ContTypeList.Value.Contains(Type));
+            BrokenRulesAssert("Invalid Size", !ContSizeList.Value.Contains(Size));
+            BrokenRulesAssert("Invalid Customer", CustomerCode.Length == 0);
+            BrokenRulesAssert("Invalid Wash Status", !WashStatusList.Value.Contains(WashStatus));
+            BrokenRulesAssert("Invalid Act In", !ActInCollection.Value.Contains(ActIn));
+            BrokenRulesAssert("Invalid ExVesselName", ExVesselName.Length == 0);
+
+            BrokenRulesAssert("Invalid Grade", GradeV2.Length == 0 && (Type.Equals("HU") || Type.Equals("GP")));
+
+            BrokenRulesAssert("Invalid Consignee Name", Consignee.Length == 0);
+            
+            string[] split = ExVesselName.Split("-".ToCharArray(), 2);
+            string ves = split[0];
+            BrokenRulesAssert("Invalid ExVesselName", ves.Length == 0);
+
+            BrokenRulesAssert("BL is required", BlNumber.Length == 0);
+
+            if (DoCheckBlockOut)
+            {
+                BrokenRulesAssert("BLOCK OUT : " + GetBlockOutMessage(), IsBlockOut());
+            }
+
+            if (Payload.Length > 0)
+            {
+                int resultPayload = 0;
+                BrokenRulesAssert("Payload is invalid (must be a number)", !Int32.TryParse(Payload, out resultPayload));
+            }
+        }
+
+        public void BrokenRulesAssert(string rule, bool isBroken)
+        {
+            if (isBroken == true)
+            {
+                if (!_brokenRulesMessage.ToString().Contains(rule))
+                {
+                    _brokenRulesMessage.AppendLine(rule);
+                }
+            }
+            else
+            {
+                if (_brokenRulesMessage.ToString().Contains(rule))
+                {
+                    _brokenRulesMessage.Replace(rule, string.Empty);
+                }
+            }
+        }
+
+        public bool BrokenRulesValidate()
+        {
+            return _brokenRulesMessage.ToString().Trim().Length > 0;
+        }
+
+        public string BrokenRulesString()
+        {
+            return _brokenRulesMessage.ToString();
         }
     }
 }

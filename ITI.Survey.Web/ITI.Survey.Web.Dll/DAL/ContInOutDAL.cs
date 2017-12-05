@@ -35,7 +35,6 @@ namespace ITI.Survey.Web.Dll.DAL
             contInOut.RfMachine = npgsqlDataReader.GetString(8);
             contInOut.Tare = npgsqlDataReader.GetString(9);
 
-            //datetime data
             if (npgsqlDataReader["dtmin"] != DBNull.Value)
             {
                 contInOut.DtmIn = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmin")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
@@ -53,18 +52,13 @@ namespace ITI.Survey.Web.Dll.DAL
                 contInOut.DtmOut = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmpti")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
 
-            //data condition, washing
             contInOut.WashStatus = npgsqlDataReader.GetString(14);
             contInOut.Condition = npgsqlDataReader.GetString(15);
 
-            //act in out
             contInOut.ActIn = npgsqlDataReader.GetString(16);
             contInOut.ActOut = npgsqlDataReader.GetString(17);
-
-            //lokasi
             contInOut.Location = npgsqlDataReader.GetString(18);
 
-            //data in
             contInOut.ExVessel = npgsqlDataReader.GetString(19);
             contInOut.ExVesselName = npgsqlDataReader.GetString(20);
             contInOut.Consignee = npgsqlDataReader.GetString(21);
@@ -76,7 +70,6 @@ namespace ITI.Survey.Web.Dll.DAL
             contInOut.AngkutanIn = npgsqlDataReader.GetString(23);
             contInOut.Payload = npgsqlDataReader.GetString(24);
 
-            //data out
             contInOut.NoMobilOut = npgsqlDataReader.GetString(25);
             contInOut.AngkutanOut = npgsqlDataReader.GetString(26);
             contInOut.DoNumber = npgsqlDataReader.GetString(27);
@@ -91,9 +84,6 @@ namespace ITI.Survey.Web.Dll.DAL
             {
                 contInOut.DtmOutDepoIn = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmoutdepoin")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
-
-            // remark
-            //contInOut.Rem = new RemarkList(npgsqlDataReader.GetString(36));
 
             contInOut.EdiIn = npgsqlDataReader.GetString(37);
             contInOut.EdiOut = npgsqlDataReader.GetString(38);
@@ -117,7 +107,6 @@ namespace ITI.Survey.Web.Dll.DAL
             }
             contInOut.BlNumber = npgsqlDataReader.GetString(49);
 
-            //cleaning data
             contInOut.CleaningRefNo = npgsqlDataReader.GetString(50);
             contInOut.CleaningRemark = npgsqlDataReader.GetString(51);
             contInOut.CleaningLastCargo = npgsqlDataReader.GetString(52);
@@ -137,10 +126,7 @@ namespace ITI.Survey.Web.Dll.DAL
                 contInOut.DtmShortPti = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmshortpti")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
 
-            //ocl request
             contInOut.ExVesselPort = npgsqlDataReader.GetString(60);
-
-            //reefer new implementation
             contInOut.RfEngineCond = npgsqlDataReader.GetString(61);
 
             if (npgsqlDataReader["rfdtmenginerepaired"] != DBNull.Value)
@@ -320,6 +306,62 @@ namespace ITI.Survey.Web.Dll.DAL
             return contInOut;
         }
 
+        public List<ContInOut> FillByNoSeriOrOut(string noSeriOrOut, string size, string type, string takeDefined)
+        {            
+            string definedCondition = string.Empty;
+            if (takeDefined.Length > 0)
+            {
+                string[] conts = takeDefined.Split(",".ToCharArray());
+                foreach (string c in conts)
+                {
+                    if (definedCondition.Length > 0) definedCondition += ",";
+                    definedCondition += "'" + c + "'";
+                }
+                definedCondition = " AND cont NOT IN (" + definedCondition + ")";
+            }
+
+            List<ContInOut> listContInOut = new List<ContInOut>();
+
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} " +
+                                         " FROM continout {1} " +
+                                         " WHERE noseriorout=@NoSeriOrOut AND size=@Size AND type=@Type " +
+                                         " {2} " +
+                                         "ORDER BY cont,dtmin DESC ",
+                                         string.Format(DEFAULT_COLUMN, string.Empty),
+                                         DEFAULT_TABLE,
+                                         definedCondition);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@NoSeriOrOut", noSeriOrOut);
+                        npgsqlCommand.Parameters.AddWithValue("@Size", size);
+                        npgsqlCommand.Parameters.AddWithValue("@Type", type);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                ContInOut contInOut = new ContInOut();
+                                MappingDataReaderToContCard(npgsqlDataReader, contInOut);
+                                listContInOut.Add(contInOut);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listContInOut;            
+        }
+
         /// <summary>
         /// Get Container Stock By Container Number
         /// </summary>
@@ -355,7 +397,7 @@ namespace ITI.Survey.Web.Dll.DAL
                                 if (isSetMessage)
                                 {
                                     BlackListDAL blackListDAL = new BlackListDAL();
-                                    contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+                                    contInOut.Message = blackListDAL.GetMessageByContainerNumber(contInOut.Cont);
                                 }
                                 listContInOut.Add(contInOut);
                             }

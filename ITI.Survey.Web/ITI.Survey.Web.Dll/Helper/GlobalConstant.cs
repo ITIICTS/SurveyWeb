@@ -9,6 +9,7 @@ namespace ITI.Survey.Web.Dll.Helper
     public static class GlobalConstant
     {
         public const string DATE_YMDHMS_LONG_FORMAT = "yyyy-MM-dd HH::mm:ss";
+        public const string STRING_SPACE = " ";
 
         private static List<string> _containerSizeList = new List<string>();
         public static List<string> ContainerSizeList

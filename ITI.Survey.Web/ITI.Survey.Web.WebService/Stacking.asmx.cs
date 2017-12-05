@@ -27,6 +27,11 @@ namespace ITI.Survey.Web.WebService
         private BlokDAL blokDAL = new BlokDAL();
         private ContainerLogDAL containerLogDAL = new ContainerLogDAL();
         private TruckInDepoDAL truckInDepoDAL = new TruckInDepoDAL();
+        private InOutRevenueDAL inOutRevenueDAL = new InOutRevenueDAL();
+        private CustDoDAL custDoDAL = new CustDoDAL();
+        private DefinedContSizeTypeDAL definedContSizeTypeDAL = new DefinedContSizeTypeDAL();
+        private DurationRuleDAL durationRuleDAL = new DurationRuleDAL();
+        private DestinationRuleDAL destinationRuleDAL = new DestinationRuleDAL();
 
         /// <summary>
         /// Previous Name: ContCard_FillByID(string activeuser, long _id, string _cmode)
@@ -39,7 +44,10 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]        
         public string FillContCardByIdAndCardMode(string userId, long id, string cardMode)
         {
-            AppPrincipal.LoginForService(userId);
+            if(!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
             ContCard contCard = new ContCard();
             contCard = contCardDAL.FillContCardByContCardIdAndCardMode(id, cardMode);
             return contCard.ContCardID > 0 ?  Converter.ConvertToXML(contCard) : string.Empty;
@@ -61,7 +69,10 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]        
         public string FillContainerDuration(string userId, string customerCode, string size, string type, string condition, int minDuration, string sortBy)
         {
-            AppPrincipal.LoginForService(userId);
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
             List<ContainerDuration> listContainerDuration = new List<ContainerDuration>();
             listContainerDuration = containerDurationDAL.FillByCriteria(customerCode, size, type, condition, minDuration, sortBy);
             return listContainerDuration.Count > 0 ? Converter.ConvertListToXML(listContainerDuration) : string.Empty;
@@ -77,10 +88,13 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]
         public string FillContInOutById(string userId, long contInOutId)
         {
-            AppPrincipal.LoginForService(userId);
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
             ContInOut contInOut = new ContInOut();
             contInOut = contInOutDAL.FillContInOutById(contInOutId);
-            contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+            contInOut.Message = blackListDAL.GetMessageByContainerNumber(contInOut.Cont);
             return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;            
         }
 
@@ -95,10 +109,13 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]
         public string FillContInOutByContainerNumber(string userId, string containerNumber)
         {
-            AppPrincipal.LoginForService(userId);
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
             ContInOut contInOut = new ContInOut();
             contInOut = contInOutDAL.FillContInOutByContainerNumber(containerNumber);
-            contInOut.Message = blackListDAL.GetMessageByContNumber(contInOut.Cont);
+            contInOut.Message = blackListDAL.GetMessageByContainerNumber(contInOut.Cont);
             return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;
         }
 
@@ -117,7 +134,10 @@ namespace ITI.Survey.Web.WebService
             DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
             DataRow dataRow = dataTable.Rows[0];
 
-            AppPrincipal.LoginForService(dataRow["activeuser"].ToString());
+            if (!AppPrincipal.LoginForService(dataRow["activeuser"].ToString()))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
 
             #region Initialize Objects
             // Initialize ContCard
@@ -286,7 +306,10 @@ namespace ITI.Survey.Web.WebService
             DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
             DataRow dataRow = dataTable.Rows[0];
 
-            AppPrincipal.LoginForService(dataRow["activeuser"].ToString());
+            if (!AppPrincipal.LoginForService(dataRow["activeuser"].ToString()))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
 
             #region Initialize Objects
 
@@ -374,7 +397,10 @@ namespace ITI.Survey.Web.WebService
             DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
             DataRow dataRow = dataTable.Rows[0];
 
-            AppPrincipal.LoginForService(dataRow["activeuser"].ToString());
+            if (!AppPrincipal.LoginForService(dataRow["activeuser"].ToString()))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
 
             #region Initialize Objects
             // Initialize Blok After
@@ -541,7 +567,10 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]
         public string FillContInOutByContainerForStock(string userId, string containerNumber)
         {
-            AppPrincipal.LoginForService(userId);
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
             List<ContInOut> listContInOut = contInOutDAL.GetContainerStockByContainerNumber(containerNumber, true);
             return listContInOut.Count > 0 ? Converter.ConvertListToXML(listContInOut) : string.Empty;
         }
@@ -555,9 +584,207 @@ namespace ITI.Survey.Web.WebService
         [WebMethod]
         public string FillContInOutByBlokForStock(string userId, string blok)
         {
-            AppPrincipal.LoginForService(userId);
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
             List<ContInOut> listContInOut = listContInOut = contInOutDAL.GetContainerStockByBlok(blok);
             return listContInOut.Count > 0 ? Converter.ConvertListToXML(listContInOut) : string.Empty;
         }
+
+        /// <summary>
+        /// Previous Name: InOutRevenue_FillByID(string activeuser, long _id)
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="_id"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillInOutRevenueByInOutRevenueId(string userId, long inOutRevenueId)
+        {
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
+            InOutRevenue inOutRevenue = inOutRevenueDAL.FillInOutRevenueByInOutRevenueId(inOutRevenueId);
+            return inOutRevenue.InOutRevenueId > 0 ? Converter.ConvertToXML(inOutRevenue) : string.Empty;
+        }
+
+        /// <summary>
+        /// Previous Name: CustDo_FillByID(string activeuser, long _id)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="custDoId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string FillCustDoByCustDoId(string userId, long custDoId)
+        {
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
+            CustDo custDo = custDoDAL.FillCustDoByCustDoId(custDoId);
+            return custDo.CustDoId > 0 ? Converter.ConvertToXML(custDo) : string.Empty;
+        }
+
+        /// <summary>
+        /// Previous Name: Check_DefinedCondition(string activeuser, long _inoutrevenueid, long _continoutid, long _custdoid)
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="inOutRevenueId"></param>
+        /// <param name="contInOutId"></param>
+        /// <param name="custDoId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string Check_DefinedCondition(string userId, long inOutRevenueId, long contInOutId, long custDoId)
+        {
+            string result = string.Empty;
+            if (!AppPrincipal.LoginForService(userId))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
+            InOutRevenue inOutRevenue = inOutRevenueDAL.FillInOutRevenueByInOutRevenueId(inOutRevenueId);
+            if (inOutRevenue.InOutRevenueId == 0)
+            {
+                result += "OR tidak ditemukan\r\n";
+            }
+            ContInOut contInOut = contInOutDAL.FillContInOutById(contInOutId);
+            if (contInOut.ContInOutId == 0)
+            {
+                result += "Container tidak ditemukan\r\n";
+            }
+
+            // Cek Cont Size Type
+            DefinedContSizeType def = definedContSizeTypeDAL.FillDefinedContSizeTypeByContainerNumberAndInOutRevenue(contInOut.Cont, inOutRevenue);
+            if (def.DefinedContSizeTypeId > 0)
+            {
+                if (contInOut.Size != def.Size || contInOut.Type != def.Type)
+                {
+                    result += "Error: Size/Type Container tidak sama dengan OR !\r\n";
+                }
+            }
+
+            CustDo custDo = custDoDAL.FillCustDoByCustDoId(custDoId);
+
+            string messageDefined = GlobalWebServiceDAL.CheckTakenDefinedContainer(custDo.CustomerCode, inOutRevenue.NoSeri, contInOut.Cont);
+            if (messageDefined.Length > 0)
+            {
+                result += "Error: Container harus dipakai untuk OR/DO Nomor: " + messageDefined + "\r\n";
+            }
+
+            // Check Duration
+            List<DurationRule> listDurationRule = durationRuleDAL.GetDurationRuleForOut(contInOut.CustomerCode, contInOut.Cont, contInOut.Size, contInOut.Type);
+            DurationRule durationRule = null;
+            foreach (DurationRule d in listDurationRule)
+            {
+                if (contInOut.ContAge < d.MinDuration)
+                {
+                    durationRule = d;
+                    break;
+                }
+            }
+
+            if (durationRule != null)
+            {
+                result += "Error: Duration rule : " + durationRule.CustomerCode + " " + durationRule.Cont + " " + durationRule.Size + " " + durationRule.Type + " " + durationRule.MinDuration.ToString() + " : " + contInOut.ContAge.ToString() + "\r\n";
+            }
+
+            //load black list
+            contInOut.ListBlackList = blackListDAL.GetBlackListByContainerNumber(contInOut.Cont);
+            List<BlackList> listBlackList2 = blackListDAL.GetBlackList2ByContainerNumber(contInOut.Cont);
+            if(listBlackList2.Count>0)
+            {
+                contInOut.ListBlackList.AddRange(listBlackList2.ToArray());
+            }
+
+            //cek blacklist
+            contInOut.DoCheckBlockOut = true;
+            contInOut.UiBrokenRulesCheck();
+            if (!contInOut.BrokenRulesValidate())
+            {
+                result += "Error: Blacklist : " + contInOut.BrokenRulesString() + "\r\n";
+            }
+
+            //cek damage (cont and refeer engine damage)
+            if (custDo.AllowDM == false)
+            {
+                if ((contInOut.Type == "RF" || contInOut.Type == "RH") && contInOut.RfEngineCond == "DM")
+                {
+                    result += "Error: Reefer Engine Not AV\r\n";
+                }
+
+                if (contInOut.Condition != "AV")
+                {
+                    result += "Error: Container Not AV\r\n";
+                }
+            }
+
+            //cek apa sudah keluar
+            if (contInOut.DtmOut.Length > 0)
+            {
+                result += "Error: Status Container sudah keluar !\r\n";
+            }
+
+            //cek party release (termasuk disini coparn change)
+            if (!inOutRevenue.TakeDef.Contains(contInOut.Cont))
+            {
+                List<ContInOut> listContInOutByOr = contInOutDAL.FillByNoSeriOrOut(inOutRevenue.NoSeri, contInOut.Size, contInOut.Type, inOutRevenue.TakeDef);
+                int containerCountByOr = listContInOutByOr.Count;
+
+                ContainerSpecification containerSpecification = new ContainerSpecification();
+                switch (contInOut.Size)
+                {
+                    case "20":
+                        containerSpecification.FromString(inOutRevenue.Take20);
+                        break;
+                    case "40":
+                        containerSpecification.FromString(inOutRevenue.Take40);
+                        break;
+                    case "45":
+                        containerSpecification.FromString(inOutRevenue.Take45);
+                        break;
+                }
+
+                int cnt1 = 0;
+                foreach (ContainerSpecification.ContSpecItem contSpecItem in containerSpecification)
+                {
+                    if (contSpecItem.ContainerType == contInOut.Type)
+                    {
+                        cnt1 = contSpecItem.ContainerCount;
+                    }
+                }
+
+                if (cnt1 <= containerCountByOr)
+                {
+                    result += "Error: Container yang keluar lebih dari DO !\r\n";
+                }
+
+            }
+
+            //cek duration rule
+            //destrule load
+            List<DestinationRule> listDestinationRule = new List<DestinationRule>();
+            try
+            {
+                listDestinationRule = destinationRuleDAL.FillForOut(contInOut.CustomerCode, contInOut.Cont, contInOut.Size, contInOut.Type, custDo.DestinationName);
+            }
+            catch (Exception ex)
+            {
+                result += "Error: " + ex.Message + ", System Error\r\n";
+            }
+
+            int countDenied = listDestinationRule.FindAll(d => d.KodeDeny.Length > 0).Count();
+            int countAllow = listDestinationRule.FindAll(d => d.KodeAllow.Length > 0).Count();
+            if (countDenied > 0 || countAllow > 0)
+            {
+                result += "Error: Diprotek oleh Destination Rule! \r\n";
+            }
+            return result;
+        }
+
     }
 }
