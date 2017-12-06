@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model ITI.Survey.Web.UI.Models.BongkarContainerModel
 
 <div class="row" id="bongkarcontainerdm">
     <div class="col-xs-12">
@@ -57,12 +58,11 @@
                                                     <div class="col-md-11"><label class="control-label">Block</label></div>
                                                     <div class="col-md-11">
                                                         <select class="form-control">
-                                                            <option>A</option>
-                                                            <option>B</option>
-                                                            <option>C</option>
-                                                            <option>D</option>
-                                                            <option>E</option>
-                                                            <option>F</option>
+                                                            @for (char i = 'A'; i <= 'Z'; i++)
+                                                            {
+                                                                /**/
+                                                                <option>@i</option>
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>

@@ -4,6 +4,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+@model ITI.Survey.Web.UI.Models.BongkarContainerModel
 
 <div class="row" id="bongkarcontainerav">
     <div class="col-xs-12">
@@ -54,15 +55,14 @@
                                         <div class="col-sm-3">
                                             <div class="row">
                                                 <div class="form-group">
-                                                    <div class="col-md-11"><label class="control-label">Block</label></div>
+                                                    <div class="col-md-11"><label class="control-label">Blok</label></div>
                                                     <div class="col-md-11">
                                                         <select class="form-control">
-                                                            <option>A</option>
-                                                            <option>B</option>
-                                                            <option>C</option>
-                                                            <option>D</option>
-                                                            <option>E</option>
-                                                            <option>F</option>
+                                                            @for (char i = 'A'; i <= 'Z'; i++)
+                                                            {
+                                                                /**/
+                                                                <option>@i</option>
+                                                            }
                                                         </select>
                                                     </div>
                                                 </div>
@@ -72,7 +72,7 @@
                                             <div class="row">
                                                 <div class="form-group">
                                                     <div class="col-md-11"><label class="control-label">Bay</label></div>
-                                                    <div class="col-md-11"><input type="text" name="" class="form-control" /></div>
+                                                    <div class="col-md-11"><input type="text" name="Bay" class="form-control" maxlength="2" /></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -81,7 +81,7 @@
                                             <div class="row">
                                                 <div class="form-group">
                                                     <div class="col-md-11"><label class="control-label">Row</label></div>
-                                                    <div class="col-md-11"><input type="text" name="" class="form-control" /></div>
+                                                    <div class="col-md-11"><input type="text" name="Row" class="form-control" maxlength="2" /></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                             <div class="row">
                                                 <div class="form-group">
                                                     <div class="col-md-12"><label class="control-label">Tier</label></div>
-                                                    <div class="col-md-12"><input type="text" name="" class="form-control" /></div>
+                                                    <div class="col-md-12"><input type="text" name="Tier" class="form-control" maxlength="1" /></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -101,7 +101,7 @@
                                         <div class="form-group">
                                             <div class="col-md-12">
                                                 <button type="button" value="Proses" class="btn btn-primary btn-save" data-confirm-msg="Apakah Bongkar Container AV diproses?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span> Proses </span></button>
-                                                <button type="button" value="New" class="btn btn-primary btn-new"><span> New </span></button>
+                                                <button type="reset" value="New" class="btn btn-primary btn-new"><span> New </span></button>
                                             </div>
                                         </div>
                                     </div>

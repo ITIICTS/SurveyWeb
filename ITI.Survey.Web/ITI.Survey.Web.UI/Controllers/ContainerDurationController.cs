@@ -28,7 +28,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 String xml = stackingService.FillContainerDuration(userId, customerCode, size, type, condition, minDuration, sortBy);
                 if (!string.IsNullOrEmpty(xml))
                 {
-                    DataSet ds = ConvertToDataTable.ConvertXmlToDataSet(xml);
+                    DataSet ds = Converter.ConvertXmlToDataSet(xml);
                     DataTable dt = ds.Tables[0];
                     result = dt.ToList<ContainerDurationModel>();
                 }

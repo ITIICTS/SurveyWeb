@@ -336,7 +336,13 @@ function GetMonthName(monthNumber) {
 }
 
 $(document).ready(function () {
-
+    $('div[class="data-result"]').find('table').DataTable({
+        responsive: true,
+        columnDefs: [ {
+            "targets": 'no-sort',
+            "orderable": false
+        }]
+    });
 
     $('#btn-logout').click(function () {
         $.ajax({
@@ -370,17 +376,17 @@ $(document).ready(function () {
     $('button[class*="search"]').click(function () {
         var $form = $(this).closest('form');
         var container = $(this).closest('.panel-body');
-        var propertyOrder = $(this).attr('data-property-order');
-        var pageSize = $(this).attr('data-pagesize');
+        //var propertyOrder = $(this).attr('data-property-order');
+        //var pageSize = $(this).attr('data-pagesize');
 
-        var str = $(this).attr('data-hidden');
-        var temp = new Array();
-        // this will return an array with strings "1", "2", etc.
-        temp = str.split(",");
+        //var str = $(this).attr('data-hidden');
+        //var temp = new Array();
+        //// this will return an array with strings "1", "2", etc.
+        //temp = str.split(",");
 
-        var skip = $(this).attr('data-skip');
-        var tempSkip = new Array();
-        tempSkip = skip.split(",");
+        //var skip = $(this).attr('data-skip');
+        //var tempSkip = new Array();
+        //tempSkip = skip.split(",");
 
         $.ajax({
             url: $form.attr('action'),
@@ -404,10 +410,34 @@ $(document).ready(function () {
                 //});
 
                 $('.data-result', container).find('table').DataTable({
-                    responsive: true
+                    responsive: true,
+                    columnDefs: [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
                 });
 
-                $('.data-result', container).find('table').removeAttr('style');
+                //$('.data-result', container).find('table').on('click', 'a.row-edit', function () {
+                //    alert($(this).attr('data-id'));
+                //});
+
+                //$('.data-result', container).find('table').on('click', 'a.row-select', function () {
+                //    alert($(this).attr('data-id'));
+                //});
+
+                //$('.data-result', container).find('table').on('click', 'a.row-delete', function () {
+                //    alert($(this).attr('data-id'));
+                //});
+
+                //$('.data-result', container).find('table').on('click', 'a.row-custom1', function () {
+                //    alert($(this).attr('data-id'));
+                //});
+
+                //$('.data-result', container).find('table').on('click', 'a.row-custom2', function () {
+                //    alert($(this).attr('data-id'));
+                //});
+
+                //$('.data-result', container).find('table').removeAttr('style');
 
                 //$('.current-page', container).val(1);
 
@@ -555,21 +585,29 @@ $(document).ready(function () {
                     //...
                 });
 
+                $('.lookup-result', $(target)).find('table').DataTable({
+                    responsive: true,
+                    columnDefs: [{
+                        "targets": 'no-sort',
+                        "orderable": false,
+                    }]
+                });
+
                 //event search
                 $(target).find('button[class*="search"]').click(function () {
                     var $form = $(this).closest('form');
                     var container = $(this).closest('.modal-body');
-                    var propertyOrder = $(this).attr('data-property-order');
-                    var pageSize = $(this).attr('data-pagesize');
+                    //var propertyOrder = $(this).attr('data-property-order');
+                    //var pageSize = $(this).attr('data-pagesize');
 
-                    var str = $(this).attr('data-hidden');
-                    var temp = new Array();
-                    // this will return an array with strings "1", "2", etc.
-                    temp = str.split(",");
+                    //var str = $(this).attr('data-hidden');
+                    //var temp = new Array();
+                    //// this will return an array with strings "1", "2", etc.
+                    //temp = str.split(",");
 
-                    var skip = $(this).attr('data-skip');
-                    var tempSkip = new Array();
-                    tempSkip = skip.split(",");
+                    //var skip = $(this).attr('data-skip');
+                    //var tempSkip = new Array();
+                    //tempSkip = skip.split(",");
 
                     $.ajax({
                         url: $form.attr('action'),
@@ -593,10 +631,14 @@ $(document).ready(function () {
                             //});
 
                             $('.lookup-result', container).find('table').DataTable({
-                                responsive: true
+                                responsive: true,
+                                columnDefs: [{
+                                    "targets": 'no-sort',
+                                    "orderable": false,
+                                }]
                             });
 
-                            $('.data-result', container).find('table').removeAttr('style');
+                            //$('.data-result', container).find('table').removeAttr('style');
 
                             //$('.current-page', container).val(1);
 
@@ -688,5 +730,6 @@ $(document).ready(function () {
         });
     });
 
-
+    //$('button[class*="new"]').click(function () {
+    //});
 });

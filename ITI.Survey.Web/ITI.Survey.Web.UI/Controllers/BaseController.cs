@@ -19,11 +19,12 @@ namespace ITI.Survey.Web.UI.Controllers
             ViewBag.CurrentUserName = System.Web.HttpContext.Current.User.Identity.Name;
         }
 
+        [NonAction]
         public void GetConfigXML()
         {
             using (var globalService = new GlobalWebService.GlobalSoapClient())
             {
-                var ds = ConvertToDataTable.ConvertXmlToDataSet(globalService.GetConfigXML(Username));
+                var ds = Converter.ConvertXmlToDataSet(globalService.GetConfigXML(Username));
                 ViewBag.HeavyEquipmentList = GetDropListByDataTable(ds.Tables["dt1"]);
                 ViewBag.ContainerSize = GetDropListByDataTable(ds.Tables["dt2"]);
                 ViewBag.ContainerType = GetDropListByDataTable(ds.Tables["dt3"]);
@@ -31,6 +32,7 @@ namespace ITI.Survey.Web.UI.Controllers
             }
         }
 
+        [NonAction]
         public IEnumerable<SelectListItem> GetDropListByDataTable(DataTable dt)
         {
             List<SelectListItem> result = new List<SelectListItem>();

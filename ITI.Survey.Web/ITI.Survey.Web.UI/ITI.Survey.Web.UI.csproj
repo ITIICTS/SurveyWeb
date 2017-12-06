@@ -138,7 +138,10 @@
     </Compile>
     <Compile Include="Models\AccountModel.cs" />
     <Compile Include="Models\BlokSystemModel.cs" />
+    <Compile Include="Models\BongkarContainerModel.cs" />
     <Compile Include="Models\ContainerDurationModel.cs" />
+    <Compile Include="Models\ContCardModel.cs" />
+    <Compile Include="Models\ContInOutModel.cs" />
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\InputNoMobilModel.cs" />
     <Compile Include="Models\SampleModel.cs" />
