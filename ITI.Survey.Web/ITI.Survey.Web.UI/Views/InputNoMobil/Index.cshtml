@@ -1,7 +1,7 @@
 ﻿@model ITI.Survey.Web.UI.Models.InputNoMobilModel
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Input No Mobil";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using AGY.Solution.Helper;
@@ -15,7 +15,6 @@
         top: 0;
     }
 </style>
-
 
 
 <div class="row" id="samplecreateonly"></div>
@@ -56,6 +55,26 @@
                                         <div class="col-sm-4">
                                             <input type="button" id="btnScan" value="SCAN" class="btn btn-primary" />
                                         </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group">
+
+                                        <div class="col-sm-4">
+                                            <div class="container">
+
+
+                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
+
+                                                <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />
+
+                                                <div id="codeResult"> </div>
+
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -115,6 +134,11 @@
                                         <div class="col-sm-4">
                                             <label id="ResultMessage" class="control-label">Result</label>
                                         </div>
+                                        <div id="result_strip">
+                                            <ul class="thumbnails"></ul>
+                                        </div>
+                                        <div id="interactive" class="viewport"></div>
+                                        <div id="debug" class="detection"></div>
 
                                     </div>
                                 </div>
@@ -128,16 +152,72 @@
         </div>
     </div>
 </div>
+
+
 <script src="~/Scripts/quagga.min.js"></script>
 
 <script>
 
-    
+
 
 
 
 
     var _scannerIsRunning = false;
+    function DecoodeSingle() {
+        alert("test");
+        var input = $("#barcodeFileInput");
+
+        alert("test");
+        if (input[0].files && input[0].files.length) {
+
+            var tmpImgURL = URL.createObjectURL(input[0].files[0]);
+
+            Quagga.decodeSingle(
+
+                {
+
+                    inputStream: {
+
+                        size: 640,
+
+                        singleChannel: false
+
+                    },
+
+                    locator: {
+
+                        patchSize: "large",
+
+                        halfSample: false
+
+                    },
+
+                    decoder: {
+
+                        readers: ["upc_reader", "code_128_reader", "code_39_reader", "code_39_vin_reader", "ean_8_reader", "ean_reader", "upc_e_reader", "codabar_reader"]
+
+                    },
+
+                    locate: true,
+                    src: tmpImgURL
+
+                },
+
+                function (result) {
+
+                    if (result && result.codeResult && result.codeResult.code) {
+
+                        $("#ContCardID").val(result.codeResult.code);
+
+                    } else {
+
+                        $("#ContCardID").val("error");
+                    }
+
+                });
+        }
+    }
 
     function startScanner() {
         //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
@@ -240,6 +320,16 @@
         } else {
             _scannerIsRunning = true;
             startScanner();
+        }
+    }, false);
+    //decode
+    document.getElementById("btnDecode").addEventListener("click", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = false;
+            DecoodeSingle();
         }
     }, false);
 </script>

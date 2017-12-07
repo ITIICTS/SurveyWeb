@@ -4,11 +4,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AGY.Solution.Helper.Common;
 namespace ITI.Survey.Web.UI.Controllers
 {
+    
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil
+
         public ActionResult Index()
         {
             InputNoMobilModel model = new InputNoMobilModel();
@@ -16,35 +19,49 @@ namespace ITI.Survey.Web.UI.Controllers
         }
         public ActionResult Create()
         {
-            SampleModel model = new SampleModel();
+            InputNoMobilModel model = new InputNoMobilModel();
             return View(model);
         }
 
         // POST: Sample/Create
         [HttpPost]
-        public ActionResult Create(SampleModel model)
+        public ActionResult Create(InputNoMobilModel model)
         {
             try
             {
-                // TODO: Add insert logic here
-                model.SampleValidate(ModelState);
-                if (ModelState.IsValid)
-                {
-                    // Do Logical Process
 
-                    // Return Status Logical Process
-                    return Json(new
+                string resultMsg = "";
+                bool status = false;
+                using (var stackingService = new StackingWebService.StackingSoapClient())
+                {
+                    model.InputNoMobilSampleValidate(ModelState);
+                    if (ModelState.IsValid)
                     {
-                        Status = true,
-                        Href = Url.Action("Index", "Sample")
-                    }, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
-                }
+                        string message = stackingService.SubmitNoMobil(Converter.ConvertToXML(model));
+                        if (message.Contains("Error"))
+                        {
+                            resultMsg = message;
+                            status = false;
+                        }
+                        else
+                        {
+                            char[] delimiters = new char[] { '\r', '\n' };
+                            string[] parts = message.Split(delimiters);
 
-                //return RedirectToAction("Index");
+                            foreach (string s in parts)
+                            {
+                                resultMsg += s + "\r\n";
+                            }
+
+                            status = true;
+                        }
+                        return Json(new { Status = status, Message = resultMsg }, JsonRequestBehavior.AllowGet);
+                    }
+                    else
+                    {
+                        return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+                    }
+                }
             }
             catch
             {
