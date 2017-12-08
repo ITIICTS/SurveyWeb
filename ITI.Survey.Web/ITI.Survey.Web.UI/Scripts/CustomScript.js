@@ -56,6 +56,8 @@ $.fn.Confirmation = function (onOkEvent) {
         var href = $(this).attr('data-href');
         var form = $(this).closest('form');
 
+        $('#ErrorSummary', form).html('');
+
         $('.confirm-message').text($(this).attr('data-confirm-msg'));
         $(".confirmationdialog").show();
         $(".confirmationdialog").dialog({
