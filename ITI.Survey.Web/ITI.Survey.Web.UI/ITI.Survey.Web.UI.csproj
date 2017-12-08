@@ -144,7 +144,6 @@
     <Compile Include="Controllers\ContainerDurationController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InputNoMobilController.cs" />
-    <Compile Include="Controllers\MuatContainerController.cs" />
     <Compile Include="Controllers\SampleController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

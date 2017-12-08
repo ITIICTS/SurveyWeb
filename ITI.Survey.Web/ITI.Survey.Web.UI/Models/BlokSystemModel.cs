@@ -21,6 +21,7 @@ namespace ITI.Survey.Web.UI.Models
 
         public string CustomerCode { get; set; }
 
+      
         [Display(Name = "Blok")]
         public string Blok { get; set; }
         [Display(Name = "Bay")]
@@ -38,6 +39,7 @@ namespace ITI.Survey.Web.UI.Models
 
         public string FlagAct { get; set; }
 
+        public string SideChoose { get; set; }
 
         public BlokSystemModel()
         {
