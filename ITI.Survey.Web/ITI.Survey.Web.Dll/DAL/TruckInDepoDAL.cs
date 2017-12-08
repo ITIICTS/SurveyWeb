@@ -39,7 +39,14 @@ namespace ITI.Survey.Web.Dll.DAL
                     {
                         npgsqlCommand.Parameters.AddWithValue("@NoMobil", truckInDepo.NoMobil);
                         npgsqlCommand.Parameters.AddWithValue("@DtmIn", truckInDepo.DtmIn);
-                        npgsqlCommand.Parameters.AddWithValue("@DtmOut", truckInDepo.DtmOut);
+                        if (truckInDepo.DtmOut.HasValue)
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@DtmOut", truckInDepo.DtmOut);
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@DtmOut", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@Remark", truckInDepo.Remark);
                         npgsqlCommand.Parameters.AddWithValue("@RefNo", truckInDepo.RefNo);
                         npgsqlCommand.Parameters.AddWithValue("@Muatan", truckInDepo.Muatan);

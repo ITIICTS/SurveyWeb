@@ -246,12 +246,33 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@Cont", contCard.Cont);
                         npgsqlCommand.Parameters.AddWithValue("@Size", contCard.Size);
                         npgsqlCommand.Parameters.AddWithValue("@Type", contCard.Type);
-                        npgsqlCommand.Parameters.AddWithValue("@Dtm1", contCard.Dtm1.Value);
+                        if (contCard.Dtm1.HasValue)
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm1", contCard.Dtm1.Value);
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm1", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@Loc1", contCard.Loc1);
-                        npgsqlCommand.Parameters.AddWithValue("@Dtm2", contCard.Dtm2.Value);
+                        if (contCard.Dtm2.HasValue)
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm2", contCard.Dtm2.Value);
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm2", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@Loc2", contCard.Loc2);
                         npgsqlCommand.Parameters.AddWithValue("@Remark", contCard.Remark);
-                        npgsqlCommand.Parameters.AddWithValue("@dtm3", contCard.Dtm3.Value);
+                        if (contCard.Dtm3.HasValue)
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm3", contCard.Dtm3.Value);
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@Dtm3", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@continoutid", contCard.ContInOutID);
                         npgsqlCommand.Parameters.AddWithValue("@userid3", contCard.UserID3);
                         npgsqlCommand.Parameters.AddWithValue("@seal1", contCard.Seal1);
