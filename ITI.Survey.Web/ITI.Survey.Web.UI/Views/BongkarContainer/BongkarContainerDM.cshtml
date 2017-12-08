@@ -54,12 +54,15 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
 
-                                            <div class="col-sm-6 col-sm-offset-6">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">atau silahkan upload file foto</label>
+                                            </div>
+                                            <div class="col-sm-6">
 
 
                                                 <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
 
-                                                <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />
+                                                @*<input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
 
                                                 <div id="codeResult"> </div>
 
@@ -184,6 +187,8 @@
                     if (result.Size == '20') {
                         $("#ContainerSide").append("<option value='Kiri'>Kiri</option>");
                         $("#ContainerSide").append("<option value='Kanan'>Kanan</option>");
+                    } else {
+                        $("#ContainerSide").append("<option value=' '></option>");
                     }
                 }
             });
@@ -191,10 +196,8 @@
     }
 
     function DecoodeSingle() {
-        alert("test");
         var input = $("#barcodeFileInput");
 
-        alert("test");
         if (input[0].files && input[0].files.length) {
 
             var tmpImgURL = URL.createObjectURL(input[0].files[0]);
@@ -374,7 +377,7 @@
     }, false);
 
     //decode
-    document.getElementById("btnDecode").addEventListener("click", function () {
+    document.getElementById("barcodeFileInput").addEventListener("change", function () {
         if (_scannerIsRunning) {
             _scannerIsRunning = false;
             Quagga.stop();
