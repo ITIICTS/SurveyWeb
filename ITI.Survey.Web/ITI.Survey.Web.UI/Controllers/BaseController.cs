@@ -12,8 +12,6 @@ namespace ITI.Survey.Web.UI.Controllers
 {
     public class BaseController : Controller
     {
-        public static string SESSION_CURUSER = "CURRUSER";
-
         public BaseController()
         {
             ViewBag.CurrentUserName = System.Web.HttpContext.Current.User.Identity.Name;
@@ -33,7 +31,7 @@ namespace ITI.Survey.Web.UI.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetDropListByDataTable(DataTable dt)
+        public IEnumerable<SelectListItem> GetDropListByDataTable(DataTable dt, string optionLabel = "")
         {
             List<SelectListItem> result = new List<SelectListItem>();
 
@@ -42,7 +40,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 result.Add(new SelectListItem
                 {
                     Value = ConvertData.ToString(dr, "Key"),
-                    Text = ConvertData.ToString(dr, "Key")
+                    Text = string.IsNullOrWhiteSpace(ConvertData.ToString(dr, "Key")) ? optionLabel : ConvertData.ToString(dr, "Key")
                 });
             }
 

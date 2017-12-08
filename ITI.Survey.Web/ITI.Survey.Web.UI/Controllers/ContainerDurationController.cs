@@ -19,6 +19,7 @@ namespace ITI.Survey.Web.UI.Controllers
             return View(model);
         }
 
+        [NonAction]
         IList<ContainerDurationModel> DataContainerDuration(string userId, string customerCode, string size, string type, string condition, int minDuration, string sortBy)
         {
             IList<ContainerDurationModel> result = new List<ContainerDurationModel>();

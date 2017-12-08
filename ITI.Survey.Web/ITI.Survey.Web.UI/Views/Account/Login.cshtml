@@ -1,4 +1,5 @@
 ﻿@model ITI.Survey.Web.UI.Models.LoginModel
+@using AGY.Solution.Helper
 
 @{
     ViewBag.Title = "Login";
@@ -16,12 +17,22 @@
                     <form role="form" id="formLogin" action="@Url.Action("Login","Account")" enctype="multipart/form-data" method="post">
                         @Html.AntiForgeryToken()
 
+                        <div id="ErrorSummary">
+                            @Html.CustomValidationSummary()
+                        </div>
+
                         <fieldset>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Username" name="UserId" type="text" autofocus>
                             </div>
                             <div class="form-group">
                                 <input class="form-control" placeholder="Password" name="Password" type="password" value="">
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.HE, (IEnumerable<SelectListItem>)ViewBag.HeavyEquipmentList, new { @class = "form-control" })
+                            </div>
+                            <div class="form-group">
+                                @Html.DropDownListFor(model => model.OPID, (IEnumerable<SelectListItem>)ViewBag.Operators, new { @class = "form-control" })
                             </div>
                             @*<div class="checkbox">
                                     <label>
@@ -32,6 +43,7 @@
                             <button type="button" class="btn btn-lg btn-success btn-block" id="btnLogin">Login</button>
                             <span class="help-block" id="ErrorLogin"></span>
                         </fieldset>
+                        <input type="hidden" name="returnUrl" value="@ViewBag.ReturnUrl" />
                     </form>
                 </div>
             </div>

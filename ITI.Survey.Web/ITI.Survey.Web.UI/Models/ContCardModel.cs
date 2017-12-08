@@ -10,12 +10,12 @@ namespace ITI.Survey.Web.UI.Models
         public string Cont { get; set; }
         public string Size { get; set; }
         public string Type { get; set; }
-        public DateTime? Dtm1 { get; set; }
+        public string Dtm1 { get; set; } // DateTime?
         public string Loc1 { get; set; }
-        public DateTime? Dtm2 { get; set; }
+        public string Dtm2 { get; set; } // DateTime?
         public string Loc2 { get; set; }
         public string Remark { get; set; }
-        public DateTime? Dtm3 { get; set; }
+        public string Dtm3 { get; set; } // DateTime?
         public string UserID3 { get; set; }
         public long ContInOutID { get; set; }
         public string Seal1 { get; set; }
@@ -28,42 +28,7 @@ namespace ITI.Survey.Web.UI.Models
         public string Token { get; set; }
         public bool IsCombo { get; set; }
 
-        public string Seal
-        {
-            get
-            {
-                string seal = string.Empty;
-                if (Seal1.Length > 0)
-                {
-                    seal += Seal1;
-                }
-                if (Seal2.Length > 0)
-                {
-                    if (seal.Length > 0)
-                    {
-                        seal += ",";
-                    }
-                    seal += Seal2;
-                }
-                if (Seal3.Length > 0)
-                {
-                    if (seal.Length > 0)
-                    {
-                        seal += ",";
-                    }
-                    seal += Seal3;
-                }
-                if (Seal4.Length > 0)
-                {
-                    if (seal.Length > 0)
-                    {
-                        seal += ",";
-                    }
-                    seal += Seal4;
-                }
-                return seal;
-            }
-        }
+        public string Seal { get; set; }
 
         public ContCardModel()
         {
@@ -73,12 +38,12 @@ namespace ITI.Survey.Web.UI.Models
             Cont = string.Empty;
             Size = string.Empty;
             Type = string.Empty;
-            Dtm1 = null;
+            Dtm1 = string.Empty;
             Loc1 = string.Empty;
-            Dtm2 = null;
+            Dtm2 = string.Empty;
             Loc2 = string.Empty;
             Remark = string.Empty;
-            Dtm3 = null;
+            Dtm3 = string.Empty;
             UserID3 = string.Empty;
             ContInOutID = 0;
 
@@ -86,6 +51,8 @@ namespace ITI.Survey.Web.UI.Models
             Seal2 = string.Empty;
             Seal3 = string.Empty;
             Seal4 = string.Empty;
+
+            Seal = string.Empty;
 
             NoMobilOut = string.Empty;
             AngkutanOut = string.Empty;

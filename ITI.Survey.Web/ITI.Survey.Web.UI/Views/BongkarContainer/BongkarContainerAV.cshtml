@@ -42,10 +42,29 @@
                                             </div>
                                             <div class="col-sm-6">
                                                 <div class="input-group">
-                                                    <input type="text" id="ContCardID" name="ContCardID" placeholder="Scan Kartu" class="form-control" />
+                                                    <input type="text" id="ContCardID" name="ContCardID" placeholder="Scan Kartu" class="form-control" maxlength="20" />
                                                     <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
                                                 </div>
                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+
+                                            <div class="col-sm-6 col-sm-offset-6">
+
+
+                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
+
+                                                <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />
+
+                                                <div id="codeResult"> </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
@@ -57,11 +76,11 @@
                                                 <div class="form-group">
                                                     <div class="col-md-11"><label class="control-label">Blok</label></div>
                                                     <div class="col-md-11">
-                                                        <select class="form-control">
+                                                        <select name="Blok" class="form-control">
                                                             @for (char i = 'A'; i <= 'Z'; i++)
                                                             {
                                                                 /**/
-                                                                <option>@i</option>
+                                                                <option value="@i">@i</option>
                                                             }
                                                         </select>
                                                     </div>
@@ -99,21 +118,39 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <div class="col-md-12">
-                                                <button type="button" value="Proses" class="btn btn-primary btn-save" data-confirm-msg="Apakah Bongkar Container AV diproses?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span> Proses </span></button>
-                                                <button type="reset" value="New" class="btn btn-primary btn-new"><span> New </span></button>
+                                            <div class="col-md-3"><label id="ContainerSize" class="control-label">20</label><span> Side</span></div>
+                                            <div class="col-md-3">
+                                                <select name="Side" id="ContainerSide" class="form-control"></select>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <button type="button" value="Proses" class="btn btn-primary btn-save" data-href="@Url.Action("ProsesBongkarContainerAV", "BongkarContainer")"
+                                                        data-confirm-msg="Proses Bongkar Container AV?">
+                                                    <span> Proses </span>
+                                                </button>
+                                                <button type="reset" value="New" class="btn btn-primary btn-new"><span> New </span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row hidden">
                                     <div class="col-md-10">
                                         <div class="form-group">
                                             <div class="col-sm-4">
-                                                <label id="ResultMessage" class="control-label">Result</label>
+                                                <label id="ResultMessage" class="control-label"></label>
                                             </div>
-
+                                            <div id="result_strip">
+                                                <ul class="thumbnails"></ul>
+                                            </div>
+                                            <div id="interactive" class="viewport"></div>
+                                            <div id="debug" class="detection"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -134,7 +171,80 @@
 
     var _scannerIsRunning = false;
 
+    function LoadInfoContCard() {
+        if ($("#ContCardID").val() != '' || $("#ContCardID").val() != undefined) {
+            $.ajax({
+                url: "@Url.Action("FillContCard", "BongkarContainer")",
+                data: { contCardID: $("#ContCardID").val() },
+                dataType: 'json',
+                type: 'post',
+                success: function (result) {
+                    $('#ContainerSize').text(result.Size);
+                    $('#ContainerSide').html("");
+                    if (result.Size == '20') {
+                        $("#ContainerSide").append("<option value='Kiri'>Kiri</option>");
+                        $("#ContainerSide").append("<option value='Kanan'>Kanan</option>");
+                    }
+                }
+            });
+        }
+    }
 
+    function DecoodeSingle() {
+        alert("test");
+        var input = $("#barcodeFileInput");
+
+        alert("test");
+        if (input[0].files && input[0].files.length) {
+
+            var tmpImgURL = URL.createObjectURL(input[0].files[0]);
+
+            Quagga.decodeSingle(
+
+                {
+
+                    inputStream: {
+
+                        size: 640,
+
+                        singleChannel: false
+
+                    },
+
+                    locator: {
+
+                        patchSize: "large",
+
+                        halfSample: false
+
+                    },
+
+                    decoder: {
+
+                        readers: ["code_39_reader", "code_39_vin_reader"]
+
+                    },
+
+                    locate: true,
+                    src: tmpImgURL
+
+                },
+
+                function (result) {
+
+                    if (result && result.codeResult && result.codeResult.code) {
+
+                        $("#ContCardID").val(result.codeResult.code);
+                        LoadInfoContCard();
+
+                    } else {
+
+                        $("#ContCardID").val("error");
+                    }
+
+                });
+        }
+    }
     function startScanner() {
         //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
 
@@ -245,6 +355,7 @@
         Quagga.onDetected(function (result) {
             // alert(result.codeResult.code);
             $("#ContCardID").val(result.codeResult.code);
+            LoadInfoContCard();
 
         });
     }
@@ -261,4 +372,40 @@
             startScanner();
         }
     }, false);
+
+    //decode
+    document.getElementById("btnDecode").addEventListener("click", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = false;
+            DecoodeSingle();
+        }
+    }, false);
 </script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $("#ContCardID").blur(function () {
+                if ($("#ContCardID").val() != '' || $("#ContCardID").val() != undefined) {
+                    $.ajax({
+                        url: "@Url.Action("FillContCard", "BongkarContainer")",
+                        data: { contCardID: $("#ContCardID").val() },
+                        dataType: 'json',
+                        type: 'post',
+                        success: function (result) {
+                            $('#ContainerSize').text(result.Size);
+                            $('#ContainerSide').html("");
+                            if (result.Size == '20') {
+                                $("#ContainerSide").append("<option value='Kiri'>Kiri</option>");
+                                $("#ContainerSide").append("<option value='Kanan'>Kanan</option>");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

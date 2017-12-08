@@ -43,6 +43,22 @@
     <script src="~/Content/dist/js/sb-admin-2.js"></script>
 
     <script>
+        $.fn.showErrorModelState = function () {
+            window.scrollTo(0, 0);
+            $('form > div > ul > li').click(function () {
+                //$('[data-val-required="' + $(this).html() + '"]').focus();
+                if ($('[name="' + $(this).attr('key') + '"]').hasClass('ckeditor')) jQuery('.cke_wysiwyg_frame').contents().find('body').focus();
+                else
+                    $('[name="' + $(this).attr('key') + '"]').focus();
+            });
+            $('form > div > div > ul > li').click(function () {
+                //$('[data-val-required="' + $(this).html() + '"]').focus();
+                if ($('[name="' + $(this).attr('key') + '"]').hasClass('ckeditor')) jQuery('.cke_wysiwyg_frame').contents().find('body').focus();
+                else
+                    $('[name="' + $(this).attr('key') + '"]').focus();
+            });
+        }
+
         $(document).ready(function () {
             $(".form-control").keyup(function (event) {
                 if (event.keyCode == 13) {
@@ -74,12 +90,25 @@
                         }
                     }
                     else {
-                        $('#ErrorLogin').text(result.ErrorMessage);
-                        if (result.ReturnUrl != undefined) {
-                            window.location = result.ReturnUrl;
+                        if (result.errorList != undefined) {
+                            var errorResult = '';
+                            errorResult += "<div class='validation-summary-errors' data-valmsg-summary='true'><ul>";
+                            $.each(result.errorList, function (i, value) {
+                                errorResult += "<li style='cursor: pointer; color: red; list-style-type: square; margin-left: 15px;' key='" + value.Key + "'>" + value.ErrorMessage + "</li>";
+                            });
+                            errorResult += "</ul></div>";
+
+                            $('#ErrorSummary', $("#formLogin")).html(errorResult);
+                            $(window).showErrorModelState();
                         }
                         else {
-                            return;
+                            $('#ErrorLogin').text(result.ErrorMessage);
+                            if (result.ReturnUrl != undefined) {
+                                window.location = result.ReturnUrl;
+                            }
+                            else {
+                                return;
+                            }
                         }
                     }
                 }

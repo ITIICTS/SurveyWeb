@@ -338,7 +338,7 @@ function GetMonthName(monthNumber) {
 $(document).ready(function () {
     $('div[class="data-result"]').find('table').DataTable({
         responsive: true,
-        columnDefs: [ {
+        columnDefs: [{
             "targets": 'no-sort',
             "orderable": false
         }]
@@ -542,10 +542,16 @@ $(document).ready(function () {
             },
             success: function (result) {
                 if (result.Status == true) {
-                    PopupMessage(successmsg, function () {
-                        if (result.Href != undefined)
-                            window.location.href = result.Href;
-                    });
+                    if (successmsg != undefined) {
+                        PopupMessage(successmsg, function () {
+                            if (result.Href != undefined)
+                                window.location.href = result.Href;
+                        });
+                    } else {
+                        PopupMessage(result.Message, function () {
+
+                        });
+                    }
                 } else {
                     if (result.errorList != undefined) {
                         var errorResult = '';
@@ -559,7 +565,11 @@ $(document).ready(function () {
                         $(window).showErrorModelState();
                     }
                     else {
-                        PopupMessage(failedmsg);
+                        if (failedmsg != undefined) {
+                            PopupMessage(failedmsg);
+                        } else {
+                            PopupMessage(result.Message);
+                        }                        
                     }
                 }
             }

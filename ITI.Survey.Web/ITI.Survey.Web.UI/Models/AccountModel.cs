@@ -8,10 +8,19 @@ namespace ITI.Survey.Web.UI.Models
 
     public class LoginModel
     {
+        [Required]
         [Display(Name = "Username")]
         public string UserId { get; set; }
+        [Required]
         [Display(Name = "Password")]
         public string Password { get; set; }
+
+        [Required]
+        public string HE { get; set; }
+
+        [Required]
+        public string OPID { get; set; }
+
         public bool RememberMe { get; set; }
 
         public LoginModel()

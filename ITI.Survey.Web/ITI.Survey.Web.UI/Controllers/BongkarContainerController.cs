@@ -15,8 +15,30 @@ namespace ITI.Survey.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProsesBongkarContainerAV(BongkarContainerModel model)
+        public ActionResult FillContCard(long contCardID)
         {
+            ContCardModel contCard = new ContCardModel();
+            using (var stackingService = new StackingWebService.StackingSoapClient())
+            {
+                string strContCard = stackingService.FillContCardByIdAndCardMode(Username, contCardID, "IN");
+                if (strContCard.Length != 0)
+                {
+                    var dsContCard = Converter.ConvertXmlToDataSet(strContCard);
+                    var listContCard = dsContCard.Tables[0].ToList<ContCardModel>();
+                    contCard = listContCard.FirstOrDefault();
+                }
+            }
+            return Json(contCard, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ProsesBongkarContainerAV(BongkarContainerModel model, UserData userData)
+        {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+            }
+
             string resultMsg = "";
             bool status = false;
             using (var stackingService = new StackingWebService.StackingSoapClient())
@@ -36,6 +58,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 {
                     var dsContInOut = Converter.ConvertXmlToDataSet(strContInOut);
                     var listContInOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
+                    contInOut = listContInOut.FirstOrDefault();
                 }
 
                 model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
@@ -45,8 +68,12 @@ namespace ITI.Survey.Web.UI.Controllers
                 model.FlagAct = "BONGKAR AV";
                 model.Cont = contInOut.Cont;
                 model.Shipper = contInOut.CustomerCode;
+                model.ActiveUser = Username;
 
-                if (model.Side.Equals("Kiri") || string.IsNullOrEmpty(model.Side))
+                model.EqpId = userData.HEID;
+                model.OPID = userData.OPID;
+
+                if (model.Side == "Kiri" || string.IsNullOrEmpty(model.Side))
                 {
                     model.Cont = contInOut.Cont;
                     model.Cont2 = "";
@@ -57,7 +84,8 @@ namespace ITI.Survey.Web.UI.Controllers
                     model.Cont2 = contInOut.Cont;
                 }
 
-                string message = stackingService.SubmitKartuBongkar(Converter.ConvertToXML(model));
+                string xml = Converter.ConvertToXML(model);
+                string message = stackingService.SubmitKartuBongkar(xml);
                 if (message.Contains("Error"))
                 {
                     resultMsg = message;
@@ -86,8 +114,13 @@ namespace ITI.Survey.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult ProsesBongkarContainerDM(BongkarContainerModel model)
+        public ActionResult ProsesBongkarContainerDM(BongkarContainerModel model, UserData userData)
         {
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+            }
+
             string resultMsg = "";
             bool status = false;
             using (var stackingService = new StackingWebService.StackingSoapClient())
@@ -107,6 +140,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 {
                     var dsContInOut = Converter.ConvertXmlToDataSet(strContInOut);
                     var listContInOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
+                    contInOut = listContInOut.FirstOrDefault();
                 }
 
                 model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
@@ -116,6 +150,10 @@ namespace ITI.Survey.Web.UI.Controllers
                 model.FlagAct = "BONGKAR DM";
                 model.Cont = contInOut.Cont;
                 model.Shipper = contInOut.CustomerCode;
+                model.ActiveUser = Username;
+
+                model.EqpId = userData.HEID;
+                model.OPID = userData.OPID;
 
                 if (model.Side.Equals("Kiri") || string.IsNullOrEmpty(model.Side))
                 {
@@ -128,7 +166,8 @@ namespace ITI.Survey.Web.UI.Controllers
                     model.Cont2 = contInOut.Cont;
                 }
 
-                string message = stackingService.SubmitKartuBongkar(Converter.ConvertToXML(model));
+                string xml = Converter.ConvertToXML(model);
+                string message = stackingService.SubmitKartuBongkar(xml);
                 if (message.Contains("Error"))
                 {
                     resultMsg = message;

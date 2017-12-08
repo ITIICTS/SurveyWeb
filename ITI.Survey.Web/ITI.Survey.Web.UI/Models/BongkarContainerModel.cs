@@ -13,6 +13,7 @@ namespace ITI.Survey.Web.UI.Models
             
         }
 
+        [Required]
         public long ContCardID { get; set; }
         public string ActiveUser { get; set; }
         public long ContInOutId { get; set; }
