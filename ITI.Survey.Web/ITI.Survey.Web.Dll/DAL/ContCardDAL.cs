@@ -2,6 +2,7 @@
 using ITI.Survey.Web.Dll.Model;
 using Npgsql;
 using System;
+using System.Collections.Generic;
 using System.Data;
 
 namespace ITI.Survey.Web.Dll.DAL
@@ -124,6 +125,93 @@ namespace ITI.Survey.Web.Dll.DAL
                 throw ex;
             }
             return contCard;
+        }
+
+        /// <summary>
+        /// Fill Container Card By contInOutId, cardMode
+        /// </summary>
+        /// <param name="contInOutId"></param>
+        /// <param name="cardMode"></param>
+        /// <returns></returns>
+        public ContCard FillContCardByContInOutIdAndCardMode(long contInOutId, string cardMode)
+        {
+            ContCard contCard = new ContCard();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+
+                    string query = string.Format("SELECT {0} " +
+                                                " FROM {1} " + 
+                                                " WHERE continoutid=@ContInOutId AND cardmode=@CardMode ",
+                                        string.Format(DEFAULT_COLUMN, string.Empty),
+                                        DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContInOutId", contInOutId);
+                        npgsqlCommand.Parameters.AddWithValue("@CardMode", cardMode);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                MappingDataReaderToContCard(npgsqlDataReader, contCard);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return contCard;
+        }
+
+        /// <summary>
+        /// Fill Container Card By refId, cardMode
+        /// </summary>
+        /// <param name="refId"></param>
+        /// <param name="cardMode"></param>
+        /// <returns></returns>
+        public List<ContCard> FillContCardByRefIdAndCardMode(long refId, string cardMode)
+        {
+            List<ContCard> listContCard = new List<ContCard>();
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("SELECT {0} FROM {1} WHERE refid=@RefId AND cardmode=@CardMode ",
+                                        string.Format(DEFAULT_COLUMN, string.Empty),
+                                        DEFAULT_TABLE);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@RefId", refId);
+                        npgsqlCommand.Parameters.AddWithValue("@CardMode", cardMode);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                ContCard contCard = new ContCard();
+                                MappingDataReaderToContCard(npgsqlDataReader, contCard);
+                                listContCard.Add(contCard);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return listContCard;
         }
 
         /// <summary>

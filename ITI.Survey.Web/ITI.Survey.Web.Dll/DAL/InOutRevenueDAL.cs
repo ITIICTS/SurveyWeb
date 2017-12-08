@@ -63,7 +63,7 @@ namespace ITI.Survey.Web.Dll.DAL
             inOutRevenue.PrincipalLiftOn = npgsqlDataReader.GetDouble(35);
             inOutRevenue.PrincipalWash = npgsqlDataReader.GetDouble(36);
             inOutRevenue.PrincipalStorage = npgsqlDataReader.GetDouble(37);
-            inOutRevenue.SpNote1 = npgsqlDataReader.GetString(38);            
+            inOutRevenue.SpNote1 = npgsqlDataReader.GetString(38);
         }
 
         public InOutRevenue FillInOutRevenueByInOutRevenueId(long inOutRevenueId)
@@ -77,8 +77,8 @@ namespace ITI.Survey.Web.Dll.DAL
                     {
                         npgsqlConnection.Open();
                     }
-                    string query = string.Format("SELECT {0} " + 
-                                                " FROM {1} " + 
+                    string query = string.Format("SELECT {0} " +
+                                                " FROM {1} " +
                                                 " WHERE inoutrevenueid=@InOutRevenueId ",
                                         string.Format(DEFAULT_COLUMN, string.Empty),
                                         DEFAULT_TABLE);
@@ -100,6 +100,86 @@ namespace ITI.Survey.Web.Dll.DAL
                 throw ex;
             }
             return inOutRevenue;
+        }
+
+        public InOutRevenue FillInOutRevenueByContCard(ContCard contCard)
+        {
+            InOutRevenue inOutRevenue = new InOutRevenue();
+            string columnCondition = string.Empty;
+            switch (contCard.CardMode)
+            {
+                case "IN":
+                    columnCondition = "r.refid";
+                    break;
+                case "OUT":
+                    columnCondition = "r.inoutrevenueid";
+                    break;
+                default:
+                    return inOutRevenue;
+            }
+            string query = string.Format("SELECT {0} " +
+                                                " FROM {1} {2} " +
+                                                " WHERE {3} " +
+                                                "   (SELECT refid FROM contcard WHERE contcardid = @ContCardId) AND noseri like 'K%' " +
+                                                " ORDER BY r.inoutrevenueid, r.noseri",
+                                        string.Format(DEFAULT_COLUMN, "r"),
+                                        DEFAULT_TABLE,
+                                        "r",
+                                        columnCondition);
+
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@ContCardId", contCard.ContCardID);
+                        using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
+                        {
+                            if (npgsqlDataReader.Read())
+                            {
+                                MappingDataReaderToInOutRevenue(npgsqlDataReader, inOutRevenue);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return inOutRevenue;
+        }
+
+        public int SetPreventGateOut(long inOutRevenueId)
+        {
+            int affectedRow = 0;
+            try
+            {
+                using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
+                {
+                    if (npgsqlConnection.State == ConnectionState.Closed)
+                    {
+                        npgsqlConnection.Open();
+                    }
+                    string query = string.Format("UPDATE {0} SET kasirnote = '{1}' ", DEFAULT_TABLE, GlobalConstant.FLAG_NO_OUT);
+                    using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
+                    {
+                        npgsqlCommand.Parameters.AddWithValue("@InOutRevenueId", inOutRevenueId);
+                        affectedRow = npgsqlCommand.ExecuteNonQuery();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return affectedRow;
         }
     }
 }

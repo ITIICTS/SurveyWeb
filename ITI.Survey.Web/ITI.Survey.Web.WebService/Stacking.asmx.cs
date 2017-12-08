@@ -20,6 +20,7 @@ namespace ITI.Survey.Web.WebService
     // [System.Web.Script.Services.ScriptService]
     public class Stacking : System.Web.Services.WebService
     {
+        #region Fields
         private ContCardDAL contCardDAL = new ContCardDAL();
         private ContainerDurationDAL containerDurationDAL = new ContainerDurationDAL();
         private ContInOutDAL contInOutDAL = new ContInOutDAL();
@@ -32,7 +33,98 @@ namespace ITI.Survey.Web.WebService
         private DefinedContSizeTypeDAL definedContSizeTypeDAL = new DefinedContSizeTypeDAL();
         private DurationRuleDAL durationRuleDAL = new DurationRuleDAL();
         private DestinationRuleDAL destinationRuleDAL = new DestinationRuleDAL();
+        private NoMobilOutSpecialMessageDAL noMobilOutSpecialMessageDAL = new NoMobilOutSpecialMessageDAL();
+        #endregion
 
+        #region Private Method
+        private string CheckSeal(ContInOut contInOut)
+        {
+            string message = string.Empty;
+            try
+            {
+                // Check Seal
+                string[] splits = contInOut.Seal.Split(",".ToCharArray());
+                SealRegisterDAL sealRegisterDAL = new SealRegisterDAL();
+                SealDestinationDAL sealDestinationDAL = new SealDestinationDAL();
+                SealDestinationItemDAL sealDestinationItemDAL = new SealDestinationItemDAL();
+                CustDoDefinedSealDAL custDoDefinedSealDAL = new CustDoDefinedSealDAL();
+                ContOutSealDAL contOutSealDAL = new ContOutSealDAL();
+                foreach (string seal in splits)
+                {
+                    if (seal.EndsWith("."))
+                    {
+                        continue;
+                    }
+                    string sealDestinationCode = sealRegisterDAL.GetSealDestinationCodeBySealAndCustomerCode(seal, contInOut.CustomerCode);
+                    if (string.IsNullOrEmpty(sealDestinationCode))
+                    {
+                        message = seal + " : seal not registered!";
+                        return message;
+                    }
+                    else
+                    {
+                        // Seal Destination
+                        if (sealDestinationCode.Length > 0)
+                        {
+                            long sealDestinationId = sealDestinationDAL.GetSealDestinationIdByDestinationCode(sealDestinationCode);
+                            if (sealDestinationId > 0)
+                            {
+                                int countSealDestinationItem = sealDestinationItemDAL.CountSealDestinationItemByDestinationCodeAndSealDestinationId(contInOut.DestinationName, sealDestinationId);
+                                if (countSealDestinationItem == 0)
+                                {
+                                    message = seal + " : destination not allowed !";
+                                    return message;
+                                }
+                            }
+                        }
+
+                        // Cek defined seal
+                        if (!custDoDefinedSealDAL.IsSealExistInCustDoDefinedSeal(contInOut.ContInOutId, seal))
+                        {
+                            message = seal + " : not listed in defined seals !";
+                            return message;
+                        }
+                    }
+
+                    // Check Seal Used
+                    string usedSealContainer = contOutSealDAL.CheckSealUsedByOtherContainer(seal, contInOut.CustomerCode);
+                    if (usedSealContainer.Length > 0 && !usedSealContainer.Equals(contInOut.Cont))
+                    {
+                        message = string.Format("{0} used by {1}!!", seal, usedSealContainer);
+                        return message;
+                    }
+                }
+            }
+            catch
+            {
+                message = "Seal check error";
+            }
+            return message;
+        }
+
+        private string CheckSeal(List<ContCard> listContCard, string seal, ContCard contCard)
+        {
+            string message = string.Empty;
+            foreach (ContCard card in listContCard)
+            {
+                if (card.ContCardID == contCard.ContCardID)
+                {
+                    continue;
+                }
+                if ((card.Seal1.Length > 0 && contCard.Seal.Contains(card.Seal1))
+                    || (card.Seal2.Length > 0 && contCard.Seal.Contains(card.Seal2))
+                    || (card.Seal3.Length > 0 && contCard.Seal.Contains(card.Seal3))
+                    || (card.Seal4.Length > 0 && contCard.Seal.Contains(card.Seal4)))
+                {
+                    message += "Seal " + seal + " is used by load card " + card.ContCardID;
+                    break;
+                }
+            }
+            return message;
+        }
+        #endregion
+
+        #region Web Method
         /// <summary>
         /// Previous Name: ContCard_FillByID(string activeuser, long _id, string _cmode)
         /// Fill Container Card By Id and Card Mode
@@ -41,16 +133,16 @@ namespace ITI.Survey.Web.WebService
         /// <param name="id"></param>
         /// <param name="cardMode"></param>
         /// <returns></returns>
-        [WebMethod]        
+        [WebMethod]
         public string FillContCardByIdAndCardMode(string userId, long id, string cardMode)
         {
-            if(!AppPrincipal.LoginForService(userId))
+            if (!AppPrincipal.LoginForService(userId))
             {
                 return "Error: Tolong login terlebih dahulu";
             }
             ContCard contCard = new ContCard();
             contCard = contCardDAL.FillContCardByContCardIdAndCardMode(id, cardMode);
-            return contCard.ContCardID > 0 ?  Converter.ConvertToXML(contCard) : string.Empty;
+            return contCard.ContCardID > 0 ? Converter.ConvertToXML(contCard) : string.Empty;
         }
 
         /// <summary>
@@ -66,7 +158,7 @@ namespace ITI.Survey.Web.WebService
         /// <param name="minDuration"></param>
         /// <param name="sortBy"></param>
         /// <returns></returns>
-        [WebMethod]        
+        [WebMethod]
         public string FillContainerDuration(string userId, string customerCode, string size, string type, string condition, int minDuration, string sortBy)
         {
             if (!AppPrincipal.LoginForService(userId))
@@ -95,7 +187,7 @@ namespace ITI.Survey.Web.WebService
             ContInOut contInOut = new ContInOut();
             contInOut = contInOutDAL.FillContInOutById(contInOutId);
             contInOut.Message = blackListDAL.GetMessageByContainerNumber(contInOut.Cont);
-            return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;            
+            return contInOut.ContInOutId > 0 ? Converter.ConvertToXML(contInOut) : string.Empty;
         }
 
         /// <summary>
@@ -149,7 +241,7 @@ namespace ITI.Survey.Web.WebService
 
             // Initialize ContInOut
             ContInOut contInOut = contInOutDAL.FillContInOutById(Convert.ToInt64(dataRow["continoutid"]));
-            if (contInOut.ContInOutId<=0)
+            if (contInOut.ContInOutId <= 0)
             {
                 result += "Error: Data container tidak ditemukan\r\n";
             }
@@ -194,7 +286,7 @@ namespace ITI.Survey.Web.WebService
             containerLog.ContInOutId = Convert.ToInt64(dataRow["continoutid"]);
             containerLog.Cont = dataRow["cont"].ToString();
             containerLog.UserId = dataRow["activeuser"].ToString();
-            containerLog.EqpId= dataRow["eqpid"].ToString();
+            containerLog.EqpId = dataRow["eqpid"].ToString();
             containerLog.FlagAct = dataRow["flagact"].ToString();
             containerLog.Location = dataRow["location"].ToString();
             containerLog.Shipper = dataRow["shipper"].ToString();
@@ -372,7 +464,7 @@ namespace ITI.Survey.Web.WebService
 
             try
             {
-                truckInDepoDAL.InsertTruckInDepo(truckInDepo);                
+                truckInDepoDAL.InsertTruckInDepo(truckInDepo);
             }
             catch
             {
@@ -639,7 +731,7 @@ namespace ITI.Survey.Web.WebService
         /// <param name="custDoId"></param>
         /// <returns></returns>
         [WebMethod]
-        public string Check_DefinedCondition(string userId, long inOutRevenueId, long contInOutId, long custDoId)
+        public string CheckDefinedCondition(string userId, long inOutRevenueId, long contInOutId, long custDoId)
         {
             string result = string.Empty;
             if (!AppPrincipal.LoginForService(userId))
@@ -696,7 +788,7 @@ namespace ITI.Survey.Web.WebService
             //load black list
             contInOut.ListBlackList = blackListDAL.GetBlackListByContainerNumber(contInOut.Cont);
             List<BlackList> listBlackList2 = blackListDAL.GetBlackList2ByContainerNumber(contInOut.Cont);
-            if(listBlackList2.Count>0)
+            if (listBlackList2.Count > 0)
             {
                 contInOut.ListBlackList.AddRange(listBlackList2.ToArray());
             }
@@ -786,5 +878,449 @@ namespace ITI.Survey.Web.WebService
             return result;
         }
 
+        /// <summary>
+        /// Previous Name: PreventGateOut(string activeUser, long contCardId)
+        /// Prevent Gate Out
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="contCardId"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string PreventGateOut(string userId, long contCardId)
+        {
+            try
+            {
+                AppPrincipal.LoginForService(userId);
+                ContCard contCard = contCardDAL.FillContCardByContCardId(contCardId);
+                if (contCard.ContCardID > 0)
+                {
+                    InOutRevenue inOutRevenue = inOutRevenueDAL.FillInOutRevenueByContCard(contCard);
+                    if (!inOutRevenue.KasirNote.ToUpper().Contains(GlobalConstant.FLAG_NO_OUT))
+                    {
+                        inOutRevenueDAL.SetPreventGateOut(inOutRevenue.InOutRevenueId);
+                    }
+                }
+            }
+            catch
+            {
+                return "Failed";
+            }
+            return "Successed";
+        }
+
+        /// <summary>
+        /// Previous Name: Submit_KartuMuat(string xml_parameter)
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string SubmitKartuMuat(string xml)
+        {
+            //return xml_parameter;
+            string result = string.Empty;
+            DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
+            DataRow dataRow = dataTable.Rows[0];
+
+            if (!AppPrincipal.LoginForService(dataRow["activeuser"].ToString()))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
+            #region Initialize Objects
+
+            // Initialize InOutRevenue
+            InOutRevenue inOutRevenue = inOutRevenueDAL.FillInOutRevenueByInOutRevenueId(Convert.ToInt64(dataRow["inoutrevenueid"]));
+            if (inOutRevenue.InOutRevenueId <= 0)
+            {
+                result += "Error: OR tidak ditemukan\r\n";
+            }
+
+            // Initialize ContInOut
+            ContInOut contInOut = contInOutDAL.FillContInOutById(Convert.ToInt64(dataRow["continoutid"]));
+            if (contInOut.ContInOutId <= 0)
+            {
+                result += "Error: Cont tidak ditemukan\r\n";
+            }
+
+            // Initialize CustDo
+            CustDo custDo = custDoDAL.FillCustDoByCustDoId(Convert.ToInt64(dataRow["custdoid"]));
+            if (custDo.CustDoId <= 0)
+            {
+                result += "Error: DO tidak ditemukan\r\n";
+            }
+
+            // Initialize ContCard
+            ContCard contCard = contCardDAL.FillContCardByContCardId(Convert.ToInt64(dataRow["contcardid"]));
+            if (contCard.ContCardID <= 0)
+            {
+                result += "Error: Contcard tidak ditemukan\r\n";
+            }
+
+            ContCard contCardByContainer = contCardDAL.FillContCardByContInOutIdAndCardMode(contInOut.ContInOutId, "OUT");
+            if (contCard.ContInOutID > 0 && contCardByContainer.ContInOutID > 0
+                && contCard.ContInOutID == contCardByContainer.ContInOutID
+                && contCard.ContCardID != contCardByContainer.ContCardID)
+            {
+                result += "Error: Container = " + contInOut.Cont + " sudah dimuat di nomor contcard " + contCardByContainer.ContCardID + ".\r\n";
+            }
+            #endregion
+
+            if (result.Length > 0)
+            {
+                return result;
+            }
+
+            #region Cek Seal and Get Seal error message
+            contInOut.Seal = dataRow["cont_Seal"].ToString();
+            // Check Seal
+            string sealMessage = CheckSeal(contInOut);
+            if (sealMessage.Length > 0)
+            {
+                result += string.Format("Error: Seal={0} \r\n", sealMessage);
+            }
+            #endregion
+
+            #region Check Double Definition for Seal in other cards
+            List<ContCard> listContCard = contCardDAL.FillContCardByRefIdAndCardMode(inOutRevenue.InOutRevenueId, "OUT");
+            sealMessage = CheckSeal(listContCard, dataRow["cont_Seal"].ToString(), contCard);
+            if (sealMessage.Length > 0)
+            {
+                result += string.Format("Error: Seal={0} \r\n", sealMessage);
+            }
+            #endregion
+
+            #region Check No Mobil
+            string tnm = dataRow["cont_NoMobilOut"].ToString().ToUpper().Replace(" ", string.Empty);
+            char[] angka = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            int i1 = tnm.IndexOfAny(angka);
+            int i2 = tnm.LastIndexOfAny(angka);
+            if (i2 >= 0) tnm = tnm.Insert(i2 + 1, " ");
+            if (i1 >= 0) tnm = tnm.Insert(i1, " ");
+
+            contInOut.NoMobilOut = tnm;
+            if (contInOut.NoMobilOut.Length == 0)
+            {
+                result += "Error: Nomor Truck Salah. -" + tnm + "-\r\n";
+            }
+            else
+            {
+                string noMobilOutSpecialMessage = noMobilOutSpecialMessageDAL.GetNoMobilOutSpecialMessage(contInOut.NoMobilOut);
+                if (noMobilOutSpecialMessage.Length > 0)
+                {
+                    result += string.Format("Error: Blocked= {0}, {1}. \r\n", contInOut.NoMobilOut, noMobilOutSpecialMessage);
+                }
+            }
+
+            #endregion
+
+            #region Try to set dtmout
+            if (contInOut.DtmOut.Length == 0)
+            {
+                contInOut.DtmOut = GlobalWebServiceDAL.GetServerDtm().AddMinutes(1).ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            // If still empty set error
+            if (contInOut.DtmOut.Length == 0)
+            {
+                result += "Error: DtmOut Conflict.\r\n";
+            }
+            #endregion
+
+            #region Update card
+
+            if (result.Length == 0)
+            {
+                contCard.ContInOutID = contInOut.ContInOutId;
+                contCard.UserID3 = dataRow["activeuser"].ToString();
+                contCard.Dtm3 = GlobalWebServiceDAL.GetServerDtm();
+
+                string containerSeal = dataRow["cont_Seal"].ToString();
+                string[] seals = containerSeal.Split(",".ToCharArray());
+                if (seals.Length > 0)
+                {
+                    if (seals.Length > 0 && seals[0].Trim().Length > 0)
+                    {
+                        contCard.Seal1 = seals[0].Trim();
+                    }
+                    if (seals.Length > 1 && seals[1].Trim().Length > 0)
+                    {
+                        contCard.Seal2 = seals[1].Trim();
+                    }
+                    if (seals.Length > 2 && seals[2].Trim().Length > 0)
+                    {
+                        contCard.Seal3 = seals[2].Trim();
+                    }
+                    if (seals.Length > 3 && seals[3].Trim().Length > 0)
+                    {
+                        contCard.Seal4 = seals[3].Trim();
+                    }
+                }
+
+                try
+                {
+                    contCardDAL.UpdateContCard(contCard);
+                }
+                catch
+                {
+                    result += "Error: Updating Contcard gagal\r\n";
+                }
+
+
+                //UpdateSealForEService(custDo, contCard.ContCardID, contCard.Seal.Trim());
+
+                #region Insert Log
+                ContainerLog containerLog = new ContainerLog();
+                containerLog.ContInOutId = contInOut.ContInOutId;
+                containerLog.Cont = contInOut.Cont;
+                containerLog.UserId = dataRow["activeuser"].ToString();
+                containerLog.EqpId = dataRow["eqpid"].ToString();
+                containerLog.FlagAct = "MUAT";
+                containerLog.Shipper = contInOut.CustomerCode;
+                containerLog.Operator = dataRow["opid"].ToString();
+                try
+                {
+                    containerLogDAL.InsertContainerLog(containerLog);
+                }
+                catch
+                {
+                    result += "Error: Updating Log gagal\r\n";
+                }
+                #endregion
+
+                #region Update Blok
+                string oldLocation = contInOut.Location;
+                contInOut.Location = string.Empty;
+
+                Blok oldBlok = blokDAL.FillBlokByKode(oldLocation);
+                if (oldBlok.Cont == contInOut.Cont)
+                {
+                    oldBlok.Cont = string.Empty;
+                }
+                if (oldBlok.Cont2 == contInOut.Cont)
+                {
+                    oldBlok.Cont2 = string.Empty;
+                }
+                try
+                {
+                    blokDAL.UpdateBlok(oldBlok);
+                }
+                catch
+                {
+                    result += "Error: Updating Blok gagal\r\n";
+                }
+                #endregion
+
+                result += "# Load Container " + contCard.Cont + " BERHASIL\r\n";
+            }
+            #endregion
+            return result;
+        }
+
+        /// <summary>
+        /// Previous Name: ReSubmit_KartuMuat(string xml_parameter)
+        /// </summary>
+        /// <param name="xml"></param>
+        /// <returns></returns>
+        [WebMethod]
+        public string ResubmitKartuMuat(string xml)
+        {
+            //return xml_parameter;
+            string result = string.Empty;
+            DataTable dataTable = Converter.ConvertXmlToDataTable(xml);
+            DataRow dataRow = dataTable.Rows[0];
+
+            if (!AppPrincipal.LoginForService(dataRow["activeuser"].ToString()))
+            {
+                return "Error: Tolong login terlebih dahulu";
+            }
+
+            #region Initialize Objects
+
+            // Initialize InOutRevenue
+            InOutRevenue inOutRevenue = inOutRevenueDAL.FillInOutRevenueByInOutRevenueId(Convert.ToInt64(dataRow["inoutrevenueid"]));
+            if (inOutRevenue.InOutRevenueId <= 0)
+            {
+                result += "Error: OR tidak ditemukan\r\n";
+            }
+
+            // Initialize ContInOut
+            ContInOut contInOut = contInOutDAL.FillContInOutById(Convert.ToInt64(dataRow["continoutid"]));
+            if (contInOut.ContInOutId <= 0)
+            {
+                result += "Error: Cont tidak ditemukan\r\n";
+            }
+
+            // Initialize ContInOut_Reselect
+            ContInOut contInOutReselect = contInOutDAL.FillContInOutById(Convert.ToInt64(dataRow["continoutid_reselect"]));
+            if (contInOutReselect.ContInOutId <= 0)
+            {
+                result += "Error: Cont Re-Select tidak ditemukan\r\n";
+            }
+
+            // Initialize CustDo
+            CustDo custDo = custDoDAL.FillCustDoByCustDoId(Convert.ToInt64(dataRow["custdoid"]));
+            if (custDo.CustDoId <= 0)
+            {
+                result += "Error: DO tidak ditemukan\r\n";
+            }
+
+            // Initialize ContCard
+            ContCard contCard = contCardDAL.FillContCardByContCardId(Convert.ToInt64(dataRow["contcardid"]));
+            if (contCard.ContCardID <= 0)
+            {
+                result += "Error: Contcard tidak ditemukan\r\n";
+            }
+
+            #endregion
+
+            if (result.Length > 0) return result;
+
+            #region Canceling Seal
+
+            contCard.ContInOutID = 0;
+            contCard.UserID3 = dataRow["activeuser"].ToString();
+            contCard.Dtm3 = null;
+            contCard.Seal1 = string.Empty;
+            try
+            {
+                contCardDAL.UpdateContCard(contCard);
+            }
+            catch
+            {
+                result += "Error: Canceling Contcard gagal\r\n";
+            }
+
+            #endregion
+
+            #region Cek Seal and Get Seal error message
+
+            contInOutReselect.Seal = dataRow["cont_Seal"].ToString();
+            // Check Seal
+            string sealMessage = CheckSeal(contInOutReselect);
+            if (sealMessage.Length > 0)
+            {
+                result += string.Format("Error: Seal={0} \r\n", sealMessage);
+            }
+            #endregion
+
+            #region cek double definition for seal in friend cards
+
+            List<ContCard> listContCard = contCardDAL.FillContCardByRefIdAndCardMode(inOutRevenue.InOutRevenueId, "OUT");
+            sealMessage = CheckSeal(listContCard, dataRow["cont_Seal"].ToString(), contCard);
+            if (sealMessage.Length > 0)
+            {
+                result += string.Format("Error: Seal={0} \r\n", sealMessage);
+            }
+            #endregion
+
+            #region cek no mobil
+
+            string tnm = dataRow["cont_NoMobilOut"].ToString().ToUpper().Replace(" ", string.Empty);
+            char[] angka = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+            int i1 = tnm.IndexOfAny(angka);
+            int i2 = tnm.LastIndexOfAny(angka);
+            if (i2 >= 0) tnm = tnm.Insert(i2 + 1, " ");
+            if (i1 >= 0) tnm = tnm.Insert(i1, " ");
+
+            contInOutReselect.NoMobilOut = tnm;
+            if (contInOutReselect.NoMobilOut.Length == 0)
+            {
+                result += "Error: Nomor Truck Salah. -" + tnm + "-\r\n";
+            }
+            else
+            {
+                string noMobilOutSpecialMessage = noMobilOutSpecialMessageDAL.GetNoMobilOutSpecialMessage(contInOutReselect.NoMobilOut);
+                if (noMobilOutSpecialMessage.Length > 0)
+                {
+                    result += string.Format("Error: Blocked= {0}, {1}. \r\n", contInOutReselect.NoMobilOut, noMobilOutSpecialMessage);
+                }
+            }
+
+            #endregion
+
+            #region Set DtmOut
+
+            if (contInOutReselect.DtmOut.Length == 0)
+            {
+                contInOutReselect.DtmOut = GlobalWebServiceDAL.GetServerDtm().AddMinutes(1).ToString("yyyy-MM-dd HH:mm:ss");
+            }
+            // if still empty set error
+            if (contInOutReselect.DtmOut.Length == 0)
+            {
+                result += "Error: DtmOut Conflict.\r\n";
+            }
+
+            #endregion
+
+            #region save to card if result is empty string
+
+            if (result.Length == 0)
+            {
+                contCard.ContInOutID = contInOutReselect.ContInOutId;
+                contCard.UserID3 = dataRow["activeuser"].ToString();
+                contCard.Dtm3 = GlobalWebServiceDAL.GetServerDtm();
+                contCard.Seal1 = dataRow["cont_Seal"].ToString();
+                try
+                {
+                    contCardDAL.UpdateContCard(contCard);
+                }
+                catch
+                {
+                    result += "Error: Updating Contcard gagal\r\n";
+                }
+
+                #region Insert Log
+                ContainerLog containerLog = new ContainerLog();
+                containerLog.ContInOutId = contInOutReselect.ContInOutId;
+                containerLog.Cont = contInOutReselect.Cont;
+                containerLog.UserId = dataRow["activeuser"].ToString();
+                containerLog.EqpId = dataRow["eqpid"].ToString();
+                containerLog.FlagAct = "MUAT";
+                containerLog.Shipper = contInOutReselect.CustomerCode;
+                containerLog.Operator = dataRow["opid"].ToString();
+                try
+                {
+                    containerLogDAL.InsertContainerLog(containerLog);
+                }
+                catch
+                {
+                    result += "Error: Updating Log gagal\r\n";
+                }
+                #endregion
+
+                //Update blok
+                string OldLocation = contInOutReselect.Location;
+                contInOutReselect.Location = string.Empty;
+                //cont.Update(null,null);
+
+                #region Update Blok
+                string oldLocation = contInOutReselect.Location;
+                contInOutReselect.Location = string.Empty;
+
+                Blok oldBlok = blokDAL.FillBlokByKode(oldLocation);
+                if (oldBlok.Cont == contInOutReselect.Cont)
+                {
+                    oldBlok.Cont = string.Empty;
+                }
+                if (oldBlok.Cont2 == contInOutReselect.Cont)
+                {
+                    oldBlok.Cont2 = string.Empty;
+                }
+                try
+                {
+                    blokDAL.UpdateBlok(oldBlok);
+                }
+                catch
+                {
+                    result += "Error: Updating Blok gagal\r\n";
+                }
+                #endregion
+                result += "# Ganti Container " + contCard.Cont + " BERHASIL\r\n";
+            }
+
+            #endregion
+
+            return result;
+        }
+        #endregion
     }
 }

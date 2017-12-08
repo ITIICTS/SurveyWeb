@@ -10,6 +10,7 @@ namespace ITI.Survey.Web.Dll.Helper
     {
         public const string DATE_YMDHMS_LONG_FORMAT = "yyyy-MM-dd HH::mm:ss";
         public const string STRING_SPACE = " ";
+        public const string FLAG_NO_OUT = "#NOOUT";
 
         private static List<string> _containerSizeList = new List<string>();
         public static List<string> ContainerSizeList
