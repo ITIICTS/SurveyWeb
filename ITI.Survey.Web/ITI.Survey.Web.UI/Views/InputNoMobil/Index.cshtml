@@ -46,28 +46,30 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.LabelFor(model => model.ContCardID, htmlAttributes: new { @class = "control-label" })
                                         </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContCardID, new { @class = "form-control" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <input type="button" id="btnScan" value="SCAN" class="btn btn-primary" />
+                                        <div class="col-sm-6">
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.ContCardID, new { @class = "form-control" })
+                                                <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="form-group">
-
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
+                                            <label class="control-label">atau silahkan upload file foto</label>
+                                        </div>
+                                        <div class="col-sm-6">
 
 
                                             <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
 
-                                        @*    <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
+                                            @*    <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
 
                                             <div id="codeResult"> </div>
 
@@ -76,71 +78,73 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.NoMobil, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.NoMobil, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.Angkutan, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Angkutan, new { @class = "form-control" })
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.NoMobil, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.NoMobil, new { @class = "form-control" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.IsCombo, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.CheckBoxFor(model => model.IsCombo, new { @class = "form-control checkbox" })
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.Angkutan, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.TextBoxFor(model => model.Angkutan, new { @class = "form-control" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-md-offset-4 col-md-10">
-                                            <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." data-failed-msg="Data save failed."><span>Save </span></button>
-                                            <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                @Html.LabelFor(model => model.IsCombo, htmlAttributes: new { @class = "control-label" })
+                                            </div>
+                                            <div class="col-sm-4">
+                                                @Html.CheckBoxFor(model => model.IsCombo, new { @class = "form-control checkbox" })
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            <label id="ResultMessage" class="control-label">Result</label>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-md-offset-4 col-md-10">
+                                                <button type="button" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully." 
+                                                        data-failed-msg="Data save failed." data-href="@Url.Action("Create", "InputNoMobil")"><span>Save </span></button>
+                                                <button type="button" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                            </div>
                                         </div>
-                                        <div id="result_strip">
-                                            <ul class="thumbnails"></ul>
-                                        </div>
-                                        <div id="interactive" class="viewport"></div>
-                                        <div id="debug" class="detection"></div>
-
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="row hidden">
+
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <label id="ResultMessage" class="control-label">Result</label>
+                                            </div>
+                                            <div id="result_strip">
+                                                <ul class="thumbnails"></ul>
+                                            </div>
+                                            <div id="interactive" class="viewport"></div>
+                                            <div id="debug" class="detection"></div>
+
+                                        </div>
+                                    </div>
+                                </div>
 
                         }
                     </div>

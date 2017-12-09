@@ -17,12 +17,7 @@ namespace ITI.Survey.Web.UI.Controllers
             InputNoMobilModel model = new InputNoMobilModel();
             return View(model);
         }
-        public ActionResult Create()
-        {
-            InputNoMobilModel model = new InputNoMobilModel();
-            return View(model);
-        }
-
+     
         // POST: Sample/Create
         [HttpPost]
         public ActionResult Create(InputNoMobilModel model)
