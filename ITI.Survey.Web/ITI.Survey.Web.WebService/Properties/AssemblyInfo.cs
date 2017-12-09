@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
 [assembly: AssemblyTitle("ITI.Survey.Web.WebService")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyDescription("Web Service Survey")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ITI.Survey.Web.WebService")]
