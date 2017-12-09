@@ -145,6 +145,7 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\InputNoMobilController.cs" />
     <Compile Include="Controllers\SampleController.cs" />
+    <Compile Include="Controllers\SearchContainerController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -157,6 +158,7 @@
     <Compile Include="Models\DataTableModel.cs" />
     <Compile Include="Models\InputNoMobilModel.cs" />
     <Compile Include="Models\SampleModel.cs" />
+    <Compile Include="Models\SearchContainerModel.cs" />
     <Compile Include="Models\UserData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service References\GlobalWebService\Reference.cs">
@@ -426,6 +428,10 @@
     <Content Include="Views\ContainerDuration\Index.cshtml" />
     <Content Include="Views\ContainerDuration\_DataTableContainerDuration.cshtml" />
     <Content Include="Views\MuatContainer\MuatContainer.cshtml" />
+    <Content Include="Views\SearchContainer\SearchContainerByContNo.cshtml" />
+    <Content Include="Views\SearchContainer\SearchContainerByKodeBlok.cshtml" />
+    <Content Include="Views\SearchContainer\_dataTableContainerByContNo.cshtml" />
+    <Content Include="Views\SearchContainer\_dataTableContainerByBlok.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
