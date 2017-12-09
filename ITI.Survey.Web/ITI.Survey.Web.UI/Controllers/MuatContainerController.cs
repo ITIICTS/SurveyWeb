@@ -6,15 +6,10 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
-    public class MuatScanController : Controller
+    public class MuatContainerController : Controller
     {
-        // GET: MuatScan
-        public ActionResult MuatScanList()
-        {
-            return View();
-        }
-
-        public ActionResult MuatScanLoad()
+        // GET: MuatContainer
+        public ActionResult Index()
         {
             return View();
         }
