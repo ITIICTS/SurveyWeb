@@ -33,7 +33,7 @@ namespace ITI.Survey.Web.Dll.DAL
                     }
                     string query = string.Format("INSERT INTO {1}({0}) " +
                                                 " VALUES(nextval('truckindepo_truckindepoid_seq'), @NoMobil, @DtmIn, @DtmOut, @Remark, @RefNo, " + 
-                                                "       @Muatan, @Ttipe, @Angkutan, @Note)",
+                                                "       @Muatan, @Tipe, @Angkutan, @Note)",
                                                 DEFAULT_COLUMN,DEFAULT_TABLE);
                     using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
                     {
