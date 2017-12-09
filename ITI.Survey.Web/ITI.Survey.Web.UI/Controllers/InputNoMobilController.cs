@@ -7,7 +7,7 @@ using System.Web.Mvc;
 using AGY.Solution.Helper.Common;
 namespace ITI.Survey.Web.UI.Controllers
 {
-    
+    [Authorize]
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil
