@@ -1,6 +1,9 @@
-﻿using AGY.Solution.Helper;
+﻿using AGY.Solution.DataAccess;
+using AGY.Solution.Helper;
 using AGY.Solution.Helper.Common;
 using ITI.Survey.Web.UI.Models;
+using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -16,14 +19,32 @@ namespace ITI.Survey.Web.UI.Controllers
         public ActionResult Index()
         {
             BlokSystemModel model = new BlokSystemModel();
+            ViewBag.ListBlok = GetDropListBlok();
             return View(model);
+        }
+        [NonAction]
+        public IEnumerable<SelectListItem> GetDropListBlok()
+        {
+            List<SelectListItem> result = new List<SelectListItem>();
+
+                result.Add(new SelectListItem
+                {
+                    Value = ConvertData.ToString("KIRI"),
+                    Text = ConvertData.ToString("KIRI")
+                });
+            result.Add(new SelectListItem
+            {
+                Value = ConvertData.ToString("KANAN"),
+                Text = ConvertData.ToString("KANAN")
+            });
+            return result.OrderBy(x => x.Value);
         }
         [HttpPost]
         public ActionResult GoByContainerNumber(string containerNumber)
         {
             string resultMessage = string.Empty;
             bool status = false;
-
+            ViewBag.ListBlok = GetDropListBlok();
             BlokSystemModel Blokmodel = new BlokSystemModel();
             ContInOutModel ContModel = new ContInOutModel();
             using (var stackingService = new StackingWebService.StackingSoapClient())

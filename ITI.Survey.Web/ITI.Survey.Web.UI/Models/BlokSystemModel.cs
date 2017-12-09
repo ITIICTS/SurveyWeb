@@ -16,9 +16,7 @@ namespace ITI.Survey.Web.UI.Models
         [Display(Name = "Nomor Container")]
 
         public string ContNo { get; set; }
-
-        public List<string> ListSide { get; set; }
-
+        
         public string CustomerCode { get; set; }
 
       
@@ -52,10 +50,7 @@ namespace ITI.Survey.Web.UI.Models
             this.KodeBlok = string.Empty;
             this.ContInOutId = 0;
             this.FlagAct = "MOVE";
-            this.ListSide = new List<string>();
-            this.ListSide.Add("KANAN");
-            this.ListSide.Add("KIRI");
-
+            
         }
         public void BlokSystemValidate(ModelStateDictionary modelState)
         {

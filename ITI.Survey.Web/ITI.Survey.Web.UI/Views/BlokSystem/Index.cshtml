@@ -87,7 +87,7 @@
                                             @Html.LabelFor(model => model.Blok, htmlAttributes: new { @class = "control-label" })
                                         </div>
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Blok, new { @class = "form-control" })
+                                            @Html.DropDownListFor(model => model.SideChoose, (IEnumerable<SelectListItem>)ViewBag.ListBlok, new { @class = "form-control" })
                                         </div>
 
                                     </div>
