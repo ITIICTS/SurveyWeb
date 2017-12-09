@@ -18,9 +18,8 @@ namespace ITI.Survey.Web.UI.Controllers
             return View(model);
         }
      
-        // POST: Sample/Create
         [HttpPost]
-        public ActionResult Create(InputNoMobilModel model)
+        public ActionResult InputMobil(InputNoMobilModel model)
         {
             try
             {
