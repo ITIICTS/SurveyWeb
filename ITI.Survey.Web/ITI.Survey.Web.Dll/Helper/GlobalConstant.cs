@@ -8,7 +8,7 @@ namespace ITI.Survey.Web.Dll.Helper
 {
     public static class GlobalConstant
     {
-        public const string DATE_YMDHMS_LONG_FORMAT = "yyyy-MM-dd HH::mm:ss";
+        public const string DATE_YMDHMS_LONG_FORMAT = "yyyy-MM-dd HH:mm:ss";
         public const string STRING_SPACE = " ";
         public const string FLAG_NO_OUT = "#NOOUT";
 

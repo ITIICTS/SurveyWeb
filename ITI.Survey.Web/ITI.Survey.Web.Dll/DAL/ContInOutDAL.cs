@@ -283,7 +283,7 @@ namespace ITI.Survey.Web.Dll.DAL
                     string query = string.Format("SELECT {0} " +
                                                 " FROM {1} " +
                                                 " WHERE cont=@ContainerNumber " +
-                                                "cORDER BY dtmin DESC",
+                                                " ORDER BY dtmin DESC",
                                                 string.Format(DEFAULT_COLUMN, string.Empty),
                                                 DEFAULT_TABLE);
                     using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
@@ -549,10 +549,38 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@berat", contInOut.Berat);
                         npgsqlCommand.Parameters.AddWithValue("@manufacture", contInOut.Manufacture);
                         npgsqlCommand.Parameters.AddWithValue("@cscplate", contInOut.CscPlate);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmin", contInOut.DtmIn);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmout", contInOut.DtmOut);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmrepaired", contInOut.DtmRepaired);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmpti", contInOut.DtmPti);
+                        if (!string.IsNullOrEmpty(contInOut.DtmIn))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmin", Convert.ToDateTime(contInOut.DtmIn));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmin", DBNull.Value);
+                        }
+                        if (!string.IsNullOrEmpty(contInOut.DtmOut))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmout", Convert.ToDateTime(contInOut.DtmOut));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmout", DBNull.Value);
+                        }
+                        if (!string.IsNullOrEmpty(contInOut.DtmRepaired))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmrepaired", Convert.ToDateTime(contInOut.DtmRepaired));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmrepaired", DBNull.Value);
+                        }
+                        if (!string.IsNullOrEmpty(contInOut.DtmPti))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmpti", Convert.ToDateTime(contInOut.DtmPti));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmpti", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@washstatus", contInOut.WashStatus);
                         npgsqlCommand.Parameters.AddWithValue("@condition", contInOut.Condition);
                         npgsqlCommand.Parameters.AddWithValue("@actin", contInOut.ActIn);
@@ -573,7 +601,15 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@vesselvoyagename", contInOut.VesselVoyageName);
                         npgsqlCommand.Parameters.AddWithValue("@remarks", contInOut.Remarks);
                         npgsqlCommand.Parameters.AddWithValue("@payload", contInOut.Payload);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmeirin", contInOut.DtmEirIn);
+                        if (!string.IsNullOrEmpty(contInOut.DtmEirIn))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmeirin", Convert.ToDateTime(contInOut.DtmEirIn));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmeirin", DBNull.Value);
+                        }
+                       
                         npgsqlCommand.Parameters.AddWithValue("@eirincontact", contInOut.EirInContact);
                         npgsqlCommand.Parameters.AddWithValue("@noseriorout", contInOut.NoSeriOrOut);
                         npgsqlCommand.Parameters.AddWithValue("@ediin", contInOut.EdiIn);
@@ -588,32 +624,92 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@rfmachine", contInOut.RfMachine);
                         npgsqlCommand.Parameters.AddWithValue("@destinationname", contInOut.DestinationName);
                         npgsqlCommand.Parameters.AddWithValue("@blnumber", contInOut.BlNumber);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmportout", contInOut.DtmPortOut);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmoutdepoin", contInOut.DtmOutDepoIn);
+                        if (!string.IsNullOrEmpty(contInOut.DtmPortOut))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmportout", Convert.ToDateTime(contInOut.DtmPortOut));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmportout", DBNull.Value);
+                        }
+                        if (!string.IsNullOrEmpty(contInOut.DtmOutDepoIn))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmoutdepoin", Convert.ToDateTime(contInOut.DtmOutDepoIn));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmoutdepoin", DBNull.Value);
+                        }
+
                         npgsqlCommand.Parameters.AddWithValue("@tare", contInOut.Tare);
                         npgsqlCommand.Parameters.AddWithValue("@cleaningrefno", contInOut.CleaningRefNo);
                         npgsqlCommand.Parameters.AddWithValue("@cleaningremark", contInOut.CleaningRemark);
                         npgsqlCommand.Parameters.AddWithValue("@cleaninglastcargo", contInOut.CleaningLastCargo);
-                        npgsqlCommand.Parameters.AddWithValue("@cleaningdtmfinish", contInOut.CleaningDtmFinish);
+                        if (!string.IsNullOrEmpty(contInOut.CleaningDtmFinish))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@cleaningdtmfinish", Convert.ToDateTime(contInOut.CleaningDtmFinish));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@cleaningdtmfinish", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@cleaningcost", contInOut.CleaningCost);
                         npgsqlCommand.Parameters.AddWithValue("@bookingassignment", contInOut.BookingAssignment);
                         npgsqlCommand.Parameters.AddWithValue("@cleaningkode", contInOut.CleaningKode);
                         npgsqlCommand.Parameters.AddWithValue("@cleaningdesc", contInOut.CleaningDesc);
                         npgsqlCommand.Parameters.AddWithValue("@cleaningaction", contInOut.CleaningAction);
-                        npgsqlCommand.Parameters.AddWithValue("@dtmshortpti", contInOut.DtmShortPti);
+                        if (!string.IsNullOrEmpty(contInOut.DtmShortPti))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmshortpti", Convert.ToDateTime(contInOut.DtmShortPti));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@dtmshortpti", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@exvesselport", contInOut.ExVesselPort);
                         npgsqlCommand.Parameters.AddWithValue("@rfenginecond", contInOut.RfEngineCond);
-                        npgsqlCommand.Parameters.AddWithValue("@rfdtmenginerepaired", contInOut.RfDtmEngineRepaired);
+                        if (!string.IsNullOrEmpty(contInOut.RfDtmEngineRepaired))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfdtmenginerepaired", Convert.ToDateTime(contInOut.RfDtmEngineRepaired));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfdtmenginerepaired", DBNull.Value);
+                        }
+
                         npgsqlCommand.Parameters.AddWithValue("@rfengineediin", contInOut.RfEngineEdiIn);
                         npgsqlCommand.Parameters.AddWithValue("@rfengineedicom", contInOut.RfEngineEdiCom);
                         npgsqlCommand.Parameters.AddWithValue("@rfptitype", contInOut.RfPtiType);
-                        npgsqlCommand.Parameters.AddWithValue("@rfptidtmapproved", contInOut.RfPtiDtmApproved);
-                        npgsqlCommand.Parameters.AddWithValue("@rfptidtmcompleted", contInOut.RfPtiDtmCompleted);
+
+                        if (!string.IsNullOrEmpty(contInOut.RfPtiDtmApproved))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfptidtmapproved", Convert.ToDateTime(contInOut.RfPtiDtmApproved));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfptidtmapproved", DBNull.Value);
+                        }
+
+                        if (!string.IsNullOrEmpty(contInOut.RfPtiDtmCompleted))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfptidtmcompleted", Convert.ToDateTime(contInOut.RfPtiDtmCompleted));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfptidtmcompleted", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@rfptiremark", contInOut.RfPtiRemark);
                         npgsqlCommand.Parameters.AddWithValue("@rfpticost", contInOut.RfPtiCost);
                         npgsqlCommand.Parameters.AddWithValue("@rfptitemp", contInOut.RfPtiTemp);
                         npgsqlCommand.Parameters.AddWithValue("@rfneedswupdate", contInOut.RfNeedSwUpdate);
-                        npgsqlCommand.Parameters.AddWithValue("@rfdtmswupdated", contInOut.RfDtmSwUpdated);
+                        if (!string.IsNullOrEmpty(contInOut.RfDtmSwUpdated))
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfdtmswupdated", Convert.ToDateTime(contInOut.RfDtmSwUpdated));
+                        }
+                        else
+                        {
+                            npgsqlCommand.Parameters.AddWithValue("@rfdtmswupdated", DBNull.Value);
+                        }
                         npgsqlCommand.Parameters.AddWithValue("@grade", contInOut.GradeV2);
                         npgsqlCommand.Parameters.AddWithValue("@commodity", contInOut.Commodity);
 

@@ -89,7 +89,7 @@ namespace ITI.Survey.Web.Dll.DAL
                     {
                         npgsqlCommand.Parameters.AddWithValue("@BlokId", blok.BlokId);
                         npgsqlCommand.Parameters.AddWithValue("@Kode", blok.Kode);
-                        npgsqlCommand.Parameters.AddWithValue("@Disabled", blok.Disabled);
+                        npgsqlCommand.Parameters.AddWithValue("@Disabled", blok.Disabled ? 1 : 0);
                         npgsqlCommand.Parameters.AddWithValue("@MaxTier", blok.MaxTier);
                         npgsqlCommand.Parameters.AddWithValue("@Remark", blok.Remark);
                         npgsqlCommand.Parameters.AddWithValue("@Size", blok.Size);

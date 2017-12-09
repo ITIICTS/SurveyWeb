@@ -72,6 +72,7 @@ namespace ITI.Survey.Web.Dll.DAL
             DateTime serverDateTime = DateTime.Now;
             using (NpgsqlConnection npgsqlConnection = AppConfig.GetUserConnection())
             {
+                npgsqlConnection.Open();
                 NpgsqlCommand npgsqlCommand = new NpgsqlCommand("SELECT now() ", npgsqlConnection);
                 serverDateTime = Convert.ToDateTime(npgsqlCommand.ExecuteScalar());
             }

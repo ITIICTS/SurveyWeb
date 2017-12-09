@@ -77,6 +77,48 @@ namespace ITI.Survey.Web.UI.StackingWebService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/FillContInOutByBlokForStock", ReplyAction="*")]
         System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillContInOutByBlokForStockResponse> FillContInOutByBlokForStockAsync(ITI.Survey.Web.UI.StackingWebService.FillContInOutByBlokForStockRequest request);
+        
+        // CODEGEN: Generating message contract since element name userId from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/FillInOutRevenueByInOutRevenueId", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse FillInOutRevenueByInOutRevenueId(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/FillInOutRevenueByInOutRevenueId", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse> FillInOutRevenueByInOutRevenueIdAsync(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest request);
+        
+        // CODEGEN: Generating message contract since element name userId from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/FillCustDoByCustDoId", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse FillCustDoByCustDoId(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/FillCustDoByCustDoId", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse> FillCustDoByCustDoIdAsync(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest request);
+        
+        // CODEGEN: Generating message contract since element name userId from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckDefinedCondition", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse CheckDefinedCondition(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/CheckDefinedCondition", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse> CheckDefinedConditionAsync(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest request);
+        
+        // CODEGEN: Generating message contract since element name userId from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PreventGateOut", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse PreventGateOut(ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/PreventGateOut", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse> PreventGateOutAsync(ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest request);
+        
+        // CODEGEN: Generating message contract since element name xml from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SubmitKartuMuat", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse SubmitKartuMuat(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/SubmitKartuMuat", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse> SubmitKartuMuatAsync(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest request);
+        
+        // CODEGEN: Generating message contract since element name xml from namespace http://tempuri.org/ is not marked nillable
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ResubmitKartuMuat", ReplyAction="*")]
+        ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse ResubmitKartuMuat(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ResubmitKartuMuat", ReplyAction="*")]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse> ResubmitKartuMuatAsync(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest request);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -739,6 +781,438 @@ namespace ITI.Survey.Web.UI.StackingWebService {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class FillInOutRevenueByInOutRevenueIdRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="FillInOutRevenueByInOutRevenueId", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequestBody Body;
+        
+        public FillInOutRevenueByInOutRevenueIdRequest() {
+        }
+        
+        public FillInOutRevenueByInOutRevenueIdRequest(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class FillInOutRevenueByInOutRevenueIdRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public long inOutRevenueId;
+        
+        public FillInOutRevenueByInOutRevenueIdRequestBody() {
+        }
+        
+        public FillInOutRevenueByInOutRevenueIdRequestBody(string userId, long inOutRevenueId) {
+            this.userId = userId;
+            this.inOutRevenueId = inOutRevenueId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class FillInOutRevenueByInOutRevenueIdResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="FillInOutRevenueByInOutRevenueIdResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponseBody Body;
+        
+        public FillInOutRevenueByInOutRevenueIdResponse() {
+        }
+        
+        public FillInOutRevenueByInOutRevenueIdResponse(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class FillInOutRevenueByInOutRevenueIdResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string FillInOutRevenueByInOutRevenueIdResult;
+        
+        public FillInOutRevenueByInOutRevenueIdResponseBody() {
+        }
+        
+        public FillInOutRevenueByInOutRevenueIdResponseBody(string FillInOutRevenueByInOutRevenueIdResult) {
+            this.FillInOutRevenueByInOutRevenueIdResult = FillInOutRevenueByInOutRevenueIdResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class FillCustDoByCustDoIdRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="FillCustDoByCustDoId", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequestBody Body;
+        
+        public FillCustDoByCustDoIdRequest() {
+        }
+        
+        public FillCustDoByCustDoIdRequest(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class FillCustDoByCustDoIdRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public long custDoId;
+        
+        public FillCustDoByCustDoIdRequestBody() {
+        }
+        
+        public FillCustDoByCustDoIdRequestBody(string userId, long custDoId) {
+            this.userId = userId;
+            this.custDoId = custDoId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class FillCustDoByCustDoIdResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="FillCustDoByCustDoIdResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponseBody Body;
+        
+        public FillCustDoByCustDoIdResponse() {
+        }
+        
+        public FillCustDoByCustDoIdResponse(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class FillCustDoByCustDoIdResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string FillCustDoByCustDoIdResult;
+        
+        public FillCustDoByCustDoIdResponseBody() {
+        }
+        
+        public FillCustDoByCustDoIdResponseBody(string FillCustDoByCustDoIdResult) {
+            this.FillCustDoByCustDoIdResult = FillCustDoByCustDoIdResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class CheckDefinedConditionRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="CheckDefinedCondition", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequestBody Body;
+        
+        public CheckDefinedConditionRequest() {
+        }
+        
+        public CheckDefinedConditionRequest(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class CheckDefinedConditionRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public long inOutRevenueId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=2)]
+        public long contInOutId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=3)]
+        public long custDoId;
+        
+        public CheckDefinedConditionRequestBody() {
+        }
+        
+        public CheckDefinedConditionRequestBody(string userId, long inOutRevenueId, long contInOutId, long custDoId) {
+            this.userId = userId;
+            this.inOutRevenueId = inOutRevenueId;
+            this.contInOutId = contInOutId;
+            this.custDoId = custDoId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class CheckDefinedConditionResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="CheckDefinedConditionResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponseBody Body;
+        
+        public CheckDefinedConditionResponse() {
+        }
+        
+        public CheckDefinedConditionResponse(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class CheckDefinedConditionResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string CheckDefinedConditionResult;
+        
+        public CheckDefinedConditionResponseBody() {
+        }
+        
+        public CheckDefinedConditionResponseBody(string CheckDefinedConditionResult) {
+            this.CheckDefinedConditionResult = CheckDefinedConditionResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class PreventGateOutRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="PreventGateOut", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequestBody Body;
+        
+        public PreventGateOutRequest() {
+        }
+        
+        public PreventGateOutRequest(ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class PreventGateOutRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string userId;
+        
+        [System.Runtime.Serialization.DataMemberAttribute(Order=1)]
+        public long contCardId;
+        
+        public PreventGateOutRequestBody() {
+        }
+        
+        public PreventGateOutRequestBody(string userId, long contCardId) {
+            this.userId = userId;
+            this.contCardId = contCardId;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class PreventGateOutResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="PreventGateOutResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponseBody Body;
+        
+        public PreventGateOutResponse() {
+        }
+        
+        public PreventGateOutResponse(ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class PreventGateOutResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string PreventGateOutResult;
+        
+        public PreventGateOutResponseBody() {
+        }
+        
+        public PreventGateOutResponseBody(string PreventGateOutResult) {
+            this.PreventGateOutResult = PreventGateOutResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class SubmitKartuMuatRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SubmitKartuMuat", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequestBody Body;
+        
+        public SubmitKartuMuatRequest() {
+        }
+        
+        public SubmitKartuMuatRequest(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class SubmitKartuMuatRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string xml;
+        
+        public SubmitKartuMuatRequestBody() {
+        }
+        
+        public SubmitKartuMuatRequestBody(string xml) {
+            this.xml = xml;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class SubmitKartuMuatResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="SubmitKartuMuatResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponseBody Body;
+        
+        public SubmitKartuMuatResponse() {
+        }
+        
+        public SubmitKartuMuatResponse(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class SubmitKartuMuatResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string SubmitKartuMuatResult;
+        
+        public SubmitKartuMuatResponseBody() {
+        }
+        
+        public SubmitKartuMuatResponseBody(string SubmitKartuMuatResult) {
+            this.SubmitKartuMuatResult = SubmitKartuMuatResult;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ResubmitKartuMuatRequest {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ResubmitKartuMuat", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequestBody Body;
+        
+        public ResubmitKartuMuatRequest() {
+        }
+        
+        public ResubmitKartuMuatRequest(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequestBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class ResubmitKartuMuatRequestBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string xml;
+        
+        public ResubmitKartuMuatRequestBody() {
+        }
+        
+        public ResubmitKartuMuatRequestBody(string xml) {
+            this.xml = xml;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
+    public partial class ResubmitKartuMuatResponse {
+        
+        [System.ServiceModel.MessageBodyMemberAttribute(Name="ResubmitKartuMuatResponse", Namespace="http://tempuri.org/", Order=0)]
+        public ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponseBody Body;
+        
+        public ResubmitKartuMuatResponse() {
+        }
+        
+        public ResubmitKartuMuatResponse(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponseBody Body) {
+            this.Body = Body;
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+    [System.Runtime.Serialization.DataContractAttribute(Namespace="http://tempuri.org/")]
+    public partial class ResubmitKartuMuatResponseBody {
+        
+        [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
+        public string ResubmitKartuMuatResult;
+        
+        public ResubmitKartuMuatResponseBody() {
+        }
+        
+        public ResubmitKartuMuatResponseBody(string ResubmitKartuMuatResult) {
+            this.ResubmitKartuMuatResult = ResubmitKartuMuatResult;
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface StackingSoapChannel : ITI.Survey.Web.UI.StackingWebService.StackingSoap, System.ServiceModel.IClientChannel {
     }
@@ -1013,6 +1487,168 @@ namespace ITI.Survey.Web.UI.StackingWebService {
             inValue.Body.userId = userId;
             inValue.Body.blok = blok;
             return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).FillContInOutByBlokForStockAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.FillInOutRevenueByInOutRevenueId(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest request) {
+            return base.Channel.FillInOutRevenueByInOutRevenueId(request);
+        }
+        
+        public string FillInOutRevenueByInOutRevenueId(string userId, long inOutRevenueId) {
+            ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest inValue = new ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.inOutRevenueId = inOutRevenueId;
+            ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).FillInOutRevenueByInOutRevenueId(inValue);
+            return retVal.Body.FillInOutRevenueByInOutRevenueIdResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.FillInOutRevenueByInOutRevenueIdAsync(ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest request) {
+            return base.Channel.FillInOutRevenueByInOutRevenueIdAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdResponse> FillInOutRevenueByInOutRevenueIdAsync(string userId, long inOutRevenueId) {
+            ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest inValue = new ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.FillInOutRevenueByInOutRevenueIdRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.inOutRevenueId = inOutRevenueId;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).FillInOutRevenueByInOutRevenueIdAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.FillCustDoByCustDoId(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest request) {
+            return base.Channel.FillCustDoByCustDoId(request);
+        }
+        
+        public string FillCustDoByCustDoId(string userId, long custDoId) {
+            ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest inValue = new ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.custDoId = custDoId;
+            ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).FillCustDoByCustDoId(inValue);
+            return retVal.Body.FillCustDoByCustDoIdResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.FillCustDoByCustDoIdAsync(ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest request) {
+            return base.Channel.FillCustDoByCustDoIdAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdResponse> FillCustDoByCustDoIdAsync(string userId, long custDoId) {
+            ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest inValue = new ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.FillCustDoByCustDoIdRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.custDoId = custDoId;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).FillCustDoByCustDoIdAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.CheckDefinedCondition(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest request) {
+            return base.Channel.CheckDefinedCondition(request);
+        }
+        
+        public string CheckDefinedCondition(string userId, long inOutRevenueId, long contInOutId, long custDoId) {
+            ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest inValue = new ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.inOutRevenueId = inOutRevenueId;
+            inValue.Body.contInOutId = contInOutId;
+            inValue.Body.custDoId = custDoId;
+            ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).CheckDefinedCondition(inValue);
+            return retVal.Body.CheckDefinedConditionResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.CheckDefinedConditionAsync(ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest request) {
+            return base.Channel.CheckDefinedConditionAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionResponse> CheckDefinedConditionAsync(string userId, long inOutRevenueId, long contInOutId, long custDoId) {
+            ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest inValue = new ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.CheckDefinedConditionRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.inOutRevenueId = inOutRevenueId;
+            inValue.Body.contInOutId = contInOutId;
+            inValue.Body.custDoId = custDoId;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).CheckDefinedConditionAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.PreventGateOut(ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest request) {
+            return base.Channel.PreventGateOut(request);
+        }
+        
+        public string PreventGateOut(string userId, long contCardId) {
+            ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest inValue = new ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.contCardId = contCardId;
+            ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).PreventGateOut(inValue);
+            return retVal.Body.PreventGateOutResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.PreventGateOutAsync(ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest request) {
+            return base.Channel.PreventGateOutAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.PreventGateOutResponse> PreventGateOutAsync(string userId, long contCardId) {
+            ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest inValue = new ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.PreventGateOutRequestBody();
+            inValue.Body.userId = userId;
+            inValue.Body.contCardId = contCardId;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).PreventGateOutAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.SubmitKartuMuat(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest request) {
+            return base.Channel.SubmitKartuMuat(request);
+        }
+        
+        public string SubmitKartuMuat(string xml) {
+            ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest inValue = new ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequestBody();
+            inValue.Body.xml = xml;
+            ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).SubmitKartuMuat(inValue);
+            return retVal.Body.SubmitKartuMuatResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.SubmitKartuMuatAsync(ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest request) {
+            return base.Channel.SubmitKartuMuatAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatResponse> SubmitKartuMuatAsync(string xml) {
+            ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest inValue = new ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.SubmitKartuMuatRequestBody();
+            inValue.Body.xml = xml;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).SubmitKartuMuatAsync(inValue);
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse ITI.Survey.Web.UI.StackingWebService.StackingSoap.ResubmitKartuMuat(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest request) {
+            return base.Channel.ResubmitKartuMuat(request);
+        }
+        
+        public string ResubmitKartuMuat(string xml) {
+            ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest inValue = new ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequestBody();
+            inValue.Body.xml = xml;
+            ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse retVal = ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).ResubmitKartuMuat(inValue);
+            return retVal.Body.ResubmitKartuMuatResult;
+        }
+        
+        [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
+        System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse> ITI.Survey.Web.UI.StackingWebService.StackingSoap.ResubmitKartuMuatAsync(ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest request) {
+            return base.Channel.ResubmitKartuMuatAsync(request);
+        }
+        
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatResponse> ResubmitKartuMuatAsync(string xml) {
+            ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest inValue = new ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequest();
+            inValue.Body = new ITI.Survey.Web.UI.StackingWebService.ResubmitKartuMuatRequestBody();
+            inValue.Body.xml = xml;
+            return ((ITI.Survey.Web.UI.StackingWebService.StackingSoap)(this)).ResubmitKartuMuatAsync(inValue);
         }
     }
 }

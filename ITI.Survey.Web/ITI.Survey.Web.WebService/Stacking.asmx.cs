@@ -346,7 +346,7 @@ namespace ITI.Survey.Web.WebService
                 containerLog.Location = dataRow["location"].ToString();
                 containerLog.Shipper = dataRow["shipper"].ToString();
                 containerLog.Operator = dataRow["opid"].ToString();
-
+                containerLog.Dtm = GlobalWebServiceDAL.GetServerDtm().ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
                 try
                 {
                     containerLogDAL.InsertContainerLog(containerLog);
@@ -438,8 +438,8 @@ namespace ITI.Survey.Web.WebService
                 }
                 catch (Exception ex)
                 {
-                    log.ErrorFormat("SubmitKartuBongkar - Update ContInOut -> Message: {0}", ex.Message);
-                    log.ErrorFormat("SubmitKartuBongkar - Update ContInOut -> StackTrace: {0}", ex.StackTrace);
+                    log.ErrorFormat("SubmitKartuBongkar - Update Blok -> Message: {0}", ex.Message);
+                    log.ErrorFormat("SubmitKartuBongkar - Update Blok -> StackTrace: {0}", ex.StackTrace);
                     result += "Error: Updating Blok gagal\r\n";
                 }
                 #endregion

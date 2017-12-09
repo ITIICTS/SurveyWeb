@@ -15,7 +15,7 @@ namespace ITI.Survey.Web.UI.GlobalWebService {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="GlobalWebService.GlobalSoap")]
     public interface GlobalSoap {
         
-        // CODEGEN: Generating message contract since element name activeUser from namespace http://tempuri.org/ is not marked nillable
+        // CODEGEN: Generating message contract since element name userId from namespace http://tempuri.org/ is not marked nillable
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/GetConfigXML", ReplyAction="*")]
         ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse GetConfigXML(ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequest request);
         
@@ -54,13 +54,13 @@ namespace ITI.Survey.Web.UI.GlobalWebService {
     public partial class GetConfigXMLRequestBody {
         
         [System.Runtime.Serialization.DataMemberAttribute(EmitDefaultValue=false, Order=0)]
-        public string activeUser;
+        public string userId;
         
         public GetConfigXMLRequestBody() {
         }
         
-        public GetConfigXMLRequestBody(string activeUser) {
-            this.activeUser = activeUser;
+        public GetConfigXMLRequestBody(string userId) {
+            this.userId = userId;
         }
     }
     
@@ -202,10 +202,10 @@ namespace ITI.Survey.Web.UI.GlobalWebService {
             return base.Channel.GetConfigXML(request);
         }
         
-        public string GetConfigXML(string activeUser) {
+        public string GetConfigXML(string userId) {
             ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequest inValue = new ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequest();
             inValue.Body = new ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequestBody();
-            inValue.Body.activeUser = activeUser;
+            inValue.Body.userId = userId;
             ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse retVal = ((ITI.Survey.Web.UI.GlobalWebService.GlobalSoap)(this)).GetConfigXML(inValue);
             return retVal.Body.GetConfigXMLResult;
         }
@@ -215,10 +215,10 @@ namespace ITI.Survey.Web.UI.GlobalWebService {
             return base.Channel.GetConfigXMLAsync(request);
         }
         
-        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse> GetConfigXMLAsync(string activeUser) {
+        public System.Threading.Tasks.Task<ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLResponse> GetConfigXMLAsync(string userId) {
             ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequest inValue = new ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequest();
             inValue.Body = new ITI.Survey.Web.UI.GlobalWebService.GetConfigXMLRequestBody();
-            inValue.Body.activeUser = activeUser;
+            inValue.Body.userId = userId;
             return ((ITI.Survey.Web.UI.GlobalWebService.GlobalSoap)(this)).GetConfigXMLAsync(inValue);
         }
         
