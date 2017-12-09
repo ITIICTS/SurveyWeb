@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:2018/Global.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:16241/Global.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Global1.disco" MetadataType="Disco" ID="a4b845a4-526b-4f83-8393-a7234e97aa2f" SourceId="1" SourceUrl="http://localhost:2018/Global.asmx?disco" />
-    <MetadataFile FileName="Global1.wsdl" MetadataType="Wsdl" ID="d1545923-e5cd-4280-8f9c-310bff6b9bcc" SourceId="1" SourceUrl="http://localhost:2018/Global.asmx?wsdl" />
+    <MetadataFile FileName="Global1.wsdl" MetadataType="Wsdl" ID="998f699c-22e8-46e5-8305-8bfa4fa88cde" SourceId="1" SourceUrl="http://localhost:16241/Global.asmx?wsdl" />
+    <MetadataFile FileName="Global1.disco" MetadataType="Disco" ID="c1fdf578-034c-47ee-a5d9-9fda57a2262d" SourceId="1" SourceUrl="http://localhost:16241/Global.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

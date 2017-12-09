@@ -9,6 +9,7 @@ namespace ITI.Survey.Web.UI.Models
 {
     public class InputNoMobilModel
     {
+        public string ActiveUser { get; set; }
 
         public string ResultMessage { get; set; }
 

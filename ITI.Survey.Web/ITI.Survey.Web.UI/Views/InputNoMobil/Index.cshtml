@@ -69,10 +69,10 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.LabelFor(model => model.NoMobil, htmlAttributes: new { @class = "control-label" })
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.TextBoxFor(model => model.NoMobil, new { @class = "form-control" })
                                         </div>
                                     </div>
@@ -82,10 +82,10 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.LabelFor(model => model.Angkutan, htmlAttributes: new { @class = "control-label" })
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.TextBoxFor(model => model.Angkutan, new { @class = "form-control" })
                                         </div>
                                     </div>
@@ -95,10 +95,10 @@
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.LabelFor(model => model.IsCombo, htmlAttributes: new { @class = "control-label" })
                                         </div>
-                                        <div class="col-sm-4">
+                                        <div class="col-sm-6">
                                             @Html.CheckBoxFor(model => model.IsCombo, new { @class = "form-control checkbox" })
                                         </div>
                                     </div>
@@ -109,8 +109,8 @@
                                 <div class="col-md-10">
                                     <div class="form-group">
                                         <div class="col-md-offset-4 col-md-10">
-                                            <button type="button" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" data-success-msg="Data save successfully."
-                                                    data-failed-msg="Data save failed." data-href="@Url.Action("InputMobil", "InputNoMobil")">
+                                            <button type="button" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" 
+                                                     data-href="@Url.Action("InputMobil", "InputNoMobil")">
                                                 <span>Save </span>
                                             </button>
                                             <button type="button" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>

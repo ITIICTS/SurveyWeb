@@ -28,6 +28,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 bool status = false;
                 using (var stackingService = new StackingWebService.StackingSoapClient())
                 {
+                    model.ActiveUser = Username;
                     model.InputNoMobilSampleValidate(ModelState);
                     if (ModelState.IsValid)
                     {
