@@ -63,16 +63,14 @@
                                     <div class="form-group">
 
                                         <div class="col-sm-4">
-                                            <div class="container">
 
 
-                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
+                                            <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
 
-                                                <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />
+                                        @*    <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
 
-                                                <div id="codeResult"> </div>
+                                            <div id="codeResult"> </div>
 
-                                            </div>
                                         </div>
 
                                     </div>
@@ -323,7 +321,7 @@
         }
     }, false);
     //decode
-    document.getElementById("btnDecode").addEventListener("click", function () {
+    document.getElementById("barcodeFileInput").addEventListener("change", function () {
         if (_scannerIsRunning) {
             _scannerIsRunning = false;
             Quagga.stop();
@@ -332,4 +330,5 @@
             DecoodeSingle();
         }
     }, false);
+
 </script>
