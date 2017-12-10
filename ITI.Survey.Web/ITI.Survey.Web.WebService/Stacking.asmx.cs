@@ -727,11 +727,11 @@ namespace ITI.Survey.Web.WebService
                 containerLog.ContInOutId = Convert.ToInt64(dataRow["continoutid"]);
                 containerLog.Cont = dataRow["cont"].ToString();
                 containerLog.UserId = dataRow["activeuser"].ToString();
-                containerLog.EqpId = dataRow["eqpid"].ToString();
+                //containerLog.EqpId = dataRow["eqpid"].ToString();
                 containerLog.FlagAct = dataRow["flagact"].ToString();
                 containerLog.Location = dataRow["location"].ToString();
                 containerLog.Shipper = dataRow["shipper"].ToString();
-                containerLog.Operator = dataRow["opid"].ToString();
+                //containerLog.Operator = dataRow["opid"].ToString();
                 try
                 {
                     containerLogDAL.InsertContainerLog(containerLog);
