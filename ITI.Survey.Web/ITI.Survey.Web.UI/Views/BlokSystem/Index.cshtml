@@ -9,14 +9,15 @@
 <div class="col-xs-12">
     <div class="panel panel-default">
         <div class="panel-heading">
-            <b>Input No Mobil</b>
+            <b>Blok System</b>
         </div>
         <div class="panel-body">
-            <div class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        @using (Html.BeginForm("GoByContainerNumber", "BlokSystem", FormMethod.Post, htmlAttributes: new { @ID = "form-GoByContainerNumberBlokSystem", @role = "form" }))
-                        {
+            <form action="@Url.Action("Process", "BlokSystem")" method="post">
+
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+
 
                             @Html.AntiForgeryToken()
                             <div id="ErrorSummary">
@@ -30,136 +31,160 @@
                                             @Html.LabelFor(model => model.ContNo, htmlAttributes: new { @class = "control-label" })
                                         </div>
                                         <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ContNo, new { @class = "form-control" })
+                                            <div class="input-group">
+                                                @Html.TextBoxFor(model => model.ContNo, new { @class = "form-control" })
+                                                <span id="btnSearch" class="input-group-addon btn-search">GO</span>
+                                            </div>
                                         </div>
-
                                     </div>
                                 </div>
                             </div>
+
+
 
 
                             <div class="row">
                                 <div class="col-md-10">
                                     <div class="form-group">
-                                        <div class="col-md-offset-4 col-md-10">
-                                            <button type="button" class="btn btn-primary btn-search"><span>GO </span></button>
+                                        <div class="col-sm-10">
+                                            <label id="Lokasi" class="control-label">Lokasi :</label>
+
+                                        </div>
+                                        <div class="col-sm-10">
+                                            <label id="ResultMessage" class="control-label"></label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.ResultMessage, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.ResultMessage, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                        }
+                        </div>
+
                     </div>
-
                 </div>
-            </div>
 
-            <div class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        @using (Html.BeginForm("Process", "BlokSystem", FormMethod.Post, htmlAttributes: new { @ID = "form-ProcessBlokSystem", @role = "form" }))
-                        {
-                            @Html.HiddenFor(model => model.ContInOutId)
-                            @Html.HiddenFor(model => model.KodeBlok)
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row hidden">
+                                <input type="text" id="ContInOut" name="ContInOutId" class="form-control" />
 
-                            @Html.AntiForgeryToken()
-                            <div id="ErrorSummary">
-                                @Html.CustomValidationSummary()
+                                <input type="text" id="kodebl" name="KodeBlok" class="form-control" />
+
                             </div>
 
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.Blok, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.DropDownListFor(model => model.SideChoose, (IEnumerable<SelectListItem>)ViewBag.ListBlok, new { @class = "form-control" })
-                                        </div>
 
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="col-sm-3">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-11"><label class="control-label">Blok</label></div>
+                                                <div class="col-md-11">
+                                                    <select name="Blok" class="form-control">
+                                                        @for (char i = 'A'; i <= 'Z'; i++)
+                                                        {
+                                                            /**/
+                                                            <option value="@i">@i</option>
+                                                        }
+                                                    </select>
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-11"><label class="control-label">Bay</label></div>
+                                                <div class="col-md-11">
+                                                    <input type="text" name="Bay" class="form-control" maxlength="2" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-11"><label class="control-label">Row</label></div>
+                                                <div class="col-md-11">
+                                                    <input type="text" name="Row" class="form-control" maxlength="2" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-3">
+                                        <div class="row">
+                                            <div class="form-group">
+                                                <div class="col-md-12"><label class="control-label">Tier</label></div>
+                                                <div class="col-md-12">
+                                                    <input type="text" name="Tier" class="form-control" maxlength="2" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <div class="col-md-3"><label id="ContainerSize" class="control-label">20</label><span> Side</span></div>
+                                        <div class="col-md-3">
+                                            <select name="SideChoose" id="ContainerSide" class="form-control"></select>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="col-md-10">
+                                <div class="col-md-12">
                                     <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.Bay, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Bay, new { @class = "form-control" })
+                                        <div class="col-md-12">
+                                            <button type="button" value="Process" class="btn btn-primary btn-save" data-confirm-msg="Do you want to Process?" data-href="@Url.Action("Process", "BlokSystem")"><span>Pindahkan Blok </span></button>
+
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.Row, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Row, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            @Html.LabelFor(model => model.Tier, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-4">
-                                            @Html.TextBoxFor(model => model.Tier, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-md-offset-4 col-md-10">
-                                            <button type="button" value="Create" class="btn btn-primary btn-save" data-confirm-msg="Do you want to Process?" data-success-msg="Data Process successfully." data-failed-msg="Data Process failed."><span>Pindahkan Blok </span></button>
-                                            <button type="button" value="Cancel" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            <label id="ResultMessage" class="control-label">Result</label>
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-
-                        }
+                        </div>
                     </div>
-
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
 
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            document.getElementById("btnSearch").addEventListener("click", function () {
+                if ($("#ContNo").val() != '' || $("#ContNo").val() != undefined) {
+                    $.ajax({
+                        url: "@Url.Action("GoByContainerNumber", "BlokSystem")",
+                        data: { ContNo: $("#ContNo").val() },
+                        dataType: 'json',
+                        type: 'post',
+                        success: function (result) {
+                            $('#ResultMessage').text(result.ResultMessage);
+                            $('#ContInOut').text(result.ContInOutId);
+
+                            $('#ContainerSize').text(result.Size);
+                            $('#ContainerSide').html("");
+                            if (result.Size == '20') {
+                                $("#ContainerSide").append("<option value='Kiri'>Kiri</option>");
+                                $("#ContainerSide").append("<option value='Kanan'>Kanan</option>");
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

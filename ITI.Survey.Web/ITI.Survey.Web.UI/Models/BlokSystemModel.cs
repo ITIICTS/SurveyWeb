@@ -9,6 +9,8 @@ namespace ITI.Survey.Web.UI.Models
 {
     public class BlokSystemModel
     {
+        public string activeuser { get; set; }
+        public string Size { get; set; }
         [Display(Name = "Lokasi")]
 
         public string ResultMessage { get; set; }
@@ -21,12 +23,19 @@ namespace ITI.Survey.Web.UI.Models
 
       
         [Display(Name = "Blok")]
+        [StringLength(1, ErrorMessage = "Blok cannot be longer than 4 characters.")]
         public string Blok { get; set; }
+
+        [StringLength(4, ErrorMessage = "Bay cannot be longer than 4 characters.")]
         [Display(Name = "Bay")]
         public string Bay { get; set; }
         [Display(Name = "Row")]
+
+        [StringLength(4, ErrorMessage = "Row cannot be longer than 4 characters.")]
         public string Row { get; set; }
         [Display(Name = "Tier")]
+
+        [StringLength(4, ErrorMessage = "Tier cannot be longer than 4 characters.")]
         public string Tier { get; set; }
 
 
@@ -50,7 +59,7 @@ namespace ITI.Survey.Web.UI.Models
             this.KodeBlok = string.Empty;
             this.ContInOutId = 0;
             this.FlagAct = "MOVE";
-            
+            this.SideChoose = string.Empty;
         }
         public void BlokSystemValidate(ModelStateDictionary modelState)
         {

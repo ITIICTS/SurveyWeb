@@ -14,9 +14,11 @@ namespace ITI.Survey.Web.UI.Models
         public string ResultMessage { get; set; }
 
         [Display(Name = "Scan Card ID")]
+        [StringLength(20, ErrorMessage = "Scanned Card ID cannot be longer than 20 characters.")]
         public Int64 ContCardID { get; set; }
 
         [Display(Name = "Nomor Mobil")]
+        [StringLength(10, ErrorMessage = "Nomor Mobil cannot be longer than 10 characters.")]
         public string NoMobil { get; set; }
 
         [Display(Name = "Flag Act")]
@@ -25,6 +27,7 @@ namespace ITI.Survey.Web.UI.Models
 
 
         [Display(Name = "Angkutan")]
+        [StringLength(40, ErrorMessage = "Angkutan cannot be longer than 40 characters.")]
         public string Angkutan { get; set; }
 
 
