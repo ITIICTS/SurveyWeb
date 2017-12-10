@@ -77,7 +77,7 @@ namespace ITI.Survey.Web.UI.Controllers
             return Json(Blokmodel, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
-        public ActionResult Process(BlokSystemModel model)
+        public ActionResult Process(BlokSystemModel model, UserData userData)
         {
             string _kodeblok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
 
@@ -117,6 +117,11 @@ namespace ITI.Survey.Web.UI.Controllers
                     model.activeuser = Username;
                     model.Location = _kodeblok;
                     model.KodeBlok = _kodeblok;
+
+                    // User Data from Login, look the step carefully.
+                    model.EqpId = userData.HEID;
+                    model.OPID = userData.OPID;
+
                     //model.BlokSystemValidate(ModelState);
                     //if (ModelState.IsValid)
                     //{

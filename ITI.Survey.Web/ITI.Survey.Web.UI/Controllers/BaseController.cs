@@ -27,6 +27,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 ViewBag.ContainerSize = GetDropListByDataTable(ds.Tables["dt2"]);
                 ViewBag.ContainerType = GetDropListByDataTable(ds.Tables["dt3"]);
                 ViewBag.Customers = GetDropListByDataTable(ds.Tables["dt4"]);
+                ViewBag.Operators = GetDropListByDataTable(ds.Tables["dt5"], "PILIH OPID");
             }
         }
 
