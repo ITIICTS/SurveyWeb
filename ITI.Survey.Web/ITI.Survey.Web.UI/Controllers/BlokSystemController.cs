@@ -79,6 +79,12 @@ namespace ITI.Survey.Web.UI.Controllers
         [HttpPost]
         public ActionResult Process(BlokSystemModel model, UserData userData)
         {
+            model.BlokSystemValidate(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+            }
+
             string _kodeblok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
 
             var status = false;
@@ -122,10 +128,6 @@ namespace ITI.Survey.Web.UI.Controllers
                     model.EqpId = userData.HEID;
                     model.OPID = userData.OPID;
 
-                    //model.BlokSystemValidate(ModelState);
-                    //if (ModelState.IsValid)
-                    //{
-
                     var kodeBlok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
                     model.FlagAct = "MOVE";
                     // Do Logical Process
@@ -143,7 +145,7 @@ namespace ITI.Survey.Web.UI.Controllers
                     model.ResultMessage = stackingService.SubmitBlokMove(Converter.ConvertToXML(model));
                     if (model.ResultMessage.Contains("Error"))
                     {
-                        return View(model);
+                        status = false;
                     }
                     else
                     {
@@ -158,13 +160,7 @@ namespace ITI.Survey.Web.UI.Controllers
 
 
                     return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
-                    //}
-                    //else
-                    //{
-                    //    return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
-                    //}
                 }
-                //return RedirectToAction("Index");
             }
             catch
             {

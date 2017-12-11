@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ITI.Survey.Web.UI.Filters;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 namespace ITI.Survey.Web.UI.Controllers
 {
     [Authorize]
+    [SurveyActionFilter]
     public class HomeController : BaseController
     {
         public ActionResult Index()

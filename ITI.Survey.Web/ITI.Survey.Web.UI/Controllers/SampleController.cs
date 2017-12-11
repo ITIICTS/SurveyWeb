@@ -1,4 +1,5 @@
 ﻿using AGY.Solution.Helper;
+using ITI.Survey.Web.UI.Filters;
 using ITI.Survey.Web.UI.Models;
 using System;
 using System.Collections.Generic;
@@ -7,6 +8,7 @@ using System.Web.Mvc;
 namespace ITI.Survey.Web.UI.Controllers
 {
     [Authorize]
+    [SurveyActionFilter]
     public class SampleController : BaseController
     {
 

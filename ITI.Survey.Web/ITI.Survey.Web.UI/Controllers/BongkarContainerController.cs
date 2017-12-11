@@ -1,4 +1,5 @@
 ﻿using AGY.Solution.Helper.Common;
+using ITI.Survey.Web.UI.Filters;
 using ITI.Survey.Web.UI.Models;
 using System.Linq;
 using System.Web.Mvc;
@@ -6,6 +7,7 @@ using System.Web.Mvc;
 namespace ITI.Survey.Web.UI.Controllers
 {
     [Authorize]
+    [SurveyActionFilter]
     public class BongkarContainerController : BaseController
     {
         public ActionResult BongkarContainerAV()
