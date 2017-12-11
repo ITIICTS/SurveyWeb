@@ -1,166 +1,159 @@
 ﻿@model ITI.Survey.Web.UI.Models.InputNoMobilModel
 
 @{
-    ViewBag.Title = "Input No Mobil";
+    ViewBag.Title = "INPUT NOMOR MOBIL";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using AGY.Solution.Helper;
 
-<div class="row" id="samplecreateonly"></div>
-<div class="col-xs-12">
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <b>Input No Mobil</b>
-        </div>
-        <div class="panel-body">
-            <div class="form-horizontal">
-                <div class="row">
-                    <div class="col-md-12">
-                        <form>
+<div class="row" id="inputnomormobil">
+    <div class="col-xs-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <b>Input No Mobil</b>
+            </div>
+            <div class="panel-body">
+                <div class="form-horizontal">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form action="@Url.Action("InputMobil","InputNoMobil")" method="post">
 
-                            @Html.AntiForgeryToken()
-                            <div id="ErrorSummary">
-                                @Html.CustomValidationSummary()
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            <div id="scanner-container"></div>
-                                        </div>
-                                    </div>
+                                
+                                <div id="ErrorSummary">
+                                    @Html.CustomValidationSummary()
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                            @Html.LabelFor(model => model.ContCardID, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="input-group">
-                                                @Html.TextBoxFor(model => model.ContCardID, new { @class = "form-control" })
-                                                <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <div id="scanner-container"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                            <label class="control-label">atau silahkan upload file foto</label>
-                                        </div>
-                                        <div class="col-sm-6">
-
-
-                                            <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
-
-                                            @*    <input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
-
-                                            <div id="codeResult"> </div>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                            @Html.LabelFor(model => model.NoMobil, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @Html.TextBoxFor(model => model.NoMobil, new { @class = "form-control" })
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Cont Card ID</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input type="text" id="ContCardID" name="ContCardID" placeholder="ketik/scan kode kartu" class="form-control" maxlength="20" />
+                                                    <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">atau silahkan upload file foto</label>
+                                            </div>
+                                            <div class="col-sm-6">
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                            @Html.LabelFor(model => model.Angkutan, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @Html.TextBoxFor(model => model.Angkutan, new { @class = "form-control" })
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
 
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-group">
-                                        <div class="col-sm-6">
-                                            @Html.LabelFor(model => model.IsCombo, htmlAttributes: new { @class = "control-label" })
-                                        </div>
-                                        <div class="col-sm-6">
-                                            @Html.CheckBoxFor(model => model.IsCombo, new { @class = "form-control checkbox" })
+                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
+
+                                                <div id="codeResult"> </div>
+
+                                            </div>
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-md-offset-4 col-md-10">
-                                            <button type="button" class="btn btn-primary btn-save" data-confirm-msg="Do you want to save?" 
-                                                     data-href="@Url.Action("InputMobil", "InputNoMobil")">
-                                                <span>Save </span>
-                                            </button>
-                                            <button type="button" class="btn btn-primary btn-cancel" data-href="@Url.Action("Index","Sample")"><span>Cancel </span></button>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Nomor Mobil</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="NoMobil" class="form-control" maxlength="15" />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="row hidden">
-
-                                <div class="col-md-10">
-                                    <div class="form-group">
-                                        <div class="col-sm-4">
-                                            <label id="ResultMessage" class="control-label">Result</label>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Angkutan</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input type="text" name="Angkutan" class="form-control" />
+                                            </div>
                                         </div>
-                                        <div id="result_strip">
-                                            <ul class="thumbnails"></ul>
-                                        </div>
-                                        <div id="interactive" class="viewport"></div>
-                                        <div id="debug" class="detection"></div>
-
                                     </div>
                                 </div>
-                            </div>
 
-                        </form>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox" id="IsComboCbx" value="" />
+                                                        Is Combo
+                                                        <input type="hidden" name="IsCombo" value="false" />
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12">
+                                                <button type="button" value="Proses" class="btn btn-primary btn-save" data-href="@Url.Action("InputMobil","InputNoMobil")"
+                                                        data-confirm-msg="Submit Nomor Mobil?">
+                                                    <span> Submit </span>
+                                                </button>
+                                                <button type="reset" value="New" class="btn btn-primary btn-new"><span> New </span></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row hidden">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <label id="ResultMessage" class="control-label"></label>
+                                            </div>
+                                            <div id="result_strip">
+                                                <ul class="thumbnails"></ul>
+                                            </div>
+                                            <div id="interactive" class="viewport"></div>
+                                            <div id="debug" class="detection"></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-
 <script src="~/Scripts/quagga.min.js"></script>
 
 <script>
 
 
-
-
-
-
     var _scannerIsRunning = false;
     function DecoodeSingle() {
-        alert("test");
         var input = $("#barcodeFileInput");
 
-        alert("test");
         if (input[0].files && input[0].files.length) {
 
             var tmpImgURL = URL.createObjectURL(input[0].files[0]);
@@ -187,7 +180,7 @@
 
                     decoder: {
 
-                        readers: ["upc_reader", "code_128_reader", "code_39_reader", "code_39_vin_reader", "ean_8_reader", "ean_reader", "upc_e_reader", "codabar_reader"]
+                        readers: ["code_39_reader", "code_39_vin_reader"]
 
                     },
 
@@ -221,20 +214,13 @@
                 constraints: {
                     width: 300,
                     height: 200,
-                    facingMode: "user"
+                    facingMode: "environment"
                 },
             },
             decoder: {
                 readers: [
-                    "code_128_reader",
-                    "ean_reader",
-                    "ean_8_reader",
                     "code_39_reader",
-                    "code_39_vin_reader",
-                    "codabar_reader",
-                    "upc_reader",
-                    "upc_e_reader",
-                    "i2of5_reader"
+                    "code_39_vin_reader"
                 ],
                 debug: {
                     showCanvas: true,
@@ -326,3 +312,16 @@
     }, false);
 
 </script>
+
+@section scripts{
+    <script>
+        $(document).ready(function () {
+            $('#IsComboCbx').click(function () {
+                if ($(this).is(":checked"))
+                    $('input[name="IsCombo"]:hidden').val(true);
+                else
+                    $('input[name="IsCombo"]:hidden').val(false);
+            })
+        })
+    </script>
+}
