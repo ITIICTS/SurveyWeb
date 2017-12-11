@@ -40,6 +40,8 @@ namespace ITI.Survey.Web.UI.Models
 
 
         public string KodeBlok { get; set; }
+        public string EqpId { get; set; }
+        public string OPID { get; set; }
 
         public long ContInOutId { get; set; }
 
@@ -63,11 +65,11 @@ namespace ITI.Survey.Web.UI.Models
         }
         public void BlokSystemValidate(ModelStateDictionary modelState)
         {
-            if (this.ContInOutId <= 0)
-            {
-                modelState.AddModelError("ContInOutId", "Container In Out ID is Required.");
+            //if (this.ContInOutId <= 0)
+            //{
+            //    modelState.AddModelError("ContInOutId", "Container In Out ID is Required.");
 
-            }
+            //}
             if (string.IsNullOrEmpty(this.Blok))
             {
                 modelState.AddModelError("Blok", "Blok is Required.");

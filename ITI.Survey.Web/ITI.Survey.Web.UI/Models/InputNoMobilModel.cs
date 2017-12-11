@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Models
@@ -14,11 +11,10 @@ namespace ITI.Survey.Web.UI.Models
         public string ResultMessage { get; set; }
 
         [Display(Name = "Scan Card ID")]
-        [StringLength(20, ErrorMessage = "Scanned Card ID cannot be longer than 20 characters.")]
         public Int64 ContCardID { get; set; }
 
         [Display(Name = "Nomor Mobil")]
-        [StringLength(10, ErrorMessage = "Nomor Mobil cannot be longer than 10 characters.")]
+        [StringLength(10)]
         public string NoMobil { get; set; }
 
         [Display(Name = "Flag Act")]
@@ -27,7 +23,7 @@ namespace ITI.Survey.Web.UI.Models
 
 
         [Display(Name = "Angkutan")]
-        [StringLength(40, ErrorMessage = "Angkutan cannot be longer than 40 characters.")]
+        [StringLength(40)]
         public string Angkutan { get; set; }
 
 
@@ -43,7 +39,8 @@ namespace ITI.Survey.Web.UI.Models
             this.IsCombo = false;
             this.ResultMessage = string.Empty;
         }
-        public void InputNoMobilSampleValidate(ModelStateDictionary modelState)
+
+        public void Validate(ModelStateDictionary modelState)
         {
             if (this.ContCardID <= 0)
             {
