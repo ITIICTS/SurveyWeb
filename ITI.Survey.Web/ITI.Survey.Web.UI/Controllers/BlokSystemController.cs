@@ -78,7 +78,7 @@ namespace ITI.Survey.Web.UI.Controllers
         }
         [HttpPost]
         public ActionResult Process(BlokSystemModel model, UserData userData)
-        {
+         {
             model.BlokSystemValidate(ModelState);
             if (!ModelState.IsValid)
             {

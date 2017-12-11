@@ -19,11 +19,11 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:16241/Stacking.asmx" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:2018/Stacking.asmx" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Stacking1.wsdl" MetadataType="Wsdl" ID="ca578458-9562-49ce-82ca-d8bfe8949034" SourceId="1" SourceUrl="http://localhost:16241/Stacking.asmx?wsdl" />
-    <MetadataFile FileName="Stacking1.disco" MetadataType="Disco" ID="f1913d58-7704-4481-aadd-114288c17d73" SourceId="1" SourceUrl="http://localhost:16241/Stacking.asmx?disco" />
+    <MetadataFile FileName="Stacking.wsdl" MetadataType="Wsdl" ID="3b73390c-7c95-436c-a5fc-cda339d16b4c" SourceId="1" SourceUrl="http://localhost:2018/Stacking.asmx?wsdl" />
+    <MetadataFile FileName="Stacking.disco" MetadataType="Disco" ID="a5dcb62e-e02f-4150-a238-8e2cc89c6415" SourceId="1" SourceUrl="http://localhost:2018/Stacking.asmx?disco" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

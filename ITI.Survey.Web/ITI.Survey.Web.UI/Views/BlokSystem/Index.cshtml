@@ -173,7 +173,7 @@
                         type: 'post',
                         success: function (result) {
                             $('#ResultMessage').text(result.ResultMessage);
-                            $('#ContInOut').text(result.ContInOutId);
+                            $('#ContInOut').val(result.ContInOutId);
 
                             $('#ContainerSize').text(result.Size);
                             $('#ContainerSide').html("");
