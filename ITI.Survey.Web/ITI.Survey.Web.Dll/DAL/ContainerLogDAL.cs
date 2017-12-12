@@ -38,7 +38,11 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@eqpid", containerLog.EqpId);
                         npgsqlCommand.Parameters.AddWithValue("@flag_act", containerLog.FlagAct);
                         npgsqlCommand.Parameters.AddWithValue("@location", containerLog.Location);
-                        npgsqlCommand.Parameters.AddWithValue("@dtm", Convert.ToDateTime(containerLog.Dtm));
+                        if (string.IsNullOrWhiteSpace(containerLog.Dtm))
+                            npgsqlCommand.Parameters.AddWithValue("@dtm", DBNull.Value);
+                        else
+                            npgsqlCommand.Parameters.AddWithValue("@dtm", Convert.ToDateTime(containerLog.Dtm));
+
                         npgsqlCommand.Parameters.AddWithValue("@shipper", containerLog.Shipper);
                         npgsqlCommand.Parameters.AddWithValue("@operator", containerLog.Operator);
                         affectedRows = npgsqlCommand.ExecuteNonQuery();

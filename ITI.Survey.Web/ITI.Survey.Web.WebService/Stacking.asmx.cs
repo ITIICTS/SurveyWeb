@@ -732,6 +732,7 @@ namespace ITI.Survey.Web.WebService
                 containerLog.Location = dataRow["location"].ToString();
                 containerLog.Shipper = dataRow["shipper"].ToString();
                 containerLog.Operator = dataRow["opid"].ToString();
+                containerLog.Dtm = GlobalWebServiceDAL.GetServerDtm().ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
                 try
                 {
                     containerLogDAL.InsertContainerLog(containerLog);
