@@ -27,10 +27,16 @@ namespace ITI.Survey.Web.UI.Controllers
         IList<SearchContainerModel> SearchContainerByContNo(string userId, string containerNumber)
         {
             IList<SearchContainerModel> result = new List<SearchContainerModel>();
-
+            string contnumber = containerNumber.Trim().ToUpper().Replace(" ", "");
+            while (contnumber.Length < 11)
+            {
+                contnumber = contnumber + " ";
+            }
+            contnumber = contnumber.Substring(0, 4) + " " + contnumber.Substring(4, 3) + " " + contnumber.Substring(7, 3) + " " + contnumber.Substring(10, 1);
+            contnumber = contnumber.Trim();
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
-                String xml = stackingService.FillContInOutByContainerNumber(userId, containerNumber);
+                String xml = stackingService.FillContInOutByContainerNumber(userId, contnumber);
                 if (!string.IsNullOrEmpty(xml))
                 {
                     DataSet ds = Converter.ConvertXmlToDataSet(xml);
@@ -55,11 +61,13 @@ namespace ITI.Survey.Web.UI.Controllers
         [NonAction]
         IList<SearchContainerModel> SearchContainerByKodeBlok(string userId, string blok)
         {
+            string kdblok = blok.Trim().ToUpper().Replace(" ", "");
+
             IList<SearchContainerModel> result = new List<SearchContainerModel>();
 
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
-                String xml = stackingService.FillContInOutByBlokForStock(userId, blok);
+                String xml = stackingService.FillContInOutByBlokForStock(userId, kdblok);
                 if (!string.IsNullOrEmpty(xml))
                 {
                     DataSet ds = Converter.ConvertXmlToDataSet(xml);
@@ -75,10 +83,10 @@ namespace ITI.Survey.Web.UI.Controllers
         public ActionResult DataTableContainerByKodeBlok(SearchContainerModel objSearch)
         {
             DataTableModel objPage = new DataTableModel { CurrentPage = 1, IsDescending = true, PageSize = int.MaxValue, PropertyOrder = "Cont" };
-            IList<SearchContainerModel> resultSearch = SearchContainerByKodeBlok(Username, objSearch.KodeBlok);
+            IList<SearchContainerModel> resultSearch = SearchContainerByKodeBlok(Username, objSearch.Location);
             objPage.TotalRow = resultSearch.Count;
             ViewBag.Pagination = PageHelper.CreateLink(objPage.CurrentPage, objPage.TotalRow, objPage.PageSize, true);
-            return View("_DataTableContainerByKodeBlok", resultSearch);
+            return View("_DataTableContainerByBlok", resultSearch);
         }
     }
 }

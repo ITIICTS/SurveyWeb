@@ -13,7 +13,7 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
-    [AGYActionFilter]
+    //[AGYActionFilter]
     public class BaseController : Controller
     {
         public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
