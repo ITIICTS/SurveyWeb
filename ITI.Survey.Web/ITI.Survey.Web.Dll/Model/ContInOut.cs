@@ -89,7 +89,7 @@ namespace ITI.Survey.Web.Dll.Model
         public string GradeV2 { get; set; }
         public string MddcRemark { get; set; }
         public string BusinessUnit { get; set; }
-        public int Ventilation { get; set;}
+        public int Ventilation { get; set; }
         public string Humidity { get; set; }
         public string VendorAngkutanIn { get; set; }
         public string RkemIn { get; set; }
@@ -100,8 +100,11 @@ namespace ITI.Survey.Web.Dll.Model
         public int ContAge
         {
             get
-            {                
-                return DateTime.Now.Subtract(Convert.ToDateTime(DtmIn)).Days;
+            {
+                if (string.IsNullOrEmpty(DtmIn))
+                    return 0;
+                else
+                    return DateTime.Now.Subtract(Convert.ToDateTime(DtmIn)).Days;
             }
         }
 
@@ -212,7 +215,7 @@ namespace ITI.Survey.Web.Dll.Model
                 }
                 if (blackList.BlockOut)
                 {
-                    result.AppendLine( (blackList.BlockByMnr ? "[MNR] " : "")
+                    result.AppendLine((blackList.BlockByMnr ? "[MNR] " : "")
                        + blackList.DtmCreate.ToString("yyyy-MM-dd")
                        + " " + blackList.ContainerNumber
                        + ":" + blackList.Message);
@@ -256,7 +259,7 @@ namespace ITI.Survey.Web.Dll.Model
             BrokenRulesAssert("Invalid Grade", GradeV2.Length == 0 && (Type.Equals("HU") || Type.Equals("GP")));
 
             BrokenRulesAssert("Invalid Consignee Name", Consignee.Length == 0);
-            
+
             string[] split = ExVesselName.Split("-".ToCharArray(), 2);
             string ves = split[0];
             BrokenRulesAssert("Invalid ExVesselName", ves.Length == 0);
