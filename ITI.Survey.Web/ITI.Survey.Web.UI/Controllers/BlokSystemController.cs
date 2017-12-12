@@ -38,10 +38,9 @@ namespace ITI.Survey.Web.UI.Controllers
                 }
                 Blokmodel.ContNo = ContNoText.Substring(0, 4) + " " +
                     ContNoText.Substring(4, 3) + " " + ContNoText.Substring(7, 3) + " " + ContNoText.Substring(10, 1);
-                Blokmodel.ContNo.ToUpper();
 
                 string ContIntOutXML = string.Empty;
-                ContIntOutXML = stackingService.FillContInOutByContainerNumber(Username, Blokmodel.ContNo);
+                ContIntOutXML = stackingService.FillContInOutByContainerNumber(Username, Blokmodel.ContNo.ToUpper());
                 if (!string.IsNullOrEmpty(ContIntOutXML))
                 {
                     var dsContInOut = Converter.ConvertXmlToDataSet(ContIntOutXML);

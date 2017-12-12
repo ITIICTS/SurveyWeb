@@ -1,4 +1,4 @@
-﻿
+﻿@using AGY.Solution.Helper
 @{
     ViewBag.Title = "MUAT CONTAINER";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -8,20 +8,87 @@
     <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <b>CONTAINER DURATION</b>
+                <b>MUAT CONTAINER</b>
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
-                    <div class="row">
+                    <div class="row" id="transactionMuatScan">
                         <div class="col-md-12">
-                            <div id="muatcontainermodulyendyw">
+                            <form action="@Url.Action("ProsesMuatScan","MuatContainer")" method="post">
+                                @Html.AntiForgeryToken()
+                                <div id="ErrorSummary">
+                                    @Html.CustomValidationSummary()
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div class="form-group">
+                                            <div class="col-sm-4">
+                                                <div id="scanner-container"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">Silahkan ketik/scan kode kartu muat disini</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="input-group">
+                                                    <input type="text" id="ContCardID" name="ContCardID" placeholder="ketik/scan kode kartu" class="form-control" maxlength="20" />
+                                                    <span id="btnScan" class="input-group-addon btn-scan">Scan</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-sm-6">
+                                                <label class="control-label">atau silahkan upload file foto</label>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" />
+                                                <div id="codeResult"> </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <div class="col-md-12 text-center">
+                                                <button type="button" value="Proses" id="btn-proses" class="btn btn-primary"
+                                                        data-confirm-msg="Proses Muat Scan?" data-href="@Url.Action("ProsesMuatScan","MuatContainer")">
+                                                    <span>  Proses  </span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    @Html.HiddenJson(new ITI.Survey.Web.UI.Models.ContCardModel(), new { @id = "contcardmodel" })
+                    @Html.HiddenJson(new ITI.Survey.Web.UI.Models.CustDoModel(), new { @id = "cusdomodel" })
+
+                    <div class="row hidden" id="transactionMuat">
+                        <div class="col-md-12">
+                            <div id="muatcontainerdiv">
                                 <h3>Info</h3>
                                 <div>
                                     <p>
-                                        Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
-                                        ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
-                                        amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
-                                        odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+                                        <span id="text-info">
+                                            Information
+                                        </span>
                                     </p>
                                 </div>
                                 <h3>List</h3>
@@ -35,12 +102,84 @@
                                 </div>
                                 <h3>Load</h3>
                                 <div>
-                                    <p>
-                                        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                                        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                                        velit, faucibus interdum tellus ac justo. Vivamus non quam. In
-                                        suscipit faucibus urna.
-                                    </p>
+
+                                    <form action="@Url.Action("SubmitLoadContainer","MuatContainer")" method="post">
+                                        @Html.AntiForgeryToken()
+                                        <div id="ErrorSummary">
+                                            @Html.CustomValidationSummary()
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Load Container</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group">
+                                                            <input type="text" id="Cont" name="Cont" placeholder="ketik container number" class="form-control" maxlength="20" />
+                                                            <span class="input-group-addon btn-go" data-href="@Url.Action("GoLoadContainer","MuatContainer")">Go</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <label class="control-label" id="info-load"></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Seal</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group">
+                                                            <input type="text" id="Seal" name="Seal" placeholder="input seal" class="form-control" maxlength="50" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Remark</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group">
+                                                            <input type="text" id="Remark" name="Remark" placeholder="remark" class="form-control" maxlength="250" />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <button type="button" value="Proses" id="btn-submit" class="btn btn-primary"
+                                                                data-confirm-msg="Submit Kartu Muat?" data-href="@Url.Action("SubmitKartuMuat","MuatContainer")">
+                                                            <span>  Submit  </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </form>
+
                                 </div>
                                 <h3>Re-Select</h3>
                                 <div>
@@ -55,6 +194,9 @@
                         </div>
                     </div>
                 </div>
+
+                @Html.HiddenJson(new ITI.Survey.Web.UI.Models.InOutRevenueModel(), new { @id = "inoutrevenuemodel" })
+
             </div>
 
 
@@ -62,12 +204,301 @@
     </div>
 </div>
 
+<script src="~/Scripts/quagga.min.js"></script>
+<script>
+    //'use strict';
+
+    var _scannerIsRunning = false;
+
+    function DecoodeSingle() {
+        var input = $("#barcodeFileInput");
+
+        if (input[0].files && input[0].files.length) {
+
+            var tmpImgURL = URL.createObjectURL(input[0].files[0]);
+
+            Quagga.decodeSingle(
+
+                {
+
+                    inputStream: {
+
+                        size: 640,
+
+                        singleChannel: false
+
+                    },
+
+                    locator: {
+
+                        patchSize: "large",
+
+                        halfSample: false
+
+                    },
+
+                    decoder: {
+
+                        readers: ["code_39_reader", "code_39_vin_reader"]
+
+                    },
+
+                    locate: true,
+                    src: tmpImgURL
+
+                },
+
+                function (result) {
+
+                    if (result && result.codeResult && result.codeResult.code) {
+
+                        $("#ContCardID").val(result.codeResult.code);
+
+                    } else {
+
+                        $("#ContCardID").val("error");
+                    }
+
+                });
+        }
+    }
+    function startScanner() {
+        //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
+
+
+        if (!navigator.mediaDevices || !navigator.mediaDevices.enumerateDevices) {
+            alert("enumerateDevices() not supported.");
+            return;
+        }
+
+        var backCamID = '';
+
+        navigator.mediaDevices.enumerateDevices()
+        .then(function (devices) {
+            devices.forEach(function (device) {
+                //alert( JSON.stringify(device) );
+                if (device.kind == "videoinput" && device.label.indexOf("back") !== -1) {
+                    //alert("Back found!");
+                    //alert( JSON.stringify(device) );
+                    backCamID = device.deviceId;
+                    //alert(backCamID);
+                }
+            });
+        })
+        .catch(function (err) {
+            //alert(err.name + ": " + err.message);
+        });
+
+        //if (typeof (backCamID) == "undefined") {
+        //    alert("back camera not found.");
+        //}
+
+        Quagga.init({
+            inputStream: {
+                name: "Live",
+                type: "LiveStream",
+                target: document.querySelector('#scanner-container'),
+                constraints: {
+                    width: 300,
+                    height: 200,
+                    facingMode: "environment",
+                    deviceId: backCamID
+                },
+            },
+            decoder: {
+                readers: [
+                    "code_39_reader",
+                    "code_39_vin_reader"
+                ],
+                debug: {
+                    showCanvas: true,
+                    showPatches: true,
+                    showFoundPatches: true,
+                    showSkeleton: true,
+                    showLabels: true,
+                    showPatchLabels: true,
+                    showRemainingPatchLabels: true,
+                    boxFromPatches: {
+                        showTransformed: true,
+                        showTransformedBox: true,
+                        showBB: true
+                    }
+                }
+            },
+
+        }, function (err) {
+            if (err) {
+                console.log(err);
+                $("#ResultMessage").val(err);
+                //document.getElementById("ResultMessage").innerHTML = err;
+                return
+            }
+
+            console.log("Initialization finished. Ready to SCAN");
+            //            alert("Initialization finished. Ready to SCAN");
+            $("#ResultMessage").val("Initialization finished. Ready to SCAN");
+
+            Quagga.start();
+
+            // Set flag to is running
+            _scannerIsRunning = true;
+        });
+
+        Quagga.onProcessed(function (result) {
+            var drawingCtx = Quagga.canvas.ctx.overlay,
+                drawingCanvas = Quagga.canvas.dom.overlay;
+
+            if (result) {
+                if (result.boxes) {
+                    drawingCtx.clearRect(0, 0, parseInt(drawingCanvas.getAttribute("width")), parseInt(drawingCanvas.getAttribute("height")));
+                    result.boxes.filter(function (box) {
+                        return box !== result.box;
+                    }).forEach(function (box) {
+                        Quagga.ImageDebug.drawPath(box, { x: 0, y: 1 }, drawingCtx, { color: "green", lineWidth: 2 });
+                    });
+                }
+
+                if (result.box) {
+                    Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, { color: "#00F", lineWidth: 2 });
+                }
+
+                if (result.codeResult && result.codeResult.code) {
+                    Quagga.ImageDebug.drawPath(result.line, { x: 'x', y: 'y' }, drawingCtx, { color: 'red', lineWidth: 3 });
+                }
+            }
+        });
+
+
+        Quagga.onDetected(function (result) {
+            // alert(result.codeResult.code);
+            $("#ContCardID").val(result.codeResult.code);
+        });
+    }
+
+
+    // Start/stop scanner
+    document.getElementById("btnScan").addEventListener("click", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            document.getElementById("scanner-container").innerHTML = "";
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = true;
+            startScanner();
+        }
+    }, false);
+
+    //decode
+    document.getElementById("barcodeFileInput").addEventListener("change", function () {
+        if (_scannerIsRunning) {
+            _scannerIsRunning = false;
+            Quagga.stop();
+        } else {
+            _scannerIsRunning = false;
+            DecoodeSingle();
+        }
+    }, false);
+</script>
+
 @section scripts{
     <script>
         $(document).ready(function () {
+            $('div[id="transactionMuatScan"]').removeClass('hidden');
+            $('#muatcontainerdiv').accordion({
+                collapsible: true
+            });
 
-            $('#muatcontainermodulyendyw').accordion();
+            $('#btn-proses').Confirmation(function (href, $form, successmsg, failedmsg) {
 
+                $.ajax({
+                    url: href,
+                    data: { contCardID: $('#ContCardID', $form).val() },
+                    dataType: 'json',
+                    type: 'post',
+                    beforeSend: function () {
+                        $form.showloading();
+                    },
+                    complete: function () {
+                        $form.hideloading();
+                    },
+                    success: function (result) {
+                        if (result.Status == true) {
+                            if (successmsg != undefined) {
+                                PopupMessage(successmsg, function () {
+                                    if (result.Href != undefined)
+                                        window.location.href = result.Href;
+                                });
+                            } else {
+
+                                $('div[id="transactionMuat"]').removeClass('hidden');
+                                $('div[id="transactionMuatScan"]').addClass('hidden');
+                                $("#muatcontainerdiv").accordion("refresh");
+
+                                if (result.ContCard != undefined) {
+                                    $('#contcardmodel').val(result.ContCard);
+                                }
+
+                                if (result.CustDo != undefined) {
+                                    $('#cusdomodel').val(result.CustDo);
+                                }
+
+                                if (result.InOutRevenue != undefined) {
+                                    $('#inoutrevenuemodel').val(result.InOutRevenue);
+                                }
+
+                                if (result.Info != undefined) {
+                                    $('#text-info').text(result.Info);
+                                }
+
+                            }
+                        } else {
+                            if (result.errorList != undefined) {
+                                var errorResult = '';
+                                errorResult += "<div class='validation-summary-errors' data-valmsg-summary='true'><ul>";
+                                $.each(result.errorList, function (i, value) {
+                                    errorResult += "<li style='cursor: pointer; color: red; list-style-type: square; margin-left: 15px;' key='" + value.Key + "'>" + value.ErrorMessage + "</li>";
+                                });
+                                errorResult += "</ul></div>";
+
+                                $('#ErrorSummary', $form).html(errorResult);
+                                $(window).showErrorModelState();
+                            }
+                            else {
+                                if (failedmsg != undefined) {
+                                    PopupMessage(failedmsg);
+                                } else {
+                                    PopupMessage(result.Message);
+                                }
+                            }
+                        }
+                    }
+                });
+
+            });
+
+            $('.btn-go').click(function () {
+                var href = $(this).attr('data-href');
+                var $form = $(this).closest('form');
+                $.ajax({
+                    url: href,
+                    data: {
+                        cont: $('#Cont', $form).val(),
+                        cc: $('#contcardmodel').val(),
+                        cdo: $('#cusdomodel').val()
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    beforeSend: function () {
+                        $form.showloading();
+                    },
+                    complete: function () {
+                        $form.hideloading();
+                    },
+                    success: function (result) {
+                        $('#info-load', $form).text(result.Message);
+                    }
+                });
+            });
         })
-    </script>    
+    </script>
 }

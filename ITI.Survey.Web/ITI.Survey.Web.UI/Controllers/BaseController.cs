@@ -1,17 +1,23 @@
 ﻿using AGY.Solution.DataAccess;
+using AGY.Solution.Filter;
 using AGY.Solution.Helper.Common;
+using log4net;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
+    [AGYActionFilter]
     public class BaseController : Controller
     {
+        public static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         public BaseController()
         {
             ViewBag.CurrentUserName = System.Web.HttpContext.Current.User.Identity.Name;

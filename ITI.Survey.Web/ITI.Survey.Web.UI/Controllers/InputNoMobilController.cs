@@ -7,7 +7,6 @@ using System;
 namespace ITI.Survey.Web.UI.Controllers
 {
     [Authorize]
-    [SurveyActionFilter]
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil

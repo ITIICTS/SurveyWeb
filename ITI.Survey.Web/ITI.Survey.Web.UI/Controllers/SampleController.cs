@@ -8,7 +8,6 @@ using System.Web.Mvc;
 namespace ITI.Survey.Web.UI.Controllers
 {
     [Authorize]
-    [SurveyActionFilter]
     public class SampleController : BaseController
     {
 
