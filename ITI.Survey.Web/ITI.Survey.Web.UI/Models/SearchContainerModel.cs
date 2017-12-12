@@ -15,14 +15,13 @@ namespace ITI.Survey.Web.UI.Models
         public string Cont { get; set; }
         [Display(Name = "Kode Blok")]
 
-        public string KodeBlok { get; set; }
+        public string Location { get; set; }
         public string CustomerCode { get; set; }
         public string Size { get; set; }
         public string Type { get; set; }
         public string Condition { get; set; }
-        public DateTime? DtmIn { get; set; }
+        public string DtmIn { get; set; }
         public string ActIn { get; set; }
-        public string Location { get; set; }
         public string ContAge { get; set; }
         public string Message { get; set; }
 
@@ -33,7 +32,7 @@ namespace ITI.Survey.Web.UI.Models
             this.Size = string.Empty;
             this.Type = string.Empty;
             this.Condition = string.Empty;
-            this.DtmIn = null;
+            this.DtmIn = string.Empty;
             this.ActIn = string.Empty;
             this.Location = string.Empty;
             this.ContAge = string.Empty;
