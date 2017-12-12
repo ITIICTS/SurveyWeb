@@ -45,11 +45,11 @@ namespace ITI.Survey.Web.Dll.DAL
             }
             if (npgsqlDataReader["dtmrepaired"] != DBNull.Value)
             {
-                contInOut.DtmOut = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmrepaired")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
+                contInOut.DtmRepaired = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmrepaired")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
             if (npgsqlDataReader["dtmpti"] != DBNull.Value)
             {
-                contInOut.DtmOut = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmpti")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
+                contInOut.DtmPti = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmpti")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
 
             contInOut.WashStatus = npgsqlDataReader.GetString(14);
@@ -142,7 +142,7 @@ namespace ITI.Survey.Web.Dll.DAL
             }
             if (npgsqlDataReader["rfptidtmcompleted"] != DBNull.Value)
             {
-                contInOut.RfDtmEngineRepaired = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("rfptidtmcompleted")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
+                contInOut.RfPtiDtmCompleted = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("rfptidtmcompleted")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
             }
             contInOut.RfPtiRemark = GetRFPTIRemark(contInOut.Cont, npgsqlDataReader.GetString(68));
             contInOut.RfPtiCost = npgsqlDataReader.GetDouble(69);
