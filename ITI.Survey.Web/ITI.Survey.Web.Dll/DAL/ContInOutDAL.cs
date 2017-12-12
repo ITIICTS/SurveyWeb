@@ -390,7 +390,19 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlCommand.Parameters.AddWithValue("@Container", cont + '%');
                         using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
                         {
-                            if (npgsqlDataReader.Read())
+                            //if (npgsqlDataReader.Read())
+                            //{
+                            //    ContInOut contInOut = new ContInOut();
+                            //    MappingDataReaderToContCard(npgsqlDataReader, contInOut);
+                            //    if (isSetMessage)
+                            //    {
+                            //        BlackListDAL blackListDAL = new BlackListDAL();
+                            //        contInOut.Message = blackListDAL.GetMessageByContainerNumber(contInOut.Cont);
+                            //    }
+                            //    listContInOut.Add(contInOut);
+                            //}
+
+                            while (npgsqlDataReader.Read())
                             {
                                 ContInOut contInOut = new ContInOut();
                                 MappingDataReaderToContCard(npgsqlDataReader, contInOut);
