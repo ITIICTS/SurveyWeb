@@ -36,7 +36,7 @@ namespace ITI.Survey.Web.UI.Controllers
             contnumber = contnumber.Trim();
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
-                String xml = stackingService.FillContInOutByContainerNumber(userId, contnumber);
+                String xml = stackingService.FillContInOutByContainerForStock(userId, contnumber);
                 if (!string.IsNullOrEmpty(xml))
                 {
                     DataSet ds = Converter.ConvertXmlToDataSet(xml);
