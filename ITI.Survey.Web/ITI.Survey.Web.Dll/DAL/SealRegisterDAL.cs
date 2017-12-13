@@ -55,7 +55,7 @@ namespace ITI.Survey.Web.Dll.DAL
                         npgsqlConnection.Open();
                     }
 
-                    string query = string.Format("SELECT sealdestkode  " +
+                    string query = string.Format("SELECT sealregid||'-'||sealdestkode  " +
                                                 " FROM {1} " +
                                                 " WHERE customercode=@CustomerCode AND sealfrom<=@Seal AND sealto>=@Seal AND length(sealfrom)=length(@Seal) AND length(sealto)=length(@Seal) ",
                                         string.Format(DEFAULT_COLUMN, string.Empty),
@@ -67,7 +67,7 @@ namespace ITI.Survey.Web.Dll.DAL
                         object sealDestKode = npgsqlCommand.ExecuteScalar();
                         if(sealDestinationCode != null)
                         {
-                            sealDestinationCode = Convert.ToString(sealDestinationCode);
+                            sealDestinationCode = Convert.ToString(sealDestKode);
                         }
                     }
                 }

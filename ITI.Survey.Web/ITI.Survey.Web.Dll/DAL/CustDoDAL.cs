@@ -16,7 +16,10 @@ namespace ITI.Survey.Web.Dll.DAL
         private void MappingDataReaderToCustDo(NpgsqlDataReader npgsqlDataReader, CustDo custDo)
         {
             custDo.CustDoId = npgsqlDataReader.GetInt64(0);
-            custDo.DtmDo = npgsqlDataReader.GetDateTime(1);
+            if (npgsqlDataReader["dtmdo"] != DBNull.Value)
+            {
+                custDo.DtmDo = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmdo")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
+            }
             custDo.DoNumber = npgsqlDataReader.GetString(2);
             custDo.CustomerCode = npgsqlDataReader.GetString(3);
             custDo.Shipper = npgsqlDataReader.GetString(4);
@@ -34,7 +37,10 @@ namespace ITI.Survey.Web.Dll.DAL
             custDo.KodeKasir = npgsqlDataReader.GetString(16);
             custDo.ExBatalRealShipper = npgsqlDataReader.GetString(17);
             custDo.Remark2 = npgsqlDataReader.GetString(18);
-            custDo.DtmStartOut = npgsqlDataReader.GetDateTime(19);
+            if (npgsqlDataReader["dtmstartout"] != DBNull.Value)
+            {
+                custDo.DtmStartOut = npgsqlDataReader.GetDateTime(npgsqlDataReader.GetOrdinal("dtmstartout")).ToString(GlobalConstant.DATE_YMDHMS_LONG_FORMAT);
+            }
             custDo.BusinessUnit = npgsqlDataReader.GetString(20);
             custDo.Duration = npgsqlDataReader.GetInt32(21);
             custDo.Region = npgsqlDataReader.GetString(22);

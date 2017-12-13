@@ -23,7 +23,7 @@ namespace ITI.Survey.Web.Dll.DAL
                     }
 
                     string query = "SELECT cont " +
-                                    "FROM continout c " +
+                                    "FROM continout " +
                                     "   JOIN contoutseal ON contoutseal.continoutid=continout.continoutid " +
                                     "WHERE customercode=@CustomerCode AND contoutseal.seal=@Seal " +
                                     "       AND dtmout + interval '60 day' >= now() ";

@@ -41,7 +41,7 @@ namespace ITI.Survey.Web.WebService
         #endregion
 
         #region Private Method
-        private string CheckSeal(ContInOut contInOut)
+        private string CheckSeal(ContInOut contInOut, InOutRevenue inOutRevenue)
         {
             string message = string.Empty;
             try
@@ -59,14 +59,15 @@ namespace ITI.Survey.Web.WebService
                     {
                         continue;
                     }
-                    string sealDestinationCode = sealRegisterDAL.GetSealDestinationCodeBySealAndCustomerCode(seal, contInOut.CustomerCode);
-                    if (string.IsNullOrEmpty(sealDestinationCode))
+                    string sealRegIdAndDestinationCode = sealRegisterDAL.GetSealDestinationCodeBySealAndCustomerCode(seal, contInOut.CustomerCode);
+                    if (string.IsNullOrEmpty(sealRegIdAndDestinationCode))
                     {
                         message = seal + " : seal not registered!";
                         return message;
                     }
                     else
                     {
+                        string sealDestinationCode = sealRegIdAndDestinationCode.Substring(sealRegIdAndDestinationCode.IndexOf('-'));
                         // Seal Destination
                         if (sealDestinationCode.Length > 0)
                         {
@@ -82,11 +83,14 @@ namespace ITI.Survey.Web.WebService
                             }
                         }
 
-                        // Cek defined seal
-                        if (!custDoDefinedSealDAL.IsSealExistInCustDoDefinedSeal(contInOut.ContInOutId, seal))
+                        if (custDoDefinedSealDAL.GetCountDefinedSealByInOutRevenue(inOutRevenue) > 0)
                         {
-                            message = seal + " : not listed in defined seals !";
-                            return message;
+                            // Cek defined seal
+                            if (!custDoDefinedSealDAL.IsSealExistInCustDoDefinedSeal(inOutRevenue.RefId, seal))
+                            {
+                                message = seal + " : not listed in defined seals !";
+                                return message;
+                            }
                         }
                     }
 
@@ -1140,7 +1144,7 @@ namespace ITI.Survey.Web.WebService
                 #region Cek Seal and Get Seal error message
                 contInOut.Seal = dataRow["cont_Seal"].ToString();
                 // Check Seal
-                string sealMessage = CheckSeal(contInOut);
+                string sealMessage = CheckSeal(contInOut, inOutRevenue);
                 if (sealMessage.Length > 0)
                 {
                     result += string.Format("Error: Seal={0} \r\n", sealMessage);
@@ -1376,7 +1380,7 @@ namespace ITI.Survey.Web.WebService
 
                 #region Check Seal and Get Seal error message
                 contInOutReselect.Seal = dataRow["cont_Seal"].ToString();
-                string sealMessage = CheckSeal(contInOutReselect);
+                string sealMessage = CheckSeal(contInOutReselect, inOutRevenue);
                 if (sealMessage.Length > 0)
                 {
                     result += string.Format("Error: Seal={0} \r\n", sealMessage);
