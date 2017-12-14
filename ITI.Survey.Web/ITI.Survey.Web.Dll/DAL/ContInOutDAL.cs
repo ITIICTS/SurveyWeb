@@ -430,13 +430,13 @@ namespace ITI.Survey.Web.Dll.DAL
                     }
                     string query = string.Format("SELECT {0} " +
                                              " FROM {1} " +
-                                             " WHERE location = @Blok AND dtmout IS NULL " + 
+                                             " WHERE location like @Blok AND dtmout IS NULL " + 
                                              " ORDER BY dtmin DESC ",
                                          string.Format(DEFAULT_COLUMN, string.Empty),
                                          DEFAULT_TABLE);
                     using (NpgsqlCommand npgsqlCommand = new NpgsqlCommand(query, npgsqlConnection))
                     {
-                        npgsqlCommand.Parameters.AddWithValue("@Blok", blok);
+                        npgsqlCommand.Parameters.AddWithValue("@Blok", blok + '%');
                         using (NpgsqlDataReader npgsqlDataReader = npgsqlCommand.ExecuteReader())
                         {
                             while (npgsqlDataReader.Read())
