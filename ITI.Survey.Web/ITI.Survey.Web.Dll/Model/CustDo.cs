@@ -9,7 +9,7 @@ namespace ITI.Survey.Web.Dll.Model
     public class CustDo
     {
         public long CustDoId { get; set; }
-        public DateTime DtmDo { get; set; }
+        public string DtmDo { get; set; } //DateTime on PostgreSQL
         public string DoNumber { get; set; }
         public string CustomerCode { get; set; }
         public string Shipper { get; set; }
@@ -27,7 +27,7 @@ namespace ITI.Survey.Web.Dll.Model
         public string KodeKasir { get; set; }
         public string ExBatalRealShipper { get; set; }
         public string Remark2 { get; set; }
-        public DateTime DtmStartOut { get; set; }
+        public string DtmStartOut { get; set; } //DateTime on PostgreSQL
         public string BusinessUnit { get; set; }
         public int Duration { get; set; }
         public string Region { get; set; }
@@ -47,7 +47,7 @@ namespace ITI.Survey.Web.Dll.Model
         public CustDo()
         {
             CustDoId = 0;
-            DtmDo = DateTime.MinValue;
+            DtmDo = string.Empty;
             DoNumber = string.Empty;
             CustomerCode = string.Empty;
             Shipper = string.Empty;
@@ -65,7 +65,7 @@ namespace ITI.Survey.Web.Dll.Model
             KodeKasir = string.Empty;
             ExBatalRealShipper = string.Empty;
             Remark2 = string.Empty;
-            DtmStartOut = DateTime.MinValue;
+            DtmStartOut = string.Empty;
             BusinessUnit = string.Empty;
             Duration = 0;
             Region = string.Empty;
