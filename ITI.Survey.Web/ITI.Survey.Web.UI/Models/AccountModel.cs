@@ -51,8 +51,12 @@ namespace ITI.Survey.Web.UI.Models
 
             try
             {
-                if (machineName != Decryptor.DecryptString(ConfigurationManager.AppSettings["MachineName"])
-                    || ipaddress != Decryptor.DecryptString(ConfigurationManager.AppSettings["Address"]))
+                string keys = ConfigurationManager.AppSettings["Keys"];
+                string[] arrayKey = keys.Split('|');
+
+                if (machineName != Decryptor.DecryptString(arrayKey[0])
+                    || ipaddress != Decryptor.DecryptString(arrayKey[1])
+                    || DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[2])))
                 {
                     modelState.AddModelError("global", "Failed secure application process.");
                 }

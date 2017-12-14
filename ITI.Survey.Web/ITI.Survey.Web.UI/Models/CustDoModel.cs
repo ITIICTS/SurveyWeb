@@ -41,6 +41,10 @@ namespace ITI.Survey.Web.UI.Models
             {
                 return Flag.Contains("ALLOWDM");
             }
+            set
+            {
+                
+            }
         }
 
         public CustDoModel()

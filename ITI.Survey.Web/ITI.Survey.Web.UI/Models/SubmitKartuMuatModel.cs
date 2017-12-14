@@ -14,5 +14,6 @@
         public string OPID { get; set; }
 
         public bool IsCombo { get; set; }
+        public string Remark { get; set; }
     }
 }

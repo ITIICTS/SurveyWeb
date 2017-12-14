@@ -14,7 +14,7 @@
                 <div class="form-horizontal">
                     <div class="row" id="transactionMuatScan">
                         <div class="col-md-12">
-                            <form action="@Url.Action("ProsesMuatScan","MuatContainer")" method="post">
+                            <form method="post">
                                 @Html.AntiForgeryToken()
                                 <div id="ErrorSummary">
                                     @Html.CustomValidationSummary()
@@ -78,7 +78,7 @@
                     </div>
 
                     @Html.HiddenJson(new ITI.Survey.Web.UI.Models.ContCardModel(), new { @id = "contcardmodel" })
-                    @Html.HiddenJson(new ITI.Survey.Web.UI.Models.CustDoModel(), new { @id = "cusdomodel" })
+                    @Html.HiddenJson(new ITI.Survey.Web.UI.Models.CustDoModel(), new { @id = "custdomodel" })
 
                     <div class="row hidden" id="transactionMuat">
                         <div class="col-md-12">
@@ -86,9 +86,9 @@
                                 <h3>Info</h3>
                                 <div>
                                     <p>
-                                        <span id="text-info">
+                                        <div id="text-info">
                                             Information
-                                        </span>
+                                        </div>
                                     </p>
                                 </div>
                                 <h3>List</h3>
@@ -129,7 +129,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
-                                                        <label class="control-label" id="info-load"></label>
+                                                        <div id="info-load"></div>
+                                                        @Html.HiddenJson(new ITI.Survey.Web.UI.Models.ContInOutModel(), new { @id = "continoutmodelforload" })
                                                     </div>
                                                 </div>
                                             </div>
@@ -142,9 +143,7 @@
                                                         <label class="control-label">Seal</label>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <div class="input-group">
-                                                            <input type="text" id="Seal" name="Seal" placeholder="input seal" class="form-control" maxlength="50" />
-                                                        </div>
+                                                        <input type="text" id="Cont_Seal" name="Cont_Seal" placeholder="input seal" class="form-control" maxlength="50" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -157,9 +156,7 @@
                                                         <label class="control-label">Remark</label>
                                                     </div>
                                                     <div class="col-sm-6">
-                                                        <div class="input-group">
-                                                            <input type="text" id="Remark" name="Remark" placeholder="remark" class="form-control" maxlength="250" />
-                                                        </div>
+                                                        <input type="text" id="Remark" name="Remark" placeholder="remark" class="form-control" maxlength="250" />
                                                     </div>
                                                 </div>
                                             </div>
@@ -168,8 +165,8 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
-                                                    <div class="col-sm-12">
-                                                        <button type="button" value="Proses" id="btn-submit" class="btn btn-primary"
+                                                    <div class="col-sm-12 text-center">
+                                                        <button type="button" value="Proses" id="btn-submit-load" class="btn btn-primary"
                                                                 data-confirm-msg="Submit Kartu Muat?" data-href="@Url.Action("SubmitKartuMuat","MuatContainer")">
                                                             <span>  Submit  </span>
                                                         </button>
@@ -183,12 +180,152 @@
                                 </div>
                                 <h3>Re-Select</h3>
                                 <div>
-                                    <p>
-                                        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                                        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                                        velit, faucibus interdum tellus libero ac justo. non quam. In
-                                        suscipit faucibus urna.
-                                    </p>
+                                    <form method="post">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label class="control-label">Kembalikan Container</label>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div id="return-container-info"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="col-sm-3">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-11"><label class="control-label">Blok</label></div>
+                                                            <div class="col-md-11">
+                                                                <select name="Blok" class="form-control">
+                                                                    @for (char i = 'A'; i <= 'Z'; i++)
+                                                                    {
+                                                                        /**/
+                                                                        <option value="@i">@i</option>
+                                                                    }
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-11"><label class="control-label">Bay</label></div>
+                                                            <div class="col-md-11"><input type="text" name="Bay" class="form-control" maxlength="2" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-sm-3">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-11"><label class="control-label">Row</label></div>
+                                                            <div class="col-md-11"><input type="text" name="Row" class="form-control" maxlength="2" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="row">
+                                                        <div class="form-group">
+                                                            <div class="col-md-12"><label class="control-label">Tier</label></div>
+                                                            <div class="col-md-12"><input type="text" name="Tier" class="form-control" maxlength="1" /></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12 text-center">
+                                                        <button type="button" id="btn-pindahkan-blok" class="btn btn-primary"
+                                                                data-confirm-msg="Pindahkan Blok Container?" data-href="@Url.Action("PindahkanBlokContainer","MuatContainer")">
+                                                            <span> Pindahkan Blok </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <form method="post">
+                                        @Html.AntiForgeryToken()
+                                        <div id="ErrorSummary">
+                                            @Html.CustomValidationSummary()
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Re-Select Container</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="input-group">
+                                                            <input type="text" id="Cont" name="Cont" placeholder="ketik container number" class="form-control" maxlength="20" />
+                                                            <span class="input-group-addon btn-go" data-href="@Url.Action("GoReselectContainer","MuatContainer")">Go</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12">
+                                                        <div id="info-load"></div>
+                                                        @Html.HiddenJson(new ITI.Survey.Web.UI.Models.ContInOutModel(), new { @id = "continoutmodelforreselect" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Seal</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" id="Cont_Seal" name="Cont_Seal" placeholder="input seal" class="form-control" maxlength="50" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-6">
+                                                        <label class="control-label">Remark</label>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <input type="text" id="Remark" name="Remark" placeholder="remark" class="form-control" maxlength="250" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <div class="col-sm-12 text-center">
+                                                        <button type="button" value="Proses" id="btn-submit-load" class="btn btn-primary"
+                                                                data-confirm-msg="Submit Kartu Muat?" data-href="@Url.Action("ReSubmitKartuMuat","MuatContainer")">
+                                                            <span>  Submit  </span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -405,7 +542,8 @@
         $(document).ready(function () {
             $('div[id="transactionMuatScan"]').removeClass('hidden');
             $('#muatcontainerdiv').accordion({
-                collapsible: true
+                collapsible: true,
+                autoHeight: false
             });
 
             $('#btn-proses').Confirmation(function (href, $form, successmsg, failedmsg) {
@@ -439,7 +577,7 @@
                                 }
 
                                 if (result.CustDo != undefined) {
-                                    $('#cusdomodel').val(result.CustDo);
+                                    $('#custdomodel').val(result.CustDo);
                                 }
 
                                 if (result.InOutRevenue != undefined) {
@@ -447,7 +585,11 @@
                                 }
 
                                 if (result.Info != undefined) {
-                                    $('#text-info').text(result.Info);
+                                    $('#text-info').html(result.Info);
+                                }
+
+                                if (result.ContInOut != undefined) {
+                                    $('#continoutmodelforload').val(result.ContInOut);
                                 }
 
                             }
@@ -484,7 +626,7 @@
                     data: {
                         cont: $('#Cont', $form).val(),
                         cc: $('#contcardmodel').val(),
-                        cdo: $('#cusdomodel').val()
+                        cdo: $('#custdomodel').val()
                     },
                     dataType: 'json',
                     type: 'post',
@@ -495,7 +637,68 @@
                         $form.hideloading();
                     },
                     success: function (result) {
-                        $('#info-load', $form).text(result.Message);
+                        $('#info-load', $form).html(result.Message);
+                        $("#muatcontainerdiv").accordion({
+                            collapsible: true,
+                            autoHeight: false
+                        });
+                        $("#muatcontainerdiv").accordion("refresh");
+                        if (result.ContInOut != undefined) {
+                            $('#continoutmodelforload', $form).val(result.ContInOut);
+                        }
+                    }
+                });
+            });
+
+            $('#btn-submit-load').Confirmation(function (href, $form, successmsg, failedmsg) {
+
+                $.ajax({
+                    url: href,
+                    data: {
+                        skm: JSON.stringify($form.serializeObject()),
+                        cc: $('#contcardmodel').val(),
+                        cdo: $('#custdomodel').val(),
+                        rev: $('#inoutrevenuemodel').val(),
+                        cont: $('#continoutmodelforload', $form).val()
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    beforeSend: function () {
+                        $form.showloading();
+                    },
+                    complete: function () {
+                        $form.hideloading();
+                    },
+                    success: function (result) {
+                        if (result.Status == true) {
+                            if (successmsg != undefined) {
+                                PopupMessage(successmsg, function () {
+                                    if (result.Href != undefined)
+                                        window.location.href = result.Href;
+                                });
+                            } else {
+                                PopupMessage(result.Message);
+                            }
+                        } else {
+                            if (result.errorList != undefined) {
+                                var errorResult = '';
+                                errorResult += "<div class='validation-summary-errors' data-valmsg-summary='true'><ul>";
+                                $.each(result.errorList, function (i, value) {
+                                    errorResult += "<li style='cursor: pointer; color: red; list-style-type: square; margin-left: 15px;' key='" + value.Key + "'>" + value.ErrorMessage + "</li>";
+                                });
+                                errorResult += "</ul></div>";
+
+                                $('#ErrorSummary', $form).html(errorResult);
+                                $(window).showErrorModelState();
+                            }
+                            else {
+                                if (failedmsg != undefined) {
+                                    PopupMessage(failedmsg);
+                                } else {
+                                    PopupMessage(result.Message);
+                                }
+                            }
+                        }
                     }
                 });
             });

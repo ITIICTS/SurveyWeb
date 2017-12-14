@@ -123,6 +123,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 }
                 else
                 {
+                    info = LoadContCard(info, contCard ?? new ContCardModel(), custDo ?? new CustDoModel(), inOutRevenue ?? new InOutRevenueModel());
                     return Json(new
                     {
                         Status = status,
@@ -147,6 +148,54 @@ namespace ITI.Survey.Web.UI.Controllers
             return Json(new { Status = status, Message = message }, JsonRequestBehavior.AllowGet);
         }
 
+        public string LoadContCard(string txtInfo, ContCardModel cc, CustDoModel cdo, InOutRevenueModel rev)
+        {
+            txtInfo = "";
+
+            #region Load Container
+            DateTime sekarang = DateTime.Now;
+            DateTime dtmstartout = Convert.ToDateTime(cdo.DtmStartOut);
+            if (sekarang < dtmstartout)
+            {
+                txtInfo = "Container tdk boleh keluar sebelum " + cdo.DtmStartOut;
+                return txtInfo;
+            }
+
+            if (rev.IsCanceled == 1)
+            {
+                txtInfo = "OR sudah dibatalkan";
+                return txtInfo;
+            }
+
+            if (rev.KasirNote.ToUpper().Contains("#NOOUT"))
+            {
+                txtInfo = "OR ini tidak boleh keluar";
+                return txtInfo;
+            }
+
+            bool allowdm = cdo.AllowDM;
+            string cdoattribs = allowdm ? " [ALLOWDM]" : "";
+
+            txtInfo = "";
+
+            txtInfo += cc.ContCardID.ToString() + " : " + rev.RefId.ToString() + "<br />";
+            txtInfo += "*** " + cc.Cont + " --- " + cc.Size + " " + cc.Type + " ***<br />";
+            txtInfo += "SEAL NUMBER: " + cc.Seal + " ***<br />";
+            txtInfo += "DO NUMBER: " + cdo.DoNumber + "<br />";
+            txtInfo += "CUSTOMER: " + cdo.CustomerCode + "<br />";
+            txtInfo += "SHIPPER: " + cdo.Shipper + "<br />";
+            txtInfo += "DESTINATION: " + cdo.DestinationName + "<br />";
+            txtInfo += "VSLVOY: " + cdo.VesselVoyageName + "<br />";
+            txtInfo += "REMARKS: " + cdo.Remarks + "<br />";
+            txtInfo += "REMARK2: " + cdo.Remark2 + "<br />";
+            txtInfo += "--------------------<br />";
+            txtInfo += cdoattribs + "<br />";
+
+            #endregion
+
+            return txtInfo;
+        }
+
         [HttpPost]
         public ActionResult GoLoadContainer(string cont, string cc, string cdo)
         {
@@ -155,6 +204,7 @@ namespace ITI.Survey.Web.UI.Controllers
 
             ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
             CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
+            ContInOutModel contInOut = null;
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
                 string ContNo = cont.Trim().ToUpper().Replace(" ", "");
@@ -171,7 +221,7 @@ namespace ITI.Survey.Web.UI.Controllers
                     else
                     {
                         var dtContInOut = Converter.ConvertXmlToDataTable(xmlContInOut);
-                        ContInOutModel contInOut = dtContInOut.ToList<ContInOutModel>().FirstOrDefault();
+                        contInOut = dtContInOut.ToList<ContInOutModel>().FirstOrDefault();
 
                         if (contInOut.CustomerCode != custDo.CustomerCode)
                         {
@@ -190,29 +240,66 @@ namespace ITI.Survey.Web.UI.Controllers
                             }
                             else
                             {
-                                message = contInOut.Cont + "\r\n";
-                                message += " " + contInOut.Size + " " + contInOut.Type + " " + contInOut.Condition + " " + contInOut.Payload + " " + contInOut.Manufacture + " " + contInOut.Grade + "\r\n";
+                                message = contInOut.Cont + "<br />";
+                                message += " " + contInOut.Size + " " + contInOut.Type + " " + contInOut.Condition + " " + contInOut.Payload + " " + contInOut.Manufacture + " " + contInOut.Grade + "<br />";
 
-                                message += "[ Duration : " + DateTime.Now.Subtract(Convert.ToDateTime(contInOut.DtmIn)).Days + " ]\r\n";
-                                message += "DESCRIPTION\r\n";
-                                message += "A. SEAL 1      : " + contCard.Seal1 + "\r\n";
-                                message += "B. SEAL 2      : " + contCard.Seal2 + "\r\n";
-                                message += "C. SEAL 3      : " + contCard.Seal3 + "\r\n";
-                                message += "D. SEAL 4      : " + contCard.Seal4 + "\r\n";
-                                message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "\r\n";
-                                message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "\r\n";
+                                message += "[ Duration : " + DateTime.Now.Subtract(Convert.ToDateTime(contInOut.DtmIn)).Days + " ]<br />";
+                                message += "DESCRIPTION<br />";
+                                message += "A. SEAL 1      : " + contCard.Seal1 + "<br />";
+                                message += "B. SEAL 2      : " + contCard.Seal2 + "<br />";
+                                message += "C. SEAL 3      : " + contCard.Seal3 + "<br />";
+                                message += "D. SEAL 4      : " + contCard.Seal4 + "<br />";
+                                message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
+                                message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
                             }
                         }
                     }
                 }
             }
+            return Json(new { Status = status, Message = message, ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel()) }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult SubmitKartuMuat(string skm, string cc, string cdo, string rev, string cont, UserData userData)
+        {
+            SubmitKartuMuatModel model = JsonConvert.DeserializeObject<SubmitKartuMuatModel>(skm, JSONSetting);
+            ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
+            CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
+            InOutRevenueModel inOutRevenue = JsonConvert.DeserializeObject<InOutRevenueModel>(rev, JSONSetting);
+            ContInOutModel contInOut = JsonConvert.DeserializeObject<ContInOutModel>(cont, JSONSetting);
+
+            model.ContInOutId = contInOut.ContInOutId;
+            model.ContInOutId_Reselect = 0;
+            model.ContCardId = contCard.ContCardID;
+            model.CustDoId = custDo.CustDoId;
+            model.InOutRevenueId = inOutRevenue.InOutRevenueId;
+            model.Cont_NoMobilOut = contCard.NoMobilOut;
+            model.ActiveUser = Username;
+            model.EqpId = userData.HEID;
+            model.OPID = userData.OPID;
+
+            bool status = true;
+            string message = string.Empty;
+            using (var stackingService = new StackingWebService.StackingSoapClient())
+            {
+                string xml = Converter.ConvertToXML(model);
+                message = stackingService.SubmitKartuMuat(xml);
+                if (message.Contains("Error"))
+                {
+                    status = false;
+                    message = message.Replace("Error: ", "");
+                }
+            }
+
             return Json(new { Status = status, Message = message }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
-        public ActionResult GoReselectContainer(string cont, string cdo)
+        public ActionResult GoReselectContainer(string cont, string cc, string cdo)
         {
+            ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
             CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
+
             return Json(new { }, JsonRequestBehavior.AllowGet);
         }
     }
