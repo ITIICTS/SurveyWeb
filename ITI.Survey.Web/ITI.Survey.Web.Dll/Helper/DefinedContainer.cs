@@ -215,6 +215,7 @@ namespace ITI.Survey.Web.Dll.Helper
         public void FromString(string input)
         {            
             string[] split = input.Split(",".ToCharArray());
+            ListDefinedContainerItem = new List<DefinedContainerItem>();
             foreach (string item in split)
             {
                 string item1 = item.Trim();
