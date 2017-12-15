@@ -83,27 +83,26 @@
                     <div class="row hidden" id="transactionMuat">
                         <div class="col-md-12">
                             <div id="muatcontainerdiv">
-                                <h3>Info</h3>
+                                <h3 class="content1">Info</h3>
                                 <div>
-                                    <p>
-                                        <div id="text-info">
-                                            Information
+                                    <div id="text-info">
+                                        Information
+                                    </div>
+                                </div>
+                                <h3 class="content2">List</h3>
+                                <div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="data-result">
+                                                @Html.Partial("_DataTableMuatContainer", new List<ITI.Survey.Web.UI.Models.ContainerDurationModel>())
+                                            </div>
                                         </div>
-                                    </p>
+                                    </div>
                                 </div>
-                                <h3>List</h3>
-                                <div>
-                                    <p>
-                                        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
-                                        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
-                                        velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
-                                        suscipit faucibus urna.
-                                    </p>
-                                </div>
-                                <h3>Load</h3>
+                                <h3 class="content3">Load</h3>
                                 <div>
 
-                                    <form action="@Url.Action("SubmitLoadContainer","MuatContainer")" method="post">
+                                    <form id="FormLoadContainer" action="@Url.Action("SubmitLoadContainer","MuatContainer")" method="post">
                                         @Html.AntiForgeryToken()
                                         <div id="ErrorSummary">
                                             @Html.CustomValidationSummary()
@@ -118,7 +117,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="input-group">
                                                             <input type="text" id="Cont" name="Cont" placeholder="ketik container number" class="form-control" maxlength="20" />
-                                                            <span class="input-group-addon btn-go" data-href="@Url.Action("GoLoadContainer","MuatContainer")">Go</span>
+                                                            <span class="input-group-addon btn-go-load" data-href="@Url.Action("GoLoadContainer","MuatContainer")">Go</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -166,8 +165,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="col-sm-12 text-center">
-                                                        <button type="button" value="Proses" id="btn-submit-load" class="btn btn-primary"
-                                                                data-confirm-msg="Submit Kartu Muat?" data-href="@Url.Action("SubmitKartuMuat","MuatContainer")">
+                                                        <button type="button" value="Proses" id="btn-submit-load" class="btn btn-primary" disabled
+                                                                data-confirm-msg="Muat Container?" data-href="@Url.Action("SubmitKartuMuat","MuatContainer")">
                                                             <span>  Submit  </span>
                                                         </button>
                                                     </div>
@@ -178,9 +177,9 @@
                                     </form>
 
                                 </div>
-                                <h3>Re-Select</h3>
+                                <h3 class="content4">Re-Select</h3>
                                 <div>
-                                    <form method="post">
+                                    <form method="post" id="FormReturnContainer">
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label class="control-label">Kembalikan Container</label>
@@ -254,7 +253,7 @@
                                             </div>
                                         </div>
                                     </form>
-                                    <form method="post">
+                                    <form method="post" id="FormReselectContainer">
                                         @Html.AntiForgeryToken()
                                         <div id="ErrorSummary">
                                             @Html.CustomValidationSummary()
@@ -269,7 +268,7 @@
                                                     <div class="col-sm-6">
                                                         <div class="input-group">
                                                             <input type="text" id="Cont" name="Cont" placeholder="ketik container number" class="form-control" maxlength="20" />
-                                                            <span class="input-group-addon btn-go" data-href="@Url.Action("GoReselectContainer","MuatContainer")">Go</span>
+                                                            <span class="input-group-addon btn-go-reselect" data-href="@Url.Action("GoReselectContainer","MuatContainer")">Go</span>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -280,7 +279,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
-                                                        <div id="info-load"></div>
+                                                        <div id="info-reselect"></div>
                                                         @Html.HiddenJson(new ITI.Survey.Web.UI.Models.ContInOutModel(), new { @id = "continoutmodelforreselect" })
                                                     </div>
                                                 </div>
@@ -317,8 +316,8 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="col-sm-12 text-center">
-                                                        <button type="button" value="Proses" id="btn-submit-load" class="btn btn-primary"
-                                                                data-confirm-msg="Submit Kartu Muat?" data-href="@Url.Action("ReSubmitKartuMuat","MuatContainer")">
+                                                        <button type="button" value="Proses" id="btn-submit-reselect" class="btn btn-primary" disabled
+                                                                data-confirm-msg="Ganti Container?" data-href="@Url.Action("ReSubmitKartuMuat","MuatContainer")">
                                                             <span>  Submit  </span>
                                                         </button>
                                                     </div>
@@ -541,9 +540,11 @@
     <script>
         $(document).ready(function () {
             $('div[id="transactionMuatScan"]').removeClass('hidden');
-            $('#muatcontainerdiv').accordion({
+
+            $("#muatcontainerdiv").accordion({
                 collapsible: true,
-                autoHeight: false
+                header: "h3",
+                heightStyle: "content"
             });
 
             $('#btn-proses').Confirmation(function (href, $form, successmsg, failedmsg) {
@@ -570,6 +571,12 @@
 
                                 $('div[id="transactionMuat"]').removeClass('hidden');
                                 $('div[id="transactionMuatScan"]').addClass('hidden');
+                                $("#muatcontainerdiv").accordion({
+                                    collapsible: true,
+                                    header: "h3",
+                                    active: $('#muatcontainerdiv h3').index($('.content1')),
+                                    heightStyle: "content"
+                                });
                                 $("#muatcontainerdiv").accordion("refresh");
 
                                 if (result.ContCard != undefined) {
@@ -590,6 +597,43 @@
 
                                 if (result.ContInOut != undefined) {
                                     $('#continoutmodelforload').val(result.ContInOut);
+                                }
+
+                                if (result.MuatContainers != undefined) {
+                                    $('div[class="data-result"]').html(result.MuatContainers);
+                                    $('div[class="data-result"]').find('table').DataTable({
+                                        responsive: true,
+                                        columnDefs: [{
+                                            "targets": 'no-sort',
+                                            "orderable": false
+                                        }]
+                                    });
+
+                                    $('div[class="data-result"]').find('.load-container').each(function () {
+                                        $(this).click(function () {
+                                            var cont = $(this).attr('data-container');
+                                            $("#muatcontainerdiv").accordion({
+                                                collapsible: true,
+                                                header: "h3",
+                                                active: $('#muatcontainerdiv h3').index($('.content3')),
+                                                heightStyle: "content"
+                                            });
+                                            $('input[name="Cont"]', $('form[id="FormLoadContainer"]')).val(cont).focus();
+                                        })
+                                    })
+
+                                    $('div[class="data-result"]').find('.reselect-container').each(function () {
+                                        $(this).click(function () {
+                                            var cont = $(this).attr('data-container');
+                                            $("#muatcontainerdiv").accordion({
+                                                collapsible: true,
+                                                header: "h3",
+                                                active: $('#muatcontainerdiv h3').index($('.content4')),
+                                                heightStyle: "content"
+                                            });
+                                            $('input[name="Cont"]', $('form[id="FormReselectContainer"]')).val(cont).focus();
+                                        })
+                                    })
                                 }
 
                             }
@@ -618,7 +662,7 @@
 
             });
 
-            $('.btn-go').click(function () {
+            $('.btn-go-load').click(function () {
                 var href = $(this).attr('data-href');
                 var $form = $(this).closest('form');
                 $.ajax({
@@ -640,11 +684,18 @@
                         $('#info-load', $form).html(result.Message);
                         $("#muatcontainerdiv").accordion({
                             collapsible: true,
-                            autoHeight: false
+                            header: "h3",
+                            active: $('#muatcontainerdiv h3').index($('.content3')),
+                            heightStyle: "content"
                         });
                         $("#muatcontainerdiv").accordion("refresh");
                         if (result.ContInOut != undefined) {
                             $('#continoutmodelforload', $form).val(result.ContInOut);
+                        }
+                        if (result.Status) {
+                            $('#btn-submit-load').removeAttr('disabled')
+                        } else {
+                            $('#btn-submit-load').attr('disabled', 'disabled');
                         }
                     }
                 });
@@ -660,6 +711,98 @@
                         cdo: $('#custdomodel').val(),
                         rev: $('#inoutrevenuemodel').val(),
                         cont: $('#continoutmodelforload', $form).val()
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    beforeSend: function () {
+                        $form.showloading();
+                    },
+                    complete: function () {
+                        $form.hideloading();
+                    },
+                    success: function (result) {
+                        if (result.Status == true) {
+                            if (successmsg != undefined) {
+                                PopupMessage(successmsg, function () {
+                                    if (result.Href != undefined)
+                                        window.location.href = result.Href;
+                                });
+                            } else {
+                                PopupMessage(result.Message);
+                            }
+                        } else {
+                            if (result.errorList != undefined) {
+                                var errorResult = '';
+                                errorResult += "<div class='validation-summary-errors' data-valmsg-summary='true'><ul>";
+                                $.each(result.errorList, function (i, value) {
+                                    errorResult += "<li style='cursor: pointer; color: red; list-style-type: square; margin-left: 15px;' key='" + value.Key + "'>" + value.ErrorMessage + "</li>";
+                                });
+                                errorResult += "</ul></div>";
+
+                                $('#ErrorSummary', $form).html(errorResult);
+                                $(window).showErrorModelState();
+                            }
+                            else {
+                                if (failedmsg != undefined) {
+                                    PopupMessage(failedmsg);
+                                } else {
+                                    PopupMessage(result.Message);
+                                }
+                            }
+                        }
+                    }
+                });
+            });
+
+            $('.btn-go-reselect').click(function () {
+                var href = $(this).attr('data-href');
+                var $form = $(this).closest('form');
+                $.ajax({
+                    url: href,
+                    data: {
+                        cont: $('#Cont', $form).val(),
+                        cc: $('#contcardmodel').val(),
+                        cdo: $('#custdomodel').val()
+                    },
+                    dataType: 'json',
+                    type: 'post',
+                    beforeSend: function () {
+                        $form.showloading();
+                    },
+                    complete: function () {
+                        $form.hideloading();
+                    },
+                    success: function (result) {
+                        $('#info-reselect', $form).html(result.Message);
+                        $("#muatcontainerdiv").accordion({
+                            collapsible: true,
+                            header: "h3",
+                            active: $('#muatcontainerdiv h3').index($('.content4')),
+                            heightStyle: "content"
+                        });
+                        $("#muatcontainerdiv").accordion("refresh");
+                        if (result.ContInOut != undefined) {
+                            $('#continoutmodelforreselect', $form).val(result.ContInOut);
+                        }
+                        if (result.Status) {
+                            $('#btn-submit-reselect').removeAttr('disabled')
+                        } else {
+                            $('#btn-submit-reselect').attr('disabled', 'disabled');
+                        }
+                    }
+                });
+            });
+
+            $('#btn-submit-reselect').Confirmation(function (href, $form, successmsg, failedmsg) {
+
+                $.ajax({
+                    url: href,
+                    data: {
+                        skm: JSON.stringify($form.serializeObject()),
+                        cc: $('#contcardmodel').val(),
+                        cdo: $('#custdomodel').val(),
+                        rev: $('#inoutrevenuemodel').val(),
+                        cont: $('#continoutmodelforreselect', $form).val()
                     },
                     dataType: 'json',
                     type: 'post',

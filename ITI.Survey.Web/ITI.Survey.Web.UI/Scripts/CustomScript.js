@@ -338,6 +338,8 @@ function GetMonthName(monthNumber) {
 }
 
 $(document).ready(function () {
+    InitializeMandatorySymbol();
+
     $('div[class="data-result"]').find('table').DataTable({
         responsive: true,
         columnDefs: [{

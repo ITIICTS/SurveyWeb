@@ -27,7 +27,7 @@ namespace ITI.Survey.Web.UI.Controllers
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
                 String xml = stackingService.FillContainerDuration(userId, customerCode, size, type, condition, minDuration, sortBy);
-                if (!string.IsNullOrEmpty(xml))
+                if (!string.IsNullOrWhiteSpace(xml) || !xml.Contains("Error"))
                 {
                     DataSet ds = Converter.ConvertXmlToDataSet(xml);
                     DataTable dt = ds.Tables[0];

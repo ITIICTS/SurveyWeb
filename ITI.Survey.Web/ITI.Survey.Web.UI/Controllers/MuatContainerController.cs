@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using AGY.Solution.Helper;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
@@ -40,6 +41,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 string xmlCustDo = string.Empty;
                 CustDoModel custDo = null;
                 string info = string.Empty;
+                IList<ContainerDurationModel> muatContainer = new List<ContainerDurationModel>();
                 using (var stackingService = new StackingWebService.StackingSoapClient())
                 {
                     string xmlContCard = stackingService.FillContCardByIdAndCardMode(Username, contCardID, "OUT");
@@ -110,6 +112,13 @@ namespace ITI.Survey.Web.UI.Controllers
                                 {
                                     var dtCustDo = Converter.ConvertXmlToDataTable(xmlCustDo);
                                     custDo = dtCustDo.ToList<CustDoModel>().FirstOrDefault();
+
+                                    string xmlContainers = stackingService.FillContainerDuration(Username, custDo.CustomerCode, contCard.Size, contCard.Type, "", 1, "");
+                                    if (!xmlContainers.Contains("Error") || !string.IsNullOrWhiteSpace(xmlContainers))
+                                    {
+                                        var dsContainers = Converter.ConvertXmlToDataSet(xmlContainers);
+                                        muatContainer = dsContainers.Tables[0].ToList<ContainerDurationModel>();
+                                    }
                                 }
                             }
                         }
@@ -131,7 +140,8 @@ namespace ITI.Survey.Web.UI.Controllers
                         ContCard = JsonConvert.SerializeObject(contCard ?? new ContCardModel()),
                         InOutRevenue = JsonConvert.SerializeObject(inOutRevenue ?? new InOutRevenueModel()),
                         CustDo = JsonConvert.SerializeObject(custDo ?? new CustDoModel()),
-                        Info = info
+                        Info = info,
+                        MuatContainers = this.RenderPartialViewToString("_DataTableMuatContainer", muatContainer)
                     }, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -297,10 +307,99 @@ namespace ITI.Survey.Web.UI.Controllers
         [HttpPost]
         public ActionResult GoReselectContainer(string cont, string cc, string cdo)
         {
+            bool status = true;
+            string message = string.Empty;
+
             ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
             CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
+            ContInOutModel contInOut = null;
+            using (var stackingService = new StackingWebService.StackingSoapClient())
+            {
+                string ContNo = cont.Trim().ToUpper().Replace(" ", "");
+                ContNo = ContNo.Substring(0, 4) + " " + ContNo.Substring(4, 3) + " " + ContNo.Substring(7, 3) + " " + ContNo.Substring(10, 1);
 
-            return Json(new { }, JsonRequestBehavior.AllowGet);
+                string xmlContInOut = stackingService.FillContInOutByContainerNumber(Username, ContNo);
+                if (!string.IsNullOrWhiteSpace(xmlContInOut))
+                {
+                    if (xmlContInOut.Contains("Error"))
+                    {
+                        status = false;
+                        message = xmlContInOut.Replace("Error: ", "");
+                    }
+                    else
+                    {
+                        var dtContInOut = Converter.ConvertXmlToDataTable(xmlContInOut);
+                        contInOut = dtContInOut.ToList<ContInOutModel>().FirstOrDefault();
+
+                        if (contInOut.CustomerCode != custDo.CustomerCode)
+                        {
+                            status = false;
+                            message = "Container " + contInOut.Cont + " owned by " + contInOut.CustomerCode + "\r\n DO must be for " + custDo.CustomerCode;
+                        }
+                        else
+                        {
+                            if (contInOut.IsFreeUse)
+                            {
+                                if (DateTime.Today.Subtract(custDo.DtmDo).Days > custDo.FreeUseDays - 1)
+                                {
+                                    status = false;
+                                    message = stackingService.PreventGateOut(Username, contCardId: contCard.ContCardID);
+                                }
+                            }
+                            else
+                            {
+                                message = contInOut.Cont + "<br />";
+                                message += " " + contInOut.Size + " " + contInOut.Type + " " + contInOut.Condition + " " + contInOut.Payload + " " + contInOut.Manufacture + " " + contInOut.Grade + "<br />";
+
+                                message += "[ Duration : " + DateTime.Now.Subtract(Convert.ToDateTime(contInOut.DtmIn)).Days + " ]<br />";
+                                message += "DESCRIPTION<br />";
+                                message += "A. SEAL 1      : " + contCard.Seal1 + "<br />";
+                                message += "B. SEAL 2      : " + contCard.Seal2 + "<br />";
+                                message += "C. SEAL 3      : " + contCard.Seal3 + "<br />";
+                                message += "D. SEAL 4      : " + contCard.Seal4 + "<br />";
+                                message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
+                                message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
+                            }
+                        }
+                    }
+                }
+            }
+            return Json(new { Status = status, Message = message, ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel()) }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult ReSubmitKartuMuat(string skm, string cc, string cdo, string rev, string cont, UserData userData)
+        {
+            SubmitKartuMuatModel model = JsonConvert.DeserializeObject<SubmitKartuMuatModel>(skm, JSONSetting);
+            ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
+            CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
+            InOutRevenueModel inOutRevenue = JsonConvert.DeserializeObject<InOutRevenueModel>(rev, JSONSetting);
+            ContInOutModel contInOut = JsonConvert.DeserializeObject<ContInOutModel>(cont, JSONSetting);
+
+            model.ContInOutId = 0;
+            model.ContInOutId_Reselect = contInOut.ContInOutId;
+            model.ContCardId = contCard.ContCardID;
+            model.CustDoId = custDo.CustDoId;
+            model.InOutRevenueId = inOutRevenue.InOutRevenueId;
+            model.Cont_NoMobilOut = contCard.NoMobilOut;
+            model.ActiveUser = Username;
+            model.EqpId = userData.HEID;
+            model.OPID = userData.OPID;
+
+            bool status = true;
+            string message = string.Empty;
+            using (var stackingService = new StackingWebService.StackingSoapClient())
+            {
+                string xml = Converter.ConvertToXML(model);
+                message = stackingService.ResubmitKartuMuat(xml);
+                if (message.Contains("Error"))
+                {
+                    status = false;
+                    message = message.Replace("Error: ", "");
+                }
+            }
+
+            return Json(new { Status = status, Message = message }, JsonRequestBehavior.AllowGet);
         }
     }
 }
