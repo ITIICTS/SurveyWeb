@@ -211,6 +211,7 @@ namespace ITI.Survey.Web.UI.Controllers
         {
             bool status = true;
             string message = string.Empty;
+            string cont_old = string.Empty;
 
             ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
             CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
@@ -261,12 +262,16 @@ namespace ITI.Survey.Web.UI.Controllers
                                 message += "D. SEAL 4      : " + contCard.Seal4 + "<br />";
                                 message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
                                 message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
+
+                                cont_old = contInOut.Cont + "<br />";
+                                cont_old += "Seal No : " + contInOut.Seal + "<br />";
+                                cont_old += "Blok : " + contInOut.Location + "<br />";
                             }
                         }
                     }
                 }
             }
-            return Json(new { Status = status, Message = message, ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel()) }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Message = message, ContOld = cont_old, ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel()) }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -355,10 +360,8 @@ namespace ITI.Survey.Web.UI.Controllers
                                 message += "DESCRIPTION<br />";
                                 message += "A. SEAL 1      : " + contCard.Seal1 + "<br />";
                                 message += "B. SEAL 2      : " + contCard.Seal2 + "<br />";
-                                message += "C. SEAL 3      : " + contCard.Seal3 + "<br />";
-                                message += "D. SEAL 4      : " + contCard.Seal4 + "<br />";
-                                message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
-                                message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
+                                message += "C. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
+                                message += "D. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
                             }
                         }
                     }

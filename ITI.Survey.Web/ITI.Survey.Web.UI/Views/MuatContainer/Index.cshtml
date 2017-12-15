@@ -697,6 +697,9 @@
                         } else {
                             $('#btn-submit-load').attr('disabled', 'disabled');
                         }
+                        if (result.ContOld != undefined) {
+                            $('#return-container-info').html(result.ContOld);
+                        }
                     }
                 });
             });
