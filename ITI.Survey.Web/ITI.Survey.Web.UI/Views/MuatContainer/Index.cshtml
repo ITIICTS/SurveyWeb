@@ -180,6 +180,11 @@
                                 <h3 class="content4">Re-Select</h3>
                                 <div>
                                     <form method="post" id="FormReturnContainer">
+                                        @Html.AntiForgeryToken()
+                                        <div id="ErrorSummary">
+                                            @Html.CustomValidationSummary()
+                                        </div>
+
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <label class="control-label">Kembalikan Container</label>
@@ -189,6 +194,7 @@
                                             <div class="col-md-12">
                                                 <div class="form-group">
                                                     <div class="col-sm-12">
+                                                        <input type="hidden" name="ContNo" value="" />
                                                         <div id="return-container-info"></div>
                                                     </div>
                                                 </div>
@@ -243,8 +249,19 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="form-group">
+                                                    <div class="col-md-3"><label id="ContainerSize" class="control-label">20</label><span> Side</span></div>
+                                                    <div class="col-md-3">
+                                                        <select name="Side" id="ContainerSide" class="form-control"></select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">
                                                     <div class="col-sm-12 text-center">
-                                                        <button type="button" id="btn-pindahkan-blok" class="btn btn-primary"
+                                                        <button type="button" id="btn-pindahkan-blok" class="btn btn-primary btn-save"
                                                                 data-confirm-msg="Pindahkan Blok Container?" data-href="@Url.Action("PindahkanBlokContainer","MuatContainer")">
                                                             <span> Pindahkan Blok </span>
                                                         </button>
@@ -698,7 +715,16 @@
                             $('#btn-submit-load').attr('disabled', 'disabled');
                         }
                         if (result.ContOld != undefined) {
-                            $('#return-container-info').html(result.ContOld);
+                            $('#return-container-info').html(result.ContOld);                            
+                        }
+                        if (result.ContIntOutExists != undefined) {
+                            $('input[name="ContNo"]:hidden').val(result.ContIntOutExists.Cont);
+                            $('#ContainerSize').text(result.ContIntOutExists.Size);
+                            $('#ContainerSide').html("");
+                            if (result.ContIntOutExists.Size == '20') {
+                                $("#ContainerSide").append("<option value='Kiri'>Kiri</option>");
+                                $("#ContainerSide").append("<option value='Kanan'>Kanan</option>");
+                            }
                         }
                     }
                 });

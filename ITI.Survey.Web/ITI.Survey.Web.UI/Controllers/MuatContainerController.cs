@@ -216,6 +216,7 @@ namespace ITI.Survey.Web.UI.Controllers
             ContCardModel contCard = JsonConvert.DeserializeObject<ContCardModel>(cc, JSONSetting);
             CustDoModel custDo = JsonConvert.DeserializeObject<CustDoModel>(cdo, JSONSetting);
             ContInOutModel contInOut = null;
+            ContInOutModel contInOutExists = null;
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
                 string ContNo = cont.Trim().ToUpper().Replace(" ", "");
@@ -263,15 +264,30 @@ namespace ITI.Survey.Web.UI.Controllers
                                 message += "E. NOPOL TRUCK : " + contCard.NoMobilOut + "<br />";
                                 message += "F. ANGKUTAN    : " + contCard.AngkutanOut + "<br />";
 
-                                cont_old = contInOut.Cont + "<br />";
-                                cont_old += "Seal No : " + contInOut.Seal + "<br />";
-                                cont_old += "Blok : " + contInOut.Location + "<br />";
+                                if (contCard.ContInOutID > 0)
+                                {
+                                    string xmlContInOutExists = stackingService.FillContInOutById(Username, contCard.ContInOutID);
+                                    if (!xmlContInOutExists.Contains("Error") || !string.IsNullOrWhiteSpace(xmlContInOutExists))
+                                    {
+                                        contInOutExists = Converter.ConvertXmlToDataTable(xmlContInOutExists).ToList<ContInOutModel>().FirstOrDefault();
+                                        cont_old = contInOutExists.Cont + "<br />";
+                                        cont_old += "Seal No : " + contInOutExists.Seal + "<br />";
+                                        cont_old += "Blok : " + contInOutExists.Location + "<br />";
+                                    }
+                                }
                             }
                         }
                     }
                 }
             }
-            return Json(new { Status = status, Message = message, ContOld = cont_old, ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel()) }, JsonRequestBehavior.AllowGet);
+            return Json(new
+            {
+                Status = status,
+                Message = message,
+                ContOld = cont_old,
+                ContIntOutExists = contInOutExists,
+                ContInOut = JsonConvert.SerializeObject(contInOut ?? new ContInOutModel())
+            }, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]
@@ -403,6 +419,91 @@ namespace ITI.Survey.Web.UI.Controllers
             }
 
             return Json(new { Status = status, Message = message }, JsonRequestBehavior.AllowGet);
+        }
+
+        [HttpPost]
+        public ActionResult PindahkanBlokContainer(BlokSystemModel model, UserData userData)
+        {
+            model.BlokSystemValidate(ModelState);
+            if (!ModelState.IsValid)
+            {
+                return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+            }
+
+            string _kodeblok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
+
+            bool status = false;
+            using (var stackingService = new StackingWebService.StackingSoapClient())
+            {
+                var ContIntOutXML = stackingService.FillContInOutByContainerNumber(Username, model.ContNo);
+                var ContModel = new ContInOutModel();
+                if (!string.IsNullOrEmpty(ContIntOutXML))
+                {
+                    var dsContInOut = Converter.ConvertXmlToDataSet(ContIntOutXML);
+                    var listContIntOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
+                    ContModel = listContIntOut.FirstOrDefault();
+
+                }
+                else
+                {
+                    return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
+                }
+                if (_kodeblok.Length < 6)
+                {
+                    //skm.location = "TMP";
+                    status = false;
+                    model.ResultMessage = "Lokasi kurang dari 6 digit";
+                    return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
+
+                }
+                // TODO: Add insert logic here
+
+                model.ContInOutId = ContModel.ContInOutId;
+                model.Cont = ContModel.Cont;
+                model.Shipper = ContModel.CustomerCode;
+                model.Size = ContModel.Size;
+                model.ResultMessage = ContModel.Message;
+                model.activeuser = Username;
+                model.Location = _kodeblok;
+                model.KodeBlok = _kodeblok;
+
+                // User Data from Login, look the step carefully.
+                model.EqpId = userData.HEID;
+                model.OPID = userData.OPID;
+
+                var kodeBlok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
+                model.FlagAct = "MOVE";
+                // Do Logical Process
+                if (model.SideChoose.ToUpper() == "KIRI" || model.SideChoose == string.Empty)
+                {
+                    model.Cont = model.Cont;
+                    model.Cont2 = "";
+                }
+                else
+                {
+                    model.Cont2 = model.Cont;
+                    model.Cont = string.Empty;
+                }
+
+                model.ResultMessage = stackingService.SubmitBlokMove(Converter.ConvertToXML(model));
+                if (model.ResultMessage.Contains("Error"))
+                {
+                    status = false;
+                }
+                else
+                {
+                    status = true;
+                    model.ResultMessage = model.ResultMessage = model.ContNo + "\r\nDipindahkan ke : " + model.Location;
+                    model.Cont = string.Empty;
+                    model.Blok = string.Empty;
+                    model.Bay = string.Empty;
+                    model.Row = string.Empty;
+                    model.Bay = string.Empty;
+                }
+
+
+                return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
+            }
         }
     }
 }
