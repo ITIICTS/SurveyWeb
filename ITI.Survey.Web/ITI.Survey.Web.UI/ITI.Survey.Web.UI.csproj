@@ -334,6 +334,7 @@
     <Content Include="Content\vendor\font-awesome\scss\_stacked.scss" />
     <Content Include="Content\vendor\font-awesome\scss\_variables.scss" />
     <Content Include="bower.json" />
+    <Content Include="log4net.config" />
     <None Include="Properties\PublishProfiles\SurveyWeb.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\CustomScript.js" />
@@ -457,6 +458,7 @@
     <Content Include="Views\SearchContainer\_dataTableContainerByContNo.cshtml" />
     <Content Include="Views\MuatContainer\Index.cshtml" />
     <None Include="Service References\StackingWebService\Stacking.wsdl" />
+    <Content Include="Views\MuatContainer\_DataTableMuatContainer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
