@@ -113,7 +113,7 @@ namespace ITI.Survey.Web.UI.Controllers
                                     var dtCustDo = Converter.ConvertXmlToDataTable(xmlCustDo);
                                     custDo = dtCustDo.ToList<CustDoModel>().FirstOrDefault();
 
-                                    string xmlContainers = stackingService.FillContainerDuration(Username, custDo.CustomerCode, contCard.Size, contCard.Type, "", 1, "");
+                                    string xmlContainers = stackingService.FillContainerDuration(Username, custDo.CustomerCode, contCard.Size, contCard.Type, custDo.AllowDM ? "" : "AV", 1, "");
                                     if (!xmlContainers.Contains("Error") || !string.IsNullOrWhiteSpace(xmlContainers))
                                     {
                                         var dsContainers = Converter.ConvertXmlToDataSet(xmlContainers);
