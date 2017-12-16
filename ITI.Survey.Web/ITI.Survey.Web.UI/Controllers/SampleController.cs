@@ -195,8 +195,6 @@ namespace ITI.Survey.Web.UI.Controllers
                 {
                     return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
                 }
-
-                //return RedirectToAction("Index");
             }
             catch
             {

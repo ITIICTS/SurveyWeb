@@ -4,32 +4,41 @@ namespace ITI.Survey.Web.UI.Models
 {
     public class ContainerDurationModel
     {
-        [Display(Name = "NO")]
+        [Display(Name = "No")]
         public int No { get; set; }
         public long ContInOutId { get; set; }
-        [Display(Name = "CONT")]
+
+        [Display(Name = "Cont")]
         public string Cont { get; set; }
-        [Display(Name = "SIZE")]
+
+        [Display(Name = "Size")]
         public string Size { get; set; }
-        [Display(Name = "TYPE")]
+
+        [Display(Name = "Type")]
         public string Type { get; set; }
-        [Display(Name = "CUSTOMER")]
+
+        [Display(Name = "Customer")]
         public string CustomerCode { get; set; }
-        [Display(Name = "CONDITION")]
+
+        [Display(Name = "Condition")]
         public string Condition { get; set; }
-        [Display(Name = "DTMIN")]
+
+        [Display(Name = "Date In")]
         public string DtmIn { get; set; }
         public string ActIn { get; set; }
         public string RfEngineCond { get; set; }
-        [Display(Name = "DURATION")]
+
+        [Display(Name = "Duration")]
         public int Duration { get; set; }
-        [Display(Name = "REMARKS")]
+
+        [Display(Name = "Remarks")]
         public string Remarks { get; set; }
         public string EorNo { get; set; }
         public string DtmEor { get; set; }
         public string DtmApproved { get; set; }
         public string DtmCompleted { get; set; }
         public string RepairStatus { get; set; }
+
         [Display(Name = "SPECIAL MESSAGE")]
         public string SpecialMessage { get; set; }
         public string SpecialMessage2 { get; set; }

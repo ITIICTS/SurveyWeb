@@ -1,12 +1,8 @@
 ﻿using ITI.Survey.Web.UI.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AGY.Solution.Helper.Common;
-
-
+using ITI.Survey.Web.UI.StackingWebService;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
@@ -22,58 +18,57 @@ namespace ITI.Survey.Web.UI.Controllers
         }
 
         [HttpPost]
-        public ActionResult GoByContainerNumber(string ContNo)
+        public ActionResult GoByContainerNumber(string contNo)
         {
             string resultMessage = string.Empty;
-            bool status = false;
-            ContInOutModel ContModel = new ContInOutModel();
-            BlokSystemModel Blokmodel = new BlokSystemModel();
-            using (var stackingService = new StackingWebService.StackingSoapClient())
+            ContInOutModel contInOutModel = new ContInOutModel();
+            BlokSystemModel blokSystemmodel = new BlokSystemModel();
+            using (var stackingService = new StackingSoapClient())
             {
-                string ContNoText = ContNo.Trim();
-                ContNoText = ContNoText.Replace(" ", "");
-                if (ContNoText.Length <= 0)
+                string contNoText = contNo.Trim();
+                contNoText = contNoText.Replace(" ", "");
+                if (contNoText.Length <= 0)
                 {
-                    return View(ContNo);
+                    return View(contNo);
                 }
-                Blokmodel.ContNo = ContNoText.Substring(0, 4) + " " +
-                    ContNoText.Substring(4, 3) + " " + ContNoText.Substring(7, 3) + " " + ContNoText.Substring(10, 1);
+                blokSystemmodel.ContNo = contNoText.Substring(0, 4) + " " +
+                    contNoText.Substring(4, 3) + " " + contNoText.Substring(7, 3) + " " + contNoText.Substring(10, 1);
 
-                string ContIntOutXML = string.Empty;
-                ContIntOutXML = stackingService.FillContInOutByContainerNumber(Username, Blokmodel.ContNo.ToUpper());
-                if (!string.IsNullOrEmpty(ContIntOutXML))
+                string contIntOutXML = string.Empty;
+                contIntOutXML = stackingService.FillContInOutByContainerNumber(Username, blokSystemmodel.ContNo.ToUpper());
+                if (!string.IsNullOrEmpty(contIntOutXML))
                 {
-                    var dsContInOut = Converter.ConvertXmlToDataSet(ContIntOutXML);
+                    var dsContInOut = Converter.ConvertXmlToDataSet(contIntOutXML);
                     var listContIntOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
-                    ContModel = listContIntOut.FirstOrDefault();
+                    contInOutModel = listContIntOut.FirstOrDefault();
 
                 }
                 else
                 {
-                    Blokmodel.ResultMessage = Blokmodel.ContNo + " tidak ditemukan.";
-                    return View(Blokmodel);
+                    blokSystemmodel.ResultMessage = blokSystemmodel.ContNo + " tidak ditemukan.";
+                    return View(blokSystemmodel);
                 }
-                Blokmodel.ResultMessage = ContModel.Cont + "\r\n";
-                Blokmodel.Size = ContModel.Size;
-                Blokmodel.ContInOutId = ContModel.ContInOutId;
-                Blokmodel.Cont = ContModel.Cont;
-                Blokmodel.Shipper = ContModel.CustomerCode;
-                if (ContModel.Location.Length == 0 || ContModel.Location.Contains("TMP"))
+                blokSystemmodel.ResultMessage = contInOutModel.Cont + "\r\n";
+                blokSystemmodel.Size = contInOutModel.Size;
+                blokSystemmodel.ContInOutId = contInOutModel.ContInOutId;
+                blokSystemmodel.Cont = contInOutModel.Cont;
+                blokSystemmodel.Shipper = contInOutModel.CustomerCode;
+                if (contInOutModel.Location.Length == 0 || contInOutModel.Location.Contains("TMP"))
                 {
-                    Blokmodel.ResultMessage += "Lokasi : Belum di set\r\n";
+                    blokSystemmodel.ResultMessage += "Lokasi : Belum di set\r\n";
                 }
                 else
                 {
-                    Blokmodel.ResultMessage += "Lokasi : " + ContModel.Location.Substring(0, 1) + "  " +
-                                                  ContModel.Location.Substring(1, 2) + "  " +
-                                                  ContModel.Location.Substring(3, 2) + "  " +
-                                                  ContModel.Location.Substring(5, 1) + "\r\n";
+                    blokSystemmodel.ResultMessage += "Lokasi : " + contInOutModel.Location.Substring(0, 1) + "  " +
+                                                  contInOutModel.Location.Substring(1, 2) + "  " +
+                                                  contInOutModel.Location.Substring(3, 2) + "  " +
+                                                  contInOutModel.Location.Substring(5, 1) + "\r\n";
                 }
-                Blokmodel.ResultMessage += "Silakan input lokasi baru.";
+                blokSystemmodel.ResultMessage += "Silakan input lokasi baru.";
 
             }
 
-            return Json(Blokmodel, JsonRequestBehavior.AllowGet);
+            return Json(blokSystemmodel, JsonRequestBehavior.AllowGet);
         }
         [HttpPost]
         public ActionResult Process(BlokSystemModel model, UserData userData)
@@ -84,52 +79,50 @@ namespace ITI.Survey.Web.UI.Controllers
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
             }
 
-            string _kodeblok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
+            string _kodeBlok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
 
             var status = false;
             try
             {
-                using (var stackingService = new StackingWebService.StackingSoapClient())
+                using (var stackingService = new StackingSoapClient())
                 {
-                    var ContIntOutXML = stackingService.FillContInOutByContainerNumber(Username, model.ContNo);
-                    var ContModel = new ContInOutModel();
-                    if (!string.IsNullOrEmpty(ContIntOutXML))
+                    var contIntOutXML = stackingService.FillContInOutByContainerNumber(Username, model.ContNo);
+                    var contInOutModel = new ContInOutModel();
+                    if (!string.IsNullOrEmpty(contIntOutXML))
                     {
-                        var dsContInOut = Converter.ConvertXmlToDataSet(ContIntOutXML);
+                        var dsContInOut = Converter.ConvertXmlToDataSet(contIntOutXML);
                         var listContIntOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
-                        ContModel = listContIntOut.FirstOrDefault();
+                        contInOutModel = listContIntOut.FirstOrDefault();
 
                     }
                     else
                     {
                         return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
                     }
-                    if (_kodeblok.Length < 6)
+                    if (_kodeBlok.Length < 6)
                     {
-                        //skm.location = "TMP";
                         status = false;
                         model.ResultMessage = "Lokasi kurang dari 6 digit";
                         return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
 
                     }
-                    // TODO: Add insert logic here
 
-                    model.ContInOutId = ContModel.ContInOutId;
-                    model.Cont = ContModel.Cont;
-                    model.Shipper = ContModel.CustomerCode;
-                    model.Size = ContModel.Size;
-                    model.ResultMessage = ContModel.Message;
-                    model.activeuser = Username;
-                    model.Location = _kodeblok;
-                    model.KodeBlok = _kodeblok;
+                    model.ContInOutId = contInOutModel.ContInOutId;
+                    model.Cont = contInOutModel.Cont;
+                    model.Shipper = contInOutModel.CustomerCode;
+                    model.Size = contInOutModel.Size;
+                    model.ResultMessage = contInOutModel.Message;
+                    model.ActiveUser = Username;
+                    model.Location = _kodeBlok;
+                    model.KodeBlok = _kodeBlok;
 
-                    // User Data from Login, look the step carefully.
+                    // User data from login
                     model.EqpId = userData.HEID;
                     model.OPID = userData.OPID;
 
                     var kodeBlok = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
                     model.FlagAct = "MOVE";
-                    // Do Logical Process
+                    // Logical Process
                     if (model.SideChoose.ToUpper() == "KIRI" || model.SideChoose == string.Empty)
                     {
                         model.Cont = model.Cont;
@@ -156,14 +149,11 @@ namespace ITI.Survey.Web.UI.Controllers
                         model.Row = string.Empty;
                         model.Bay = string.Empty;
                     }
-
-
                     return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
                 }
             }
             catch
             {
-
                 return Json(new { Status = status, Message = model.ResultMessage }, JsonRequestBehavior.AllowGet);
             }
         }

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ITI.Survey.Web.UI.Models
 {
     public class BongkarContainerModel
     {
-        public BongkarContainerModel()
-        {
-            
-        }
-
         [Required]
         public long ContCardID { get; set; }
         public string ActiveUser { get; set; }
@@ -27,15 +18,23 @@ namespace ITI.Survey.Web.UI.Models
 
         [StringLength(1)]
         public string Blok { get; set; }
+
         [Required]
         [StringLength(2)]
         public string Bay { get; set; }
+
         [Required]
         [StringLength(2)]
         public string Row { get; set; }
+
         [Required]
         [StringLength(1)]
         public string Tier { get; set; }
         public string Side { get; set; }
+
+        public BongkarContainerModel()
+        {
+
+        }
     }
 }

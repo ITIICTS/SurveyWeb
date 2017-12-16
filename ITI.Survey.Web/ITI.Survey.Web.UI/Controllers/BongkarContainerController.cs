@@ -1,5 +1,6 @@
 ﻿using AGY.Solution.Helper.Common;
 using ITI.Survey.Web.UI.Models;
+using ITI.Survey.Web.UI.StackingWebService;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -18,13 +19,13 @@ namespace ITI.Survey.Web.UI.Controllers
         public ActionResult FillContCard(long contCardID)
         {
             ContCardModel contCard = new ContCardModel();
-            using (var stackingService = new StackingWebService.StackingSoapClient())
+            using (var stackingService = new StackingSoapClient())
             {
                 string strContCard = stackingService.FillContCardByIdAndCardMode(Username, contCardID, "IN");
                 if (strContCard.Length != 0)
                 {
-                    var dsContCard = Converter.ConvertXmlToDataSet(strContCard);
-                    var listContCard = dsContCard.Tables[0].ToList<ContCardModel>();
+                    var dataSetContCard = Converter.ConvertXmlToDataSet(strContCard);
+                    var listContCard = dataSetContCard.Tables[0].ToList<ContCardModel>();
                     contCard = listContCard.FirstOrDefault();
                 }
             }
@@ -39,16 +40,16 @@ namespace ITI.Survey.Web.UI.Controllers
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
             }
 
-            string resultMsg = "";
+            string resultMessage = string.Empty;
             bool status = false;
-            using (var stackingService = new StackingWebService.StackingSoapClient())
+            using (var stackingService = new StackingSoapClient())
             {
                 ContCardModel contCard = new ContCardModel();
                 string strContCard = stackingService.FillContCardByIdAndCardMode(Username, model.ContCardID, "IN");
                 if (strContCard.Length != 0)
                 {
-                    var dsContCard = Converter.ConvertXmlToDataSet(strContCard);
-                    var listContCard = dsContCard.Tables[0].ToList<ContCardModel>();
+                    var dataSetContCard = Converter.ConvertXmlToDataSet(strContCard);
+                    var listContCard = dataSetContCard.Tables[0].ToList<ContCardModel>();
                     contCard = listContCard.FirstOrDefault();
                 }
 
@@ -56,31 +57,29 @@ namespace ITI.Survey.Web.UI.Controllers
                 string strContInOut = stackingService.FillContInOutById(Username, contCard.RefID);
                 if (strContInOut.Length != 0)
                 {
-                    var dsContInOut = Converter.ConvertXmlToDataSet(strContInOut);
-                    var listContInOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
+                    var dataSetContInOut = Converter.ConvertXmlToDataSet(strContInOut);
+                    var listContInOut = dataSetContInOut.Tables[0].ToList<ContInOutModel>();
                     contInOut = listContInOut.FirstOrDefault();
                 }
 
                 model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
-
                 model.ContInOutId = contInOut.ContInOutId;
                 model.ContCardID = contCard.ContCardID;
                 model.FlagAct = "BONGKAR AV";
                 model.Cont = contInOut.Cont;
                 model.Shipper = contInOut.CustomerCode;
                 model.ActiveUser = Username;
-
                 model.EqpId = userData.HEID;
                 model.OPID = userData.OPID;
 
                 if (model.Side == "Kiri" || string.IsNullOrEmpty(model.Side))
                 {
                     model.Cont = contInOut.Cont;
-                    model.Cont2 = "";
+                    model.Cont2 = string.Empty;
                 }
                 else
                 {
-                    model.Cont = "";
+                    model.Cont = string.Empty;
                     model.Cont2 = contInOut.Cont;
                 }
 
@@ -88,7 +87,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 string message = stackingService.SubmitKartuBongkar(xml);
                 if (message.Contains("Error"))
                 {
-                    resultMsg = message;
+                    resultMessage = message;
                     status = false;
                 }
                 else
@@ -98,13 +97,12 @@ namespace ITI.Survey.Web.UI.Controllers
 
                     foreach (string s in parts)
                     {
-                        resultMsg += s + "\r\n";
+                        resultMessage += s + "\r\n";
                     }
-
                     status = true;
                 }
             }
-            return Json(new { Status = status, Message = resultMsg }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Message = resultMessage }, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult BongkarContainerDM()
@@ -121,7 +119,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
             }
 
-            string resultMsg = "";
+            string resultMessage = string.Empty;
             bool status = false;
             using (var stackingService = new StackingWebService.StackingSoapClient())
             {
@@ -129,8 +127,8 @@ namespace ITI.Survey.Web.UI.Controllers
                 string strContCard = stackingService.FillContCardByIdAndCardMode(Username, model.ContCardID, "IN");
                 if (strContCard.Length != 0)
                 {
-                    var dsContCard = Converter.ConvertXmlToDataSet(strContCard);
-                    var listContCard = dsContCard.Tables[0].ToList<ContCardModel>();
+                    var dataSetContCard = Converter.ConvertXmlToDataSet(strContCard);
+                    var listContCard = dataSetContCard.Tables[0].ToList<ContCardModel>();
                     contCard = listContCard.FirstOrDefault();
                 }
 
@@ -138,31 +136,29 @@ namespace ITI.Survey.Web.UI.Controllers
                 string strContInOut = stackingService.FillContInOutById(Username, contCard.RefID);
                 if (strContInOut.Length != 0)
                 {
-                    var dsContInOut = Converter.ConvertXmlToDataSet(strContInOut);
-                    var listContInOut = dsContInOut.Tables[0].ToList<ContInOutModel>();
+                    var dataSetContInOut = Converter.ConvertXmlToDataSet(strContInOut);
+                    var listContInOut = dataSetContInOut.Tables[0].ToList<ContInOutModel>();
                     contInOut = listContInOut.FirstOrDefault();
                 }
 
                 model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
-
                 model.ContInOutId = contInOut.ContInOutId;
                 model.ContCardID = contCard.ContCardID;
                 model.FlagAct = "BONGKAR DM";
                 model.Cont = contInOut.Cont;
                 model.Shipper = contInOut.CustomerCode;
                 model.ActiveUser = Username;
-
                 model.EqpId = userData.HEID;
                 model.OPID = userData.OPID;
 
                 if (model.Side.Equals("Kiri") || string.IsNullOrEmpty(model.Side))
                 {
                     model.Cont = contInOut.Cont;
-                    model.Cont2 = "";
+                    model.Cont2 = string.Empty;
                 }
                 else
                 {
-                    model.Cont = "";
+                    model.Cont = string.Empty;
                     model.Cont2 = contInOut.Cont;
                 }
 
@@ -170,7 +166,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 string message = stackingService.SubmitKartuBongkar(xml);
                 if (message.Contains("Error"))
                 {
-                    resultMsg = message;
+                    resultMessage = message;
                     status = false;
                 }
                 else
@@ -180,13 +176,12 @@ namespace ITI.Survey.Web.UI.Controllers
 
                     foreach (string s in parts)
                     {
-                        resultMsg += s + "\r\n";
+                        resultMessage += s + "\r\n";
                     }
-
                     status = true;
                 }
             }
-            return Json(new { Status = status, Message = resultMsg }, JsonRequestBehavior.AllowGet);
+            return Json(new { Status = status, Message = resultMessage }, JsonRequestBehavior.AllowGet);
         }
     }
 }

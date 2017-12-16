@@ -1,8 +1,7 @@
 ﻿using ITI.Survey.Web.UI.Models;
 using System.Web.Mvc;
 using AGY.Solution.Helper.Common;
-using ITI.Survey.Web.UI.Filters;
-using System;
+using ITI.Survey.Web.UI.StackingWebService;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
@@ -10,7 +9,6 @@ namespace ITI.Survey.Web.UI.Controllers
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil
-
         public ActionResult Index()
         {
             InputNoMobilModel model = new InputNoMobilModel();
@@ -24,32 +22,28 @@ namespace ITI.Survey.Web.UI.Controllers
             model.Validate(ModelState);
             if (ModelState.IsValid)
             {
-
-                string resultMsg = "";
+                string resultMessage = string.Empty;
                 bool status = false;
-                using (var stackingService = new StackingWebService.StackingSoapClient())
+                using (var stackingService = new StackingSoapClient())
                 {
-
                     string message = stackingService.SubmitNoMobil(Converter.ConvertToXML(model));
                     if (message.Contains("Error"))
                     {
-                        resultMsg = message;
+                        resultMessage = message;
                         status = false;
                     }
                     else
                     {
                         char[] delimiters = new char[] { '\r', '\n' };
                         string[] parts = message.Split(delimiters);
-
                         foreach (string s in parts)
                         {
-                            resultMsg += s + "\r\n";
+                            resultMessage += s + "\r\n";
                         }
 
                         status = true;
                     }
-                    return Json(new { Status = status, Message = resultMsg }, JsonRequestBehavior.AllowGet);
-
+                    return Json(new { Status = status, Message = resultMessage }, JsonRequestBehavior.AllowGet);
                 }
             }
             else

@@ -9,10 +9,6 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Models
 {
-    public class AccountModel
-    {
-    }
-
     public class LoginModel
     {
         [Required]
@@ -32,9 +28,9 @@ namespace ITI.Survey.Web.UI.Models
 
         public LoginModel()
         {
-            this.UserId = string.Empty;
-            this.Password = string.Empty;
-            this.RememberMe = true;
+            UserId = string.Empty;
+            Password = string.Empty;
+            RememberMe = true;
         }
 
         public void Validate(ModelStateDictionary modelState)

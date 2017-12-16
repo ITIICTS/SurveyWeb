@@ -29,12 +29,12 @@ namespace ITI.Survey.Web.UI.Controllers
         {
             using (var globalService = new GlobalWebService.GlobalSoapClient())
             {
-                var ds = Converter.ConvertXmlToDataSet(globalService.GetConfigXML("agys"));
-                ViewBag.HeavyEquipmentList = GetDropListByDataTable(ds.Tables["dt1"], "PILIH HEID");
-                ViewBag.ContainerSize = GetDropListByDataTable(ds.Tables["dt2"]);
-                ViewBag.ContainerType = GetDropListByDataTable(ds.Tables["dt3"]);
-                ViewBag.Customers = GetDropListByDataTable(ds.Tables["dt4"]);
-                ViewBag.Operators = GetDropListByDataTable(ds.Tables["dt5"], "PILIH OPID");
+                var dataSet = Converter.ConvertXmlToDataSet(globalService.GetConfigXML("agys"));
+                ViewBag.HeavyEquipmentList = GetDropListByDataTable(dataSet.Tables["dt1"], "PILIH HEID");
+                ViewBag.ContainerSize = GetDropListByDataTable(dataSet.Tables["dt2"]);
+                ViewBag.ContainerType = GetDropListByDataTable(dataSet.Tables["dt3"]);
+                ViewBag.Customers = GetDropListByDataTable(dataSet.Tables["dt4"]);
+                ViewBag.Operators = GetDropListByDataTable(dataSet.Tables["dt5"], "PILIH OPID");
             }
         }
 
@@ -50,16 +50,16 @@ namespace ITI.Survey.Web.UI.Controllers
         }
 
         [NonAction]
-        public IEnumerable<SelectListItem> GetDropListByDataTable(DataTable dt, string optionLabel = "")
+        public IEnumerable<SelectListItem> GetDropListByDataTable(DataTable dataTable, string optionLabel = "")
         {
             List<SelectListItem> result = new List<SelectListItem>();
 
-            foreach (DataRow dr in dt.Rows)
+            foreach (DataRow dataRow in dataTable.Rows)
             {
                 result.Add(new SelectListItem
                 {
-                    Value = ConvertData.ToString(dr, "Key"),
-                    Text = string.IsNullOrWhiteSpace(ConvertData.ToString(dr, "Key")) ? optionLabel : ConvertData.ToString(dr, "Key")
+                    Value = ConvertData.ToString(dataRow, "Key"),
+                    Text = string.IsNullOrWhiteSpace(ConvertData.ToString(dataRow, "Key")) ? optionLabel : ConvertData.ToString(dataRow, "Key")
                 });
             }
 
@@ -71,7 +71,6 @@ namespace ITI.Survey.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            //model.Validate(ModelState);
             if (!ModelState.IsValid)
             {
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);
@@ -109,8 +108,6 @@ namespace ITI.Survey.Web.UI.Controllers
             string ipAddress = HttpContext.Request.UserHostAddress;
             string userLogin = HttpContext.User.Identity.Name;
 
-            //Session.Clear();
-            //System.Web.HttpContext.Current.Session.Clear();
             FormsAuthentication.SignOut();
 
             return Json(Url.Action("Index", "Home"), JsonRequestBehavior.AllowGet);

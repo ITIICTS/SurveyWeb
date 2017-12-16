@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Models
@@ -11,14 +9,14 @@ namespace ITI.Survey.Web.UI.Models
     {
         public Guid SampleID { get; set; }
         [Display(Name = "Sample Description")]
-        public String SampleDescription { get; set; }
+        public string SampleDescription { get; set; }
         [Display(Name = "Sample Drop List")]
-        public String SampleDropList { get; set; }
+        public string SampleDropList { get; set; }
         [Display(Name = "Sample Number")]
-        public Int32 SampleNumber { get; set; }
+        public int SampleNumber { get; set; }
         [Display(Name = "Sample Currency")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:#,##0}")]
-        public Double SampleCurrency { get; set; }
+        public double SampleCurrency { get; set; }
         [Display(Name = "Sample Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd MMM yyyy}")]
         public DateTime? SampleDate { get; set; }
@@ -27,12 +25,12 @@ namespace ITI.Survey.Web.UI.Models
 
         public SampleModel()
         {
-            this.SampleID = Guid.NewGuid();
-            this.SampleDescription = string.Empty;
-            this.SampleLookup = string.Empty;
-            this.SampleDate = DateTime.Now;
-            this.SampleList = new List<SampleModel>();
-            this.SampleListJson = string.Empty;
+            SampleID = Guid.NewGuid();
+            SampleDescription = string.Empty;
+            SampleLookup = string.Empty;
+            SampleDate = DateTime.Now;
+            SampleList = new List<SampleModel>();
+            SampleListJson = string.Empty;
         }
 
         public List<SampleModel> SampleList { get; set; }
@@ -40,7 +38,7 @@ namespace ITI.Survey.Web.UI.Models
 
         public void SampleValidate(ModelStateDictionary modelState)
         {
-            if (string.IsNullOrEmpty(this.SampleDescription))
+            if (string.IsNullOrEmpty(SampleDescription))
             {
                 modelState.AddModelError("SampleDescription", "Sample Description is required.");
             }

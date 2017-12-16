@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace ITI.Survey.Web.UI.Models
+﻿namespace ITI.Survey.Web.UI.Models
 {
     public class ContCardModel
     {
