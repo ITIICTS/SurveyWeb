@@ -103,8 +103,10 @@ namespace ITI.Survey.Web.WebService
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
+                log.ErrorFormat("CheckSeal -> Message: {0}", ex.Message);
+                log.ErrorFormat("CheckSeal -> StackTrace: {0}", ex.StackTrace);
                 message = "Seal check error";
             }
             return message;
