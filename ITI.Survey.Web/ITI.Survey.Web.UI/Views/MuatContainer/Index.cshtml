@@ -686,8 +686,8 @@
                     url: href,
                     data: {
                         cont: $('#Cont', $form).val(),
-                        cc: $('#contcardmodel').val(),
-                        cdo: $('#custdomodel').val()
+                        stringContCard: $('#contcardmodel').val(),
+                        stringCustDo: $('#custdomodel').val()
                     },
                     dataType: 'json',
                     type: 'post',
@@ -735,10 +735,10 @@
                 $.ajax({
                     url: href,
                     data: {
-                        skm: JSON.stringify($form.serializeObject()),
-                        cc: $('#contcardmodel').val(),
-                        cdo: $('#custdomodel').val(),
-                        rev: $('#inoutrevenuemodel').val(),
+                        stringKartuMuat: JSON.stringify($form.serializeObject()),
+                        stringContCard: $('#contcardmodel').val(),
+                        stringCustDo: $('#custdomodel').val(),
+                        stringInOutRevenue: $('#inoutrevenuemodel').val(),
                         cont: $('#continoutmodelforload', $form).val()
                     },
                     dataType: 'json',
@@ -790,8 +790,8 @@
                     url: href,
                     data: {
                         cont: $('#Cont', $form).val(),
-                        cc: $('#contcardmodel').val(),
-                        cdo: $('#custdomodel').val()
+                        stringContCard: $('#contcardmodel').val(),
+                        stringCustDo: $('#custdomodel').val()
                     },
                     dataType: 'json',
                     type: 'post',
@@ -827,10 +827,10 @@
                 $.ajax({
                     url: href,
                     data: {
-                        skm: JSON.stringify($form.serializeObject()),
-                        cc: $('#contcardmodel').val(),
-                        cdo: $('#custdomodel').val(),
-                        rev: $('#inoutrevenuemodel').val(),
+                        stringKartuMuat: JSON.stringify($form.serializeObject()),
+                        stringContCard: $('#contcardmodel').val(),
+                        stringCustDo: $('#custdomodel').val(),
+                        stringInOutRevenue: $('#inoutrevenuemodel').val(),
                         cont: $('#continoutmodelforreselect', $form).val()
                     },
                     dataType: 'json',
