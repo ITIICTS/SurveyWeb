@@ -5,6 +5,14 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 @using AGY.Solution.Helper;
+<style>
+    /* In order to place the tracking correctly */
+    canvas.drawing, canvas.drawingBuffer {
+        position: absolute;
+        left: 0;
+        top: 0;
+    }
+</style>
 
 <div class="row" id="inputnomormobil">
     <div class="col-xs-12">
@@ -18,7 +26,7 @@
                         <div class="col-md-12">
                             <form action="@Url.Action("InputMobil","InputNoMobil")" method="post">
 
-                                
+
                                 <div id="ErrorSummary">
                                     @Html.CustomValidationSummary()
                                 </div>
@@ -180,7 +188,15 @@
 
                     decoder: {
 
-                        readers: ["code_39_reader", "code_39_vin_reader"]
+                        readers: [
+
+
+                            "code_39_reader",
+                            "code_39_vin_reader",
+                            "codabar_reader",
+                            "upc_reader",
+                            "upc_e_reader",
+                            "i2of5_reader"]
 
                     },
 
@@ -219,8 +235,15 @@
             },
             decoder: {
                 readers: [
+                    "code_128_reader",
+                    "ean_reader",
+                    "ean_8_reader",
                     "code_39_reader",
-                    "code_39_vin_reader"
+                    "code_39_vin_reader",
+                    "codabar_reader",
+                    "upc_reader",
+                    "upc_e_reader",
+                    "i2of5_reader"
                 ],
                 debug: {
                     showCanvas: true,
