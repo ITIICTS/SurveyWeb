@@ -1,4 +1,5 @@
 ﻿using AGY.Solution.DataAccess;
+using AGY.Solution.Filter;
 using AGY.Solution.Helper.Common;
 using log4net;
 using Newtonsoft.Json;
@@ -58,7 +59,7 @@ namespace ITI.Survey.Web.UI.Controllers
                 return jsonSetting;
             }
         }
-      
+
         public string Username
         {
             get
@@ -98,6 +99,11 @@ namespace ITI.Survey.Web.UI.Controllers
                 message += string.Format("{0} ", item.ErrorMessage);
             }
             return message;
+        }
+
+        public static string ErrorMessageFromService(string messageError, string defaultMessageErrorIfMessageErrorIsEmpty)
+        {
+            return string.IsNullOrWhiteSpace(messageError) ? defaultMessageErrorIfMessageErrorIsEmpty : messageError.Replace("Error :", "");
         }
     }
 }

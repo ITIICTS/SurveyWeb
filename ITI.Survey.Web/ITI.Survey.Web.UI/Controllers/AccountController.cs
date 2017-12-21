@@ -71,6 +71,7 @@ namespace ITI.Survey.Web.UI.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
+            //model.Validate(ModelState);
             if (!ModelState.IsValid)
             {
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);

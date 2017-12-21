@@ -19,6 +19,31 @@ namespace ITI.Survey.Web.UI.Controllers
             return View();
         }
 
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScanBarcode()
+        {
+            string result = string.Empty;
+
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var postedFile = Request.Files[file];
+                    if (postedFile != null)
+                    {
+                        string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
+                        result = data[0];
+                    }
+                }
+            }
+            catch
+            {
+                result = "error";
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public ActionResult ProsesMuatScan(long contCardID)
         {
@@ -44,85 +69,87 @@ namespace ITI.Survey.Web.UI.Controllers
                 using (var stackingService = new StackingSoapClient())
                 {
                     string xmlContCard = stackingService.FillContCardByIdAndCardMode(Username, contCardID, "OUT");
-                    if (string.IsNullOrWhiteSpace(xmlContCard))
+                    if (string.IsNullOrWhiteSpace(xmlContCard) || xmlContCard.Contains("Error"))
                     {
                         status = false;
-                        message = "No. Kartu Muat salah";
+                        message = ErrorMessageFromService(xmlContCard, "No. Kartu Muat salah");
                         errors++;
-                    }
-
-                    var dataTableContCard = Converter.ConvertXmlToDataTable(xmlContCard);
-                    contCard = dataTableContCard.ToList<ContCardModel>().FirstOrDefault();
-
-                    if (contCard.EirOutNo.Length > 0)
-                    {
-                        status = false;
-                        message = "Surat jalan sudah tercetak";
-                        errors++;
-                    }
-
-                    if (contCard.Loc1.Length < 2)
-                    {
-                        status = false;
-                        message = "Kartu Muat belum scan di Gate-In";
-                        errors++;
-                    }
-
-                    // Cek nomor mobil
-                    if (string.IsNullOrEmpty(contCard.NoMobilOut.Trim()))
-                    {
-                        status = false;
-                        message = "Nomor mobil belum diinput";
-                        errors++;
-                    }
-
-                    // InOutRevenue
-                    xmlInOutRevenue = stackingService.FillInOutRevenueByInOutRevenueId(Username, contCard.RefID);
-                    if (string.IsNullOrWhiteSpace(xmlInOutRevenue))
-                    {
-                        status = false;
-                        info = "Record pembayaran tidak ditemukan. Hubungi inventori";
                     }
                     else
                     {
-                        if (xmlInOutRevenue.Contains("Error"))
+                        var dataTableContCard = Converter.ConvertXmlToDataTable(xmlContCard);
+                        contCard = dataTableContCard.ToList<ContCardModel>().FirstOrDefault();
+
+                        if (contCard.EirOutNo.Length > 0)
                         {
-                            info = xmlInOutRevenue.Replace("Error: ", "");
+                            status = false;
+                            message = "Surat jalan sudah tercetak";
+                            errors++;
+                        }
+
+                        if (contCard.Loc1.Length < 2)
+                        {
+                            status = false;
+                            message = "Kartu Muat belum scan di Gate-In";
+                            errors++;
+                        }
+
+                        // Cek nomor mobil
+                        if (string.IsNullOrEmpty(contCard.NoMobilOut.Trim()))
+                        {
+                            status = false;
+                            message = "Nomor mobil belum diinput";
+                            errors++;
+                        }
+
+                        // InOutRevenue
+                        xmlInOutRevenue = stackingService.FillInOutRevenueByInOutRevenueId(Username, contCard.RefID);
+                        if (string.IsNullOrWhiteSpace(xmlInOutRevenue))
+                        {
+                            status = false;
+                            info = "Record pembayaran tidak ditemukan. Hubungi inventori";
                         }
                         else
                         {
-                            var dtInOutRevenue = Converter.ConvertXmlToDataTable(xmlInOutRevenue);
-                            inOutRevenue = dtInOutRevenue.ToList<InOutRevenueModel>().FirstOrDefault();
-
-                            // CustDo
-                            xmlCustDo = stackingService.FillCustDoByCustDoId(Username, inOutRevenue.RefId);
-                            if (string.IsNullOrWhiteSpace(xmlCustDo))
+                            if (xmlInOutRevenue.Contains("Error"))
                             {
-                                status = false;
-                                info = "Nomor DO tidak ditemukan. Hubungi inventori";
+                                info = xmlInOutRevenue.Replace("Error: ", "");
                             }
                             else
                             {
-                                if (xmlCustDo.Contains("Error"))
+                                var dtInOutRevenue = Converter.ConvertXmlToDataTable(xmlInOutRevenue);
+                                inOutRevenue = dtInOutRevenue.ToList<InOutRevenueModel>().FirstOrDefault();
+
+                                // CustDo
+                                xmlCustDo = stackingService.FillCustDoByCustDoId(Username, inOutRevenue.RefId);
+                                if (string.IsNullOrWhiteSpace(xmlCustDo))
                                 {
-                                    info = xmlCustDo.Replace("Error: ", "");
+                                    status = false;
+                                    info = "Nomor DO tidak ditemukan. Hubungi inventori";
                                 }
                                 else
                                 {
-                                    var dtCustDo = Converter.ConvertXmlToDataTable(xmlCustDo);
-                                    custDo = dtCustDo.ToList<CustDoModel>().FirstOrDefault();
-
-                                    string xmlContainers = stackingService.FillContainerDuration(Username, custDo.CustomerCode, contCard.Size, contCard.Type, custDo.AllowDM ? "" : "AV", 1, "");
-                                    if (!xmlContainers.Contains("Error") || !string.IsNullOrWhiteSpace(xmlContainers))
+                                    if (xmlCustDo.Contains("Error"))
                                     {
-                                        var dsContainers = Converter.ConvertXmlToDataSet(xmlContainers);
-                                        muatContainer = dsContainers.Tables[0].ToList<ContainerDurationModel>();
+                                        info = xmlCustDo.Replace("Error: ", "");
+                                    }
+                                    else
+                                    {
+                                        var dtCustDo = Converter.ConvertXmlToDataTable(xmlCustDo);
+                                        custDo = dtCustDo.ToList<CustDoModel>().FirstOrDefault();
+
+                                        string xmlContainers = stackingService.FillContainerDuration(Username, custDo.CustomerCode, contCard.Size, contCard.Type, custDo.AllowDM ? "" : "AV", 1, "");
+                                        if (!xmlContainers.Contains("Error") || !string.IsNullOrWhiteSpace(xmlContainers))
+                                        {
+                                            var dsContainers = Converter.ConvertXmlToDataSet(xmlContainers);
+                                            muatContainer = dsContainers.Tables[0].ToList<ContainerDurationModel>();
+                                        }
                                     }
                                 }
                             }
                         }
-                    }
 
+                    }
                 }
 
                 if (errors > 0)

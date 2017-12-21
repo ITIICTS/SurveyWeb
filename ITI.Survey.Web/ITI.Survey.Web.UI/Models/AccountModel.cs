@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Web;
 using System.Web.Mvc;
+using System.Linq;
 
 namespace ITI.Survey.Web.UI.Models
 {
@@ -50,11 +51,21 @@ namespace ITI.Survey.Web.UI.Models
                 string keys = ConfigurationManager.AppSettings["Keys"];
                 string[] arrayKey = keys.Split('|');
 
-                if (machineName != Decryptor.DecryptString(arrayKey[0])
-                    || ipaddress != Decryptor.DecryptString(arrayKey[1])
-                    || DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[2])))
+                if (arrayKey.Count() == 1)
                 {
-                    modelState.AddModelError("global", "Failed secure application process.");
+                    if (DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[0])))
+                    {
+                        modelState.AddModelError("global", "Keys is invalid.");
+                    }
+                }
+                else
+                {
+                    if (machineName != Decryptor.DecryptString(arrayKey[0])
+                        || ipaddress != Decryptor.DecryptString(arrayKey[1])
+                        || DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[2])))
+                    {
+                        modelState.AddModelError("global", "Keys is expired.");
+                    }
                 }
             }
             catch (Exception ex)

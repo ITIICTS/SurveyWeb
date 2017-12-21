@@ -14,7 +14,8 @@
                 <div class="form-horizontal">
                     <div class="row" id="transactionMuatScan">
                         <div class="col-md-12">
-                            <form method="post">
+                            @using (Ajax.BeginForm("ScanBarcode", "MuatContainer", new AjaxOptions { HttpMethod = "post" }, new { @enctype = "multipart/form-data", @ID = "scan-barcode", @role = "form" }))
+                            {
                                 @Html.AntiForgeryToken()
                                 <div id="ErrorSummary">
                                     @Html.CustomValidationSummary()
@@ -53,7 +54,7 @@
                                                 <label class="control-label">atau silahkan upload file foto</label>
                                             </div>
                                             <div class="col-sm-6">
-                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" />
+                                                <input id="barcodeFileInput" name="barcodeFileInput" type="file" accept="image/*;capture=camera" />
                                                 <div id="codeResult"> </div>
                                             </div>
                                         </div>
@@ -65,15 +66,14 @@
                                         <div class="form-group">
                                             <div class="col-md-12 text-center">
                                                 <button type="button" value="Proses" id="btn-proses" class="btn btn-primary btn-block"
-                                                        data-confirm-msg="Proses Muat Scan?" data-href="@Url.Action("ProsesMuatScan","MuatContainer")">
+                                                        data-confirm-msg="Proses Muat Scan?" data-href="@Url.Action("ProsesMuatScan", "MuatContainer")">
                                                     <span>  Proses  </span>
                                                 </button>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
-                            </form>
+                            }
                         </div>
                     </div>
 
@@ -363,58 +363,58 @@
 
     var _scannerIsRunning = false;
 
-    function DecoodeSingle() {
-        var input = $("#barcodeFileInput");
+    //function DecoodeSingle() {
+    //    var input = $("#barcodeFileInput");
 
-        if (input[0].files && input[0].files.length) {
+    //    if (input[0].files && input[0].files.length) {
 
-            var tmpImgURL = URL.createObjectURL(input[0].files[0]);
+    //        var tmpImgURL = URL.createObjectURL(input[0].files[0]);
 
-            Quagga.decodeSingle(
+    //        Quagga.decodeSingle(
 
-                {
+    //            {
 
-                    inputStream: {
+    //                inputStream: {
 
-                        size: 640,
+    //                    size: 640,
 
-                        singleChannel: false
+    //                    singleChannel: false
 
-                    },
+    //                },
 
-                    locator: {
+    //                locator: {
 
-                        patchSize: "large",
+    //                    patchSize: "large",
 
-                        halfSample: false
+    //                    halfSample: false
 
-                    },
+    //                },
 
-                    decoder: {
+    //                decoder: {
 
-                        readers: ["code_39_reader", "code_39_vin_reader"]
+    //                    readers: ["code_39_reader", "code_39_vin_reader"]
 
-                    },
+    //                },
 
-                    locate: true,
-                    src: tmpImgURL
+    //                locate: true,
+    //                src: tmpImgURL
 
-                },
+    //            },
 
-                function (result) {
+    //            function (result) {
 
-                    if (result && result.codeResult && result.codeResult.code) {
+    //                if (result && result.codeResult && result.codeResult.code) {
 
-                        $("#ContCardID").val(result.codeResult.code);
+    //                    $("#ContCardID").val(result.codeResult.code);
 
-                    } else {
+    //                } else {
 
-                        $("#ContCardID").val("error");
-                    }
+    //                    $("#ContCardID").val("error");
+    //                }
 
-                });
-        }
-    }
+    //            });
+    //    }
+    //}
     function startScanner() {
         //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
 
@@ -541,22 +541,35 @@
         }
     }, false);
 
-    //decode
-    document.getElementById("barcodeFileInput").addEventListener("change", function () {
-        if (_scannerIsRunning) {
-            _scannerIsRunning = false;
-            Quagga.stop();
-        } else {
-            _scannerIsRunning = false;
-            DecoodeSingle();
-        }
-    }, false);
+    ////decode
+    //document.getElementById("barcodeFileInput").addEventListener("change", function () {
+    //    if (_scannerIsRunning) {
+    //        _scannerIsRunning = false;
+    //        Quagga.stop();
+    //    } else {
+    //        _scannerIsRunning = false;
+    //        DecoodeSingle();
+    //    }
+    //}, false);
 </script>
 
 @section scripts{
     <script>
         $(document).ready(function () {
             $('div[id="transactionMuatScan"]').removeClass('hidden');
+
+            $('#barcodeFileInput').change(function () {
+                var form = $(this).closest('form');
+
+                form.ajaxSubmit({
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    type: 'POST',
+                    success: function (result) {
+                        $("#ContCardID").val(result);
+                    }
+                });
+            })
 
             $("#muatcontainerdiv").accordion({
                 collapsible: true,
@@ -715,7 +728,7 @@
                             $('#btn-submit-load').attr('disabled', 'disabled');
                         }
                         if (result.ContOld != undefined) {
-                            $('#return-container-info').html(result.ContOld);                            
+                            $('#return-container-info').html(result.ContOld);
                         }
                         if (result.ContIntOutExists != undefined) {
                             $('input[name="ContNo"]:hidden').val(result.ContIntOutExists.Cont);
