@@ -22,7 +22,7 @@ namespace ITI.Survey.Web.UI.Controllers
         [HttpPost, ValidateInput(false)]
         public ActionResult ScanBarcode()
         {
-            string result = string.Empty;
+            Int64? result = null;
 
             try
             {
@@ -32,13 +32,13 @@ namespace ITI.Survey.Web.UI.Controllers
                     if (postedFile != null)
                     {
                         string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
-                        result = data[0];
+                        result = Convert.ToInt64(data[0]);
                     }
                 }
             }
             catch
             {
-                result = "error";
+                result = null;
             }
 
             return Json(result, JsonRequestBehavior.AllowGet);
