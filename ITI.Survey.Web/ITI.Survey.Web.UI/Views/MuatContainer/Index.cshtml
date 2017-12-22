@@ -565,6 +565,12 @@
                     url: form.attr('action'),
                     data: form.serialize(),
                     type: 'POST',
+                    beforeSend: function () {
+                        form.showloading();
+                    },
+                    complete: function () {
+                        form.hideloading();
+                    },
                     success: function (result) {
                         $("#ContCardID").val(result);
                     }
