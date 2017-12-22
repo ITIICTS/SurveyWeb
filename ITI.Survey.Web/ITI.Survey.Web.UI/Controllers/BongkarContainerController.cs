@@ -1,6 +1,7 @@
 ﻿using AGY.Solution.Helper.Common;
 using ITI.Survey.Web.UI.Models;
 using ITI.Survey.Web.UI.StackingWebService;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -13,6 +14,31 @@ namespace ITI.Survey.Web.UI.Controllers
         {
             BongkarContainerModel model = new BongkarContainerModel();
             return View(model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScanBarcode()
+        {
+            Int64? result = null;
+
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var postedFile = Request.Files[file];
+                    if (postedFile != null)
+                    {
+                        string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
+                        result = Convert.ToInt64(data[0]);
+                    }
+                }
+            }
+            catch
+            {
+                result = null;
+            }
+
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         [HttpPost]

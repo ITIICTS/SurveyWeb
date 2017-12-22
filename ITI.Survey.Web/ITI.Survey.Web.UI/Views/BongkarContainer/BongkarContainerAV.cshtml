@@ -16,8 +16,7 @@
                 <div class="form-horizontal">
                     <div class="row">
                         <div class="col-md-12">
-
-                            <form action="@Url.Action("ProsesBongkarContainerAV", "BongkarContainer")" method="post">
+                            <form id="scan-barcode" action="@Url.Action("ScanBarcode", "BongkarContainer")" data-ajax="true" data-ajax-method="post" enctype="multipart/form-data" method="post" role="form">
 
                                 @Html.AntiForgeryToken()
                                 <div id="ErrorSummary">
@@ -59,7 +58,7 @@
                                             <div class="col-sm-6">
 
 
-                                                <input id="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
+                                                <input id="barcodeFileInput" name="barcodeFileInput" type="file" accept="image/*;capture=camera" /> <br />
 
                                                 @*<input type="button" id="btnDecode" value="Decode" class="btn btn-primary" />*@
 
@@ -194,59 +193,59 @@
         }
     }
 
-    function DecoodeSingle() {
-        var input = $("#barcodeFileInput");
+    //function DecoodeSingle() {
+    //    var input = $("#barcodeFileInput");
 
-        if (input[0].files && input[0].files.length) {
+    //    if (input[0].files && input[0].files.length) {
 
-            var tmpImgURL = URL.createObjectURL(input[0].files[0]);
+    //        var tmpImgURL = URL.createObjectURL(input[0].files[0]);
 
-            Quagga.decodeSingle(
+    //        Quagga.decodeSingle(
 
-                {
+    //            {
 
-                    inputStream: {
+    //                inputStream: {
 
-                        size: 640,
+    //                    size: 640,
 
-                        singleChannel: false
+    //                    singleChannel: false
 
-                    },
+    //                },
 
-                    locator: {
+    //                locator: {
 
-                        patchSize: "large",
+    //                    patchSize: "large",
 
-                        halfSample: false
+    //                    halfSample: false
 
-                    },
+    //                },
 
-                    decoder: {
+    //                decoder: {
 
-                        readers: ["code_39_reader", "code_39_vin_reader"]
+    //                    readers: ["code_39_reader", "code_39_vin_reader"]
 
-                    },
+    //                },
 
-                    locate: true,
-                    src: tmpImgURL
+    //                locate: true,
+    //                src: tmpImgURL
 
-                },
+    //            },
 
-                function (result) {
+    //            function (result) {
 
-                    if (result && result.codeResult && result.codeResult.code) {
+    //                if (result && result.codeResult && result.codeResult.code) {
 
-                        $("#ContCardID").val(result.codeResult.code);
-                        LoadInfoContCard();
+    //                    $("#ContCardID").val(result.codeResult.code);
+    //                    LoadInfoContCard();
 
-                    } else {
+    //                } else {
 
-                        $("#ContCardID").val("error");
-                    }
+    //                    $("#ContCardID").val("error");
+    //                }
 
-                });
-        }
-    }
+    //            });
+    //    }
+    //}
     function startScanner() {
         //SUPPORTS_MEDIA_DEVICES = 'mediaDevices' in navigator
 
@@ -375,21 +374,41 @@
         }
     }, false);
 
-    //decode
-    document.getElementById("barcodeFileInput").addEventListener("change", function () {
-        if (_scannerIsRunning) {
-            _scannerIsRunning = false;
-            Quagga.stop();
-        } else {
-            _scannerIsRunning = false;
-            DecoodeSingle();
-        }
-    }, false);
+    ////decode
+    //document.getElementById("barcodeFileInput").addEventListener("change", function () {
+    //    if (_scannerIsRunning) {
+    //        _scannerIsRunning = false;
+    //        Quagga.stop();
+    //    } else {
+    //        _scannerIsRunning = false;
+    //        DecoodeSingle();
+    //    }
+    //}, false);
 </script>
 
 @section scripts{
     <script>
         $(document).ready(function () {
+            $('#barcodeFileInput').change(function () {
+                var form = $(this).closest('form');
+
+                form.ajaxSubmit({
+                    url: form.attr('action'),
+                    data: form.serialize(),
+                    type: 'POST',
+                    beforeSend: function () {
+                        form.showloading();
+                    },
+                    complete: function () {
+                        form.hideloading();
+                    },
+                    success: function (result) {
+                        $("#ContCardID").val(result);
+                        LoadInfoContCard();
+                    }
+                });
+            })
+
             $("#ContCardID").blur(function () {
                 if ($("#ContCardID").val() != '' || $("#ContCardID").val() != undefined) {
                     $.ajax({
