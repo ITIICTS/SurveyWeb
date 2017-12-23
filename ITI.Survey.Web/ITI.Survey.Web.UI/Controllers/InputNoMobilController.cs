@@ -1,11 +1,13 @@
-﻿using ITI.Survey.Web.UI.Models;
-using System.Web.Mvc;
-using AGY.Solution.Helper.Common;
+﻿using AGY.Solution.Helper.Common;
+using ITI.Survey.Web.UI.Models;
 using ITI.Survey.Web.UI.StackingWebService;
+using System;
+using System.Linq;
+using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil
@@ -14,7 +16,31 @@ namespace ITI.Survey.Web.UI.Controllers
             InputNoMobilModel model = new InputNoMobilModel();
             return View(model);
         }
+        [HttpPost, ValidateInput(false)]
+        public ActionResult ScanBarcode()
+        {
+            Int64? result = null;
+            //var result = string.Empty;
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var postedFile = Request.Files[file];
+                    if (postedFile != null)
+                    {
+                        string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
+                        result = Convert.ToInt64(data[0]);
+                        //result = data[0].ToString();
+                    }
+                }
+            }
+            catch
+            {
+                result = null;
+            }
 
+            return Json(result, JsonRequestBehavior.AllowGet);
+        }
         [HttpPost]
         public ActionResult InputMobil(InputNoMobilModel model)
         {
