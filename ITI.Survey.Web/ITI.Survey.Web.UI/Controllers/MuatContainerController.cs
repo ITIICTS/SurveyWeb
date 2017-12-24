@@ -7,6 +7,8 @@ using System.Linq;
 using System.Web.Mvc;
 using AGY.Solution.Helper;
 using ITI.Survey.Web.UI.StackingWebService;
+using System.Drawing;
+using System.Collections;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
@@ -31,13 +33,20 @@ namespace ITI.Survey.Web.UI.Controllers
                     var postedFile = Request.Files[file];
                     if (postedFile != null)
                     {
-                        string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
-                        result = Convert.ToInt64(data[0]);
+                        using (var bi = new Bitmap(postedFile.InputStream))
+                        {
+                            ArrayList barcodes = new ArrayList();
+                            BarcodeImaging.FullScanPage(ref barcodes, bi, 100);
+                            if (barcodes.Count > 0)
+                                result = Convert.ToInt64(barcodes[0]);
+                        }
+
                     }
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                log.ErrorFormat("Muat Container --> Error Message : {0}", ex.Message);
                 result = null;
             }
 

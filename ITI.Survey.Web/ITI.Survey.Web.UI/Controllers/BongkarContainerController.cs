@@ -2,6 +2,8 @@
 using ITI.Survey.Web.UI.Models;
 using ITI.Survey.Web.UI.StackingWebService;
 using System;
+using System.Collections;
+using System.Drawing;
 using System.Linq;
 using System.Web.Mvc;
 
@@ -28,8 +30,14 @@ namespace ITI.Survey.Web.UI.Controllers
                     var postedFile = Request.Files[file];
                     if (postedFile != null)
                     {
-                        string[] data = Spire.Barcode.BarcodeScanner.Scan(postedFile.InputStream);
-                        result = Convert.ToInt64(data[0]);
+                        using (var bi = new Bitmap(postedFile.InputStream))
+                        {
+                            ArrayList barcodes = new ArrayList();
+                            BarcodeImaging.FullScanPage(ref barcodes, bi, 100);
+                            if (barcodes.Count > 0)
+                                result = Convert.ToInt64(barcodes[0]);
+                        }
+
                     }
                 }
             }
