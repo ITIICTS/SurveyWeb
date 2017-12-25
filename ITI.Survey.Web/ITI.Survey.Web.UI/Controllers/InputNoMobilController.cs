@@ -9,7 +9,7 @@ using System.Web.Mvc;
 
 namespace ITI.Survey.Web.UI.Controllers
 {
-    //[Authorize]
+    [Authorize]
     public class InputNoMobilController : BaseController
     {
         // GET: InputNoMobil
