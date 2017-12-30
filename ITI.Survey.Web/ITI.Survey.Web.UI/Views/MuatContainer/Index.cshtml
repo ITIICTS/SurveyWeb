@@ -61,6 +61,12 @@
                                     </div>
                                 </div>
 
+                                @*<div class="row">
+                                    <div class="col-md-12">
+                                        <img src="#" id="barcodeimage" alt="barcode image" />
+                                    </div>
+                                </div>*@
+
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -554,27 +560,48 @@
 </script>
 
 @section scripts{
+    @*<script src="~/Scripts/jquery.exif.js"></script>
+    <script src="~/Scripts/EXIF.js"></script>
+    <script src="~/Scripts/binaryajax.js"></script>
+    <script src="~/Scripts/jquery.canvasResize.js"></script>
+    <script src="~/Scripts/canvasResize.js"></script>*@
+
     <script>
         $(document).ready(function () {
             $('div[id="transactionMuatScan"]').removeClass('hidden');
 
-            $('#barcodeFileInput').change(function () {
+            $('#barcodeFileInput').change(function (e) {
+
                 var form = $(this).closest('form');
 
-                form.ajaxSubmit({
-                    url: form.attr('action'),
-                    data: form.serialize(),
-                    type: 'POST',
-                    beforeSend: function () {
-                        form.showloading();
-                    },
-                    complete: function () {
-                        form.hideloading();
-                    },
-                    success: function (result) {
-                        $("#ContCardID").val(result);
-                    }
-                });
+                //var file = e.target.files[0];
+                //canvasResize(file, {
+                //    width: 640,
+                //    height: 0,
+                //    crop: false,
+                //    quality: 90,
+                //    //rotate: 90,
+                //    callback: function (data, width, height) {
+                //        //$('#barcodeimage').attr('src', data);
+                        form.ajaxSubmit({
+                            url: form.attr('action'),
+                            data: form.serialize(), //{ src: data }, //form.serialize(),
+                            type: 'POST',
+                            beforeSend: function () {
+                                form.showloading();
+                            },
+                            complete: function () {
+                                form.hideloading();
+                            },
+                            success: function (result) {
+                                $("#ContCardID").val(result);
+                            }
+                        });
+                //    }
+                //});
+
+
+
             })
 
             $("#muatcontainerdiv").accordion({

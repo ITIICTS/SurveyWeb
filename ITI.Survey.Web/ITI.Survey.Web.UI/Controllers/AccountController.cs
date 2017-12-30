@@ -1,4 +1,5 @@
 ﻿using AGY.Solution.DataAccess;
+using AGY.Solution.Filter;
 using AGY.Solution.Helper.Common;
 using ITI.Survey.Web.UI.Models;
 using System.Collections.Generic;
@@ -68,10 +69,9 @@ namespace ITI.Survey.Web.UI.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken, AGYActionFilter]
         public ActionResult Login(LoginModel model, string returnUrl)
         {
-            //model.Validate(ModelState);
             if (!ModelState.IsValid)
             {
                 return Json(new { errorList = GetErrorList(ModelState) }, JsonRequestBehavior.AllowGet);

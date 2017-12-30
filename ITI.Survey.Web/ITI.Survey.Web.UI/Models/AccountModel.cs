@@ -7,6 +7,7 @@ using System.Net.Sockets;
 using System.Web;
 using System.Web.Mvc;
 using System.Linq;
+using System.Diagnostics;
 
 namespace ITI.Survey.Web.UI.Models
 {
@@ -34,44 +35,6 @@ namespace ITI.Survey.Web.UI.Models
             RememberMe = true;
         }
 
-        public void Validate(ModelStateDictionary modelState)
-        {
-            string machineName = Environment.MachineName;
-            string ipaddress = string.Empty;
-            foreach (var item in Dns.GetHostAddresses(Environment.MachineName))
-            {
-                if (item.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    ipaddress = item.MapToIPv4().ToString();
-                }
-            }
-
-            try
-            {
-                string keys = ConfigurationManager.AppSettings["Keys"];
-                string[] arrayKey = keys.Split('|');
-
-                if (arrayKey.Count() == 1)
-                {
-                    if (DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[0])))
-                    {
-                        modelState.AddModelError("global", "Keys is invalid.");
-                    }
-                }
-                else
-                {
-                    if (machineName != Decryptor.DecryptString(arrayKey[0])
-                        || ipaddress != Decryptor.DecryptString(arrayKey[1])
-                        || DateTime.Now > Convert.ToDateTime(Decryptor.DecryptString(arrayKey[2])))
-                    {
-                        modelState.AddModelError("global", "Keys is expired.");
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                modelState.AddModelError("global", ex.Message);
-            }
-        }
+        
     }
 }
