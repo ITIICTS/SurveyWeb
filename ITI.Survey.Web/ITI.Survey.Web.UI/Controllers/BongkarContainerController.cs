@@ -34,7 +34,6 @@ namespace ITI.Survey.Web.UI.Controllers
                         {
                             ArrayList barcodes = new ArrayList();
                             BarcodeImaging.FullScanPage(ref barcodes, bi, 100);
-                            //BarcodeImaging.ScanPage(ref barcodes, bi, 100, BarcodeImaging.ScanDirection.Vertical, BarcodeImaging.BarcodeType.Code39);
 
                             if (barcodes.Count > 0)
                                 result = Convert.ToInt64(barcodes[0]);
