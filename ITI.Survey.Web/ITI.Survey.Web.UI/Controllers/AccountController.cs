@@ -2,9 +2,12 @@
 using AGY.Solution.Filter;
 using AGY.Solution.Helper.Common;
 using ITI.Survey.Web.UI.Models;
+using log4net;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -13,6 +16,8 @@ namespace ITI.Survey.Web.UI.Controllers
     [Authorize]
     public class AccountController : Controller
     {
+        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+
         private string GetReturnUrl(string returnUrl)
         {
             if (Url.IsLocalUrl(returnUrl))
@@ -28,14 +33,22 @@ namespace ITI.Survey.Web.UI.Controllers
         [NonAction]
         public void GetConfigXML()
         {
-            using (var globalService = new GlobalWebService.GlobalSoapClient())
+            try
             {
-                var dataSet = Converter.ConvertXmlToDataSet(globalService.GetConfigXML("agys"));
-                ViewBag.HeavyEquipmentList = GetDropListByDataTable(dataSet.Tables["dt1"], "PILIH HEID");
-                ViewBag.ContainerSize = GetDropListByDataTable(dataSet.Tables["dt2"]);
-                ViewBag.ContainerType = GetDropListByDataTable(dataSet.Tables["dt3"]);
-                ViewBag.Customers = GetDropListByDataTable(dataSet.Tables["dt4"]);
-                ViewBag.Operators = GetDropListByDataTable(dataSet.Tables["dt5"], "PILIH OPID");
+                using (var globalService = new GlobalWebService.GlobalSoapClient())
+                {
+                    var dataSet = Converter.ConvertXmlToDataSet(globalService.GetConfigXML("agys"));
+                    ViewBag.HeavyEquipmentList = GetDropListByDataTable(dataSet.Tables["dt1"], "PILIH HEID");
+                    ViewBag.ContainerSize = GetDropListByDataTable(dataSet.Tables["dt2"]);
+                    ViewBag.ContainerType = GetDropListByDataTable(dataSet.Tables["dt3"]);
+                    ViewBag.Customers = GetDropListByDataTable(dataSet.Tables["dt4"]);
+                    ViewBag.Operators = GetDropListByDataTable(dataSet.Tables["dt5"], "PILIH OPID");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.ErrorFormat("GetConfigXML -> Message: {0}", ex.Message);
+                log.ErrorFormat("GetConfigXML -> StackTrace: {0}", ex.StackTrace);
             }
         }
 

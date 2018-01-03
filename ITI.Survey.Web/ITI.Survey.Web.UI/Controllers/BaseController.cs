@@ -3,6 +3,7 @@ using AGY.Solution.Filter;
 using AGY.Solution.Helper.Common;
 using log4net;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Globalization;
@@ -25,14 +26,21 @@ namespace ITI.Survey.Web.UI.Controllers
         [NonAction]
         public void GetConfigXML()
         {
-            using (var globalService = new GlobalWebService.GlobalSoapClient())
+            try
             {
-                var dataSet = Converter.ConvertXmlToDataSet(globalService.GetConfigXML(Username));
-                ViewBag.HeavyEquipmentList = GetDropListByDataTable(dataSet.Tables["dt1"]);
-                ViewBag.ContainerSize = GetDropListByDataTable(dataSet.Tables["dt2"]);
-                ViewBag.ContainerType = GetDropListByDataTable(dataSet.Tables["dt3"]);
-                ViewBag.Customers = GetDropListByDataTable(dataSet.Tables["dt4"]);
-                ViewBag.Operators = GetDropListByDataTable(dataSet.Tables["dt5"], "PILIH OPID");
+                using (var globalService = new GlobalWebService.GlobalSoapClient())
+                {
+                    var dataSet = Converter.ConvertXmlToDataSet(globalService.GetConfigXML(Username));
+                    ViewBag.HeavyEquipmentList = GetDropListByDataTable(dataSet.Tables["dt1"]);
+                    ViewBag.ContainerSize = GetDropListByDataTable(dataSet.Tables["dt2"]);
+                    ViewBag.ContainerType = GetDropListByDataTable(dataSet.Tables["dt3"]);
+                    ViewBag.Customers = GetDropListByDataTable(dataSet.Tables["dt4"]);
+                    ViewBag.Operators = GetDropListByDataTable(dataSet.Tables["dt5"], "PILIH OPID");
+                }
+            }
+            catch (Exception ex)
+            {
+                log.ErrorFormat("GetConfigXML --> Error Message : {0}", ex.Message);
             }
         }
 
