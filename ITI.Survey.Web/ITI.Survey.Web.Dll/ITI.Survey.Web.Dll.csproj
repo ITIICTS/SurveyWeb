@@ -87,6 +87,7 @@
     <Compile Include="Helper\GlobalConstant.cs" />
     <Compile Include="Helper\PhpCompatible.cs" />
     <Compile Include="Helper\WashStatusList.cs" />
+    <Compile Include="Helper\XOR.cs" />
     <Compile Include="Model\BlackList.cs" />
     <Compile Include="Model\Blok.cs" />
     <Compile Include="Model\ContainerDuration.cs" />

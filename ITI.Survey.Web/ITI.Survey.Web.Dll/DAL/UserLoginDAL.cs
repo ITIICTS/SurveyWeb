@@ -22,6 +22,11 @@ namespace ITI.Survey.Web.Dll.DAL
             userLogin.DbHost = Convert.ToString(npgsqlDataReader["dbhost"]);
             userLogin.DbName = Convert.ToString(npgsqlDataReader["dbname"]);
             userLogin.DbPass = Convert.ToString(npgsqlDataReader["dbpass"]);
+
+            if (userLogin.DbPass.StartsWith(XOR.XOR_Cript_Header))
+            {
+                userLogin.DbPass = XOR.XOR_Cript(userLogin.DbPass.Substring(XOR.XOR_Cript_Header.Length), XOR.XOR_Cript_Key);
+            }
             userLogin.CashierCode = Convert.ToString(npgsqlDataReader["cashiercode"]);
 
             userLogin.IsNew = false;
@@ -34,7 +39,7 @@ namespace ITI.Survey.Web.Dll.DAL
             return userLogin;
         }
 
-        public void FillUserLoginByUserId (string userId, UserLogin userLogin)
+        public void FillUserLoginByUserId(string userId, UserLogin userLogin)
         {
             try
             {
