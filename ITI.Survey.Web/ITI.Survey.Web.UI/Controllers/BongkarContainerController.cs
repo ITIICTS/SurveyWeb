@@ -96,45 +96,53 @@ namespace ITI.Survey.Web.UI.Controllers
                     var listContInOut = dataSetContInOut.Tables[0].ToList<ContInOutModel>();
                     contInOut = listContInOut.FirstOrDefault();
                 }
-
-                model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
-                model.ContInOutId = contInOut.ContInOutId;
-                model.ContCardID = contCard.ContCardID;
-                model.FlagAct = "BONGKAR AV";
-                model.Cont = contInOut.Cont;
-                model.Shipper = contInOut.CustomerCode;
-                model.ActiveUser = Username;
-                model.EqpId = userData.HEID;
-                model.OPID = userData.OPID;
-
-                if (model.Side == "Kiri" || string.IsNullOrEmpty(model.Side))
+                if (contInOut.Condition.Equals("AV"))
                 {
+
+                    model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
+                    model.ContInOutId = contInOut.ContInOutId;
+                    model.ContCardID = contCard.ContCardID;
+                    model.FlagAct = "BONGKAR AV";
                     model.Cont = contInOut.Cont;
-                    model.Cont2 = string.Empty;
-                }
-                else
-                {
-                    model.Cont = string.Empty;
-                    model.Cont2 = contInOut.Cont;
-                }
+                    model.Shipper = contInOut.CustomerCode;
+                    model.ActiveUser = Username;
+                    model.EqpId = userData.HEID;
+                    model.OPID = userData.OPID;
 
-                string xml = Converter.ConvertToXML(model);
-                string message = stackingService.SubmitKartuBongkar(xml);
-                if (message.Contains("Error"))
-                {
-                    resultMessage = message;
-                    status = false;
-                }
-                else
-                {
-                    char[] delimiters = new char[] { '\r', '\n' };
-                    string[] parts = message.Split(delimiters);
-
-                    foreach (string s in parts)
+                    if (model.Side == "Kiri" || string.IsNullOrEmpty(model.Side))
                     {
-                        resultMessage += s + "\r\n";
+                        model.Cont = contInOut.Cont;
+                        model.Cont2 = string.Empty;
                     }
-                    status = true;
+                    else
+                    {
+                        model.Cont = string.Empty;
+                        model.Cont2 = contInOut.Cont;
+                    }
+
+                    string xml = Converter.ConvertToXML(model);
+                    string message = stackingService.SubmitKartuBongkar(xml);
+                    if (message.Contains("Error"))
+                    {
+                        resultMessage = message;
+                        status = false;
+                    }
+                    else
+                    {
+                        char[] delimiters = new char[] { '\r', '\n' };
+                        string[] parts = message.Split(delimiters);
+
+                        foreach (string s in parts)
+                        {
+                            resultMessage += s + "\r\n";
+                        }
+                        status = true;
+                    }
+                }
+                else
+                {
+                    resultMessage = "Error container type bukan AV";
+                    status = false;
                 }
             }
             return Json(new { Status = status, Message = resultMessage }, JsonRequestBehavior.AllowGet);
@@ -175,45 +183,52 @@ namespace ITI.Survey.Web.UI.Controllers
                     var listContInOut = dataSetContInOut.Tables[0].ToList<ContInOutModel>();
                     contInOut = listContInOut.FirstOrDefault();
                 }
-
-                model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
-                model.ContInOutId = contInOut.ContInOutId;
-                model.ContCardID = contCard.ContCardID;
-                model.FlagAct = "BONGKAR DM";
-                model.Cont = contInOut.Cont;
-                model.Shipper = contInOut.CustomerCode;
-                model.ActiveUser = Username;
-                model.EqpId = userData.HEID;
-                model.OPID = userData.OPID;
-
-                if (model.Side.Equals("Kiri") || string.IsNullOrEmpty(model.Side))
+                if (contInOut.Condition.Equals("DM"))
                 {
+                    model.Location = model.Blok.ToUpper() + model.Bay + model.Row + model.Tier;
+                    model.ContInOutId = contInOut.ContInOutId;
+                    model.ContCardID = contCard.ContCardID;
+                    model.FlagAct = "BONGKAR DM";
                     model.Cont = contInOut.Cont;
-                    model.Cont2 = string.Empty;
-                }
-                else
-                {
-                    model.Cont = string.Empty;
-                    model.Cont2 = contInOut.Cont;
-                }
+                    model.Shipper = contInOut.CustomerCode;
+                    model.ActiveUser = Username;
+                    model.EqpId = userData.HEID;
+                    model.OPID = userData.OPID;
 
-                string xml = Converter.ConvertToXML(model);
-                string message = stackingService.SubmitKartuBongkar(xml);
-                if (message.Contains("Error"))
-                {
-                    resultMessage = message;
-                    status = false;
-                }
-                else
-                {
-                    char[] delimiters = new char[] { '\r', '\n' };
-                    string[] parts = message.Split(delimiters);
-
-                    foreach (string s in parts)
+                    if (model.Side.Equals("Kiri") || string.IsNullOrEmpty(model.Side))
                     {
-                        resultMessage += s + "\r\n";
+                        model.Cont = contInOut.Cont;
+                        model.Cont2 = string.Empty;
                     }
-                    status = true;
+                    else
+                    {
+                        model.Cont = string.Empty;
+                        model.Cont2 = contInOut.Cont;
+                    }
+
+                    string xml = Converter.ConvertToXML(model);
+                    string message = stackingService.SubmitKartuBongkar(xml);
+                    if (message.Contains("Error"))
+                    {
+                        resultMessage = message;
+                        status = false;
+                    }
+                    else
+                    {
+                        char[] delimiters = new char[] { '\r', '\n' };
+                        string[] parts = message.Split(delimiters);
+
+                        foreach (string s in parts)
+                        {
+                            resultMessage += s + "\r\n";
+                        }
+                        status = true;
+                    }
+                }
+                else
+                {
+                    resultMessage = "Error container type bukan DM";
+                    status = false;
                 }
             }
             return Json(new { Status = status, Message = resultMessage }, JsonRequestBehavior.AllowGet);
